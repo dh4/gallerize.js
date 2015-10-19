@@ -40,7 +40,6 @@ var SimpleElementGallery = function(config) {
         (c.gallery !== undefined)   ? seg.gallery = c.gallery      : seg.log('gallery_missing');
         (c.images !== undefined)    ? seg.images = c.images        : seg.log('images_missing');
         (c.thumbs !== undefined)    ? seg.thumbs = c.thumbs        : seg.thumbs = null;
-        (c.thumb_ratio !== undefined) ? seg.thumb_ratio = c.thumb_ratio : seg.thumb_ratio = 1.4;
         (c.nav !== undefined)       ? seg.nav = c.nav              : seg.nav = null;
         (c.nav_buttons !== undefined) ? seg.nav_buttons = c.nav_buttons : seg.nav_buttons = true;
         (c.prev !== undefined)      ? seg.prev = c.prev            : seg.prev = null;
@@ -71,12 +70,14 @@ var SimpleElementGallery = function(config) {
                                        : seg.thumb_iterations = 2;
 
         // Calculate thumbnail size based on how large the nav element is
-        (seg.nav_buttons) ? seg.thumbs_wrapper_width = $(seg.nav).width() - 100
-                          : seg.thumbs_wrapper_width = $(seg.nav).width() - 20
-        seg.thumb_width = (seg.thumbs_wrapper_width - 40) / 5;
-        seg.thumb_height = seg.thumb_width / seg.thumb_ratio;
+        var thumb_hpadding = Math.round($(seg.nav).width() * 0.015);
+        var thumb_vpadding = Math.round($(seg.nav).width() * 0.01);
+        (seg.nav_buttons) ? seg.thumbs_wrapper_width = $(seg.nav).width() - 80 - (thumb_hpadding * 2)
+                          : seg.thumbs_wrapper_width = $(seg.nav).width() - (thumb_hpadding * 2);
+        seg.thumb_width = Math.round((seg.thumbs_wrapper_width - (thumb_hpadding * 4)) / 5);
+        seg.thumb_height = Math.round($(seg.nav).height() - (thumb_vpadding * 2));
         seg.nav_wrapper_padding = ($(seg.nav).height() - seg.thumb_height) / 2;
-        seg.thumb_offset = seg.thumb_width + 10;
+        seg.thumb_offset = seg.thumb_width + thumb_hpadding;
         seg.thumb_most_left = 3 * seg.thumb_offset * -1;
         seg.thumb_most_right = (seg.images.length * seg.thumb_iterations - 3) * seg.thumb_offset;
         seg.thumb_wrap = Math.abs(seg.thumb_most_left) + seg.thumb_most_right;
