@@ -50,6 +50,8 @@ var SimpleElementGallery = function(config) {
         seg.nav_buttons     = (c.nav_buttons !== undefined)     ? c.nav_buttons     : true;
         seg.prev            = (c.prev !== undefined)            ? c.prev            : null;
         seg.next            = (c.next !== undefined)            ? c.next            : null;
+        seg.prev_text       = (c.prev_text !== undefined)       ? c.prev_text       : '&laquo;';
+        seg.next_text       = (c.next_text !== undefined)       ? c.next_text       : '&raquo;';
         seg.prev_image      = (c.prev_image !== undefined)      ? c.prev_image      : null;
         seg.next_image      = (c.next_image !== undefined)      ? c.next_image      : null;
         seg.captions        = (c.captions !== undefined)        ? c.captions        : null;
@@ -297,7 +299,7 @@ var SimpleElementGallery = function(config) {
                                    'background-size: contain;';
             $('<div/>', {style: button_img_style}).appendTo('#'+element);
         } else {
-            $('#'+element).html((button == 'prev') ? '&laquo;' : '&raquo;');
+            $('#'+element).html((button == 'prev') ? seg.prev_text : seg.next_text);
         }
 
         $('#'+element).click(function() {
