@@ -44,12 +44,14 @@ var SimpleElementGallery = function(config) {
         (c.nav_buttons !== undefined) ? seg.nav_buttons = c.nav_buttons : seg.nav_buttons = true;
         (c.prev !== undefined)      ? seg.prev = c.prev            : seg.prev = null;
         (c.next !== undefined)      ? seg.next = c.next            : seg.next = null;
-        (c.text !== undefined)      ? seg.text = c.text            : seg.text = null;
-        (c.text_element !== undefined) ? seg.text_element = c.text_element : seg.text_element = null;
+        (c.prev_image !== undefined) ? seg.prev_image = c.prev_image : seg.prev_image = null;
+        (c.next_image !== undefined) ? seg.next_image = c.next_image : seg.next_image = null;
         (c.captions !== undefined)  ? seg.captions = c.captions    : seg.captions = null;
         (c.links !== undefined)     ? seg.links = c.links          : seg.links = null;
-        (c.delay !== undefined)     ? seg.delay = c.delay          : seg.delay = 5000;
+        (c.text !== undefined)      ? seg.text = c.text            : seg.text = null;
+        (c.text_element !== undefined) ? seg.text_element = c.text_element : seg.text_element = null;
         (c.auto !== undefined)      ? seg.auto = c.auto            : seg.auto = true;
+        (c.delay !== undefined)     ? seg.delay = c.delay          : seg.delay = 5000;
         (c.fade !== undefined)      ? seg.fade = c.fade            : seg.fade = 1000;
         (c.bg_color !== undefined)  ? seg.bg_color = c.bg_color    : seg.bg_color = '#FFF';
         (c.contain !== undefined)   ? seg.contain = c.contain      : seg.contain = 'none';
@@ -90,8 +92,8 @@ var SimpleElementGallery = function(config) {
     seg.start = function() {
         seg.createGallery();
         if (seg.nav) seg.createNavigator();
-        if (seg.prev) seg.createButton('prev');
-        if (seg.next) seg.createButton('next');
+        if (seg.prev) seg.createButton('prev', false);
+        if (seg.next) seg.createButton('next', false);
         if (seg.text && seg.text_element) seg.createText();
 
         seg.preloadImage();
@@ -154,16 +156,7 @@ var SimpleElementGallery = function(config) {
         $('<div/>', {id: 'seg_navigator', style: wrapper_style}).appendTo('#seg_navigator_wrapper');
 
         // Create previous button
-        var button_style = 'padding:'+((seg.thumb_height-25)/2)+'px 5px;';
-        if (seg.nav_buttons) {
-            $('<a/>', {id: 'seg_navigator_prev', href: '#', style: button_style})
-                .appendTo('#seg_navigator');
-            $('#seg_navigator_prev').html('&laquo;');
-
-            $('#seg_navigator_prev').click(function() {
-                seg.changeImage(-1);
-            });
-        }
+        if (seg.nav_buttons) seg.createButton('prev', true);
 
         var thumbs_style = 'height:'+$(seg.nav).height()+'px;'
                +'width:'+seg.thumbs_wrapper_width+'px;';
@@ -227,39 +220,43 @@ var SimpleElementGallery = function(config) {
         }
 
         // Create next button
-        if (seg.nav_buttons) {
-            $('<a/>', {id: 'seg_navigator_next', href: '#', style: button_style})
-                .appendTo('#seg_navigator');
-            $('#seg_navigator_next').html('&raquo;');
-
-            $('#seg_navigator_next').click(function() {
-                seg.changeImage(1);
-            });
-        }
+        if (seg.nav_buttons) seg.createButton('next', true);
     }
 
     /**
      * seg.createButton creates the 'prev' and 'next' buttons
      *
      * @param button The button to create: 'prev' or 'next'.
+     * @param nav Whether button appears in nav or in free-standing element
      */
-    seg.createButton = function(button) {
-        if (button == 'prev') {
-            arrow = '&laquo;';
-            element = seg.prev;
+    seg.createButton = function(button, nav) {
+        (button == 'prev') ? image = seg.prev_image : image = seg.next_image;
+
+        if (nav) {
+            parent = '#seg_navigator';
+            element = 'seg_navigator_'+button;
+            button_style = 'height:'+seg.thumb_height+'px;'
+                          +'line-height:'+seg.thumb_height+'px;';
         } else {
-            arrow = '&raquo;';
-            element = seg.next;
+            (button == 'prev') ? parent = seg.prev : parent = seg.next;
+            element = 'seg_'+button;
+            button_style = 'line-height:'+$(parent).height()+'px;'
+                          +'height:'+$(parent).height()+'px;'
+                          +'width:'+$(parent).width()+'px;';
+        }
+        if (!image) button_style += 'top:-3px;'
+
+        $('<a/>', {id: element, href: '#', style: button_style}).appendTo(parent);
+
+        if (image) {
+            var button_img_style = 'background: url('+image+') no-repeat 50% 50%;'
+                                  +'background-size: contain;';
+            $('<div/>', {style: button_img_style}).appendTo('#'+element);
+        } else {
+            $('#'+element).html((button == 'prev') ? '&laquo;' : '&raquo;');
         }
 
-        style = 'line-height:'+$(element).height()+'px;'
-               +'height:'+$(element).height()+'px;'
-               +'width:'+$(element).width()+'px';
-
-        $('<a/>', {id: 'seg_'+button, href: '#', style: style}).appendTo(element);
-        $('#seg_'+button).html(arrow);
-
-        $('#seg_'+button).click(function() {
+        $('#'+element).click(function() {
             seg.changeImage((button == 'prev') ? -1 : 1);
         });
     }
