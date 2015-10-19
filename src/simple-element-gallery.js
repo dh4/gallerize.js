@@ -90,6 +90,7 @@ var SimpleElementGallery = function(config) {
      * and start the rotation timer.
      */
     seg.start = function() {
+        seg.insertCSS();
         seg.createGallery();
         if (seg.nav) seg.createNavigator();
         if (seg.prev) seg.createButton('prev', false);
@@ -118,6 +119,39 @@ var SimpleElementGallery = function(config) {
                             +"images. This will cause unintended consequences.", values[0]);
                 break;
         }
+    }
+
+    /**
+     * seg.insertCSS inserts the CSS rules into the DOM. This is so we don't have to
+     * distribute a static CSS file.
+     */
+    seg.insertCSS = function() {
+        $("<style>").prop("type", "text/css").html(
+            "#seg_click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"
+            +"#seg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"
+            +"#seg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"
+                +"height:100%;}"
+            +".seg_cover {background-size:cover !important;}"
+            +".seg_contain {background-size:contain !important;}"
+            +"#seg_navigator_wrapper {position:absolute;left:50%;}"
+            +"#seg_navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"
+            +"#seg_prev, #seg_next {display:block;z-index:97;position:relative;color:#FFF;"
+                +"text-decoration:none;font-size:40px;text-align:center;}"
+            +"#seg_prev > div, #seg_next > div, #seg_navigator_prev > div, "
+                +"#seg_navigator_next > div {height:100%;width:100%;}"
+            +"#seg_navigator_prev, #seg_navigator_next {display:block;float:left;width:40px;"
+                +"color:#FFF;text-decoration:none;font-size:40px;text-align:center;"
+                +"position:relative;}"
+            +".seg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"
+                +"line-height:17px;font-size:11px;color:#FFF;font-weight:bold;background:#000;"
+                +"background:rgba(0,0,0,0.7);text-align:center;}"
+            +"#seg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"
+            +".seg_navigator_action, #seg_navigator_current {z-index:99;position:absolute;"
+                +"cursor:pointer;background:url(i/iefix.png);}"
+            +".seg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"
+            +".seg_thumb_border {z-index:99;position:absolute;border: 1px solid #FFF;opacity:0;}"
+            +".seg_navigator_thumb img {position:absolute;}"
+        ).appendTo("head");
     }
 
     /**
