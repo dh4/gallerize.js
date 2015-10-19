@@ -62,6 +62,8 @@ var SimpleElementGallery = function(config) {
         seg.delay           = (c.delay !== undefined)           ? c.delay           : 5000;
         seg.fade            = (c.fade !== undefined)            ? c.fade            : 1000;
         seg.bg_color        = (c.bg_color !== undefined)        ? c.bg_color        : '#FFF';
+        seg.button_color    = (c.button_color !== undefined)    ? c.button_color    : '#000';
+        seg.active_color    = (c.active_color !== undefined)    ? c.active_color    : '#000';
         seg.contain         = (c.contain !== undefined)         ? c.contain         : 'none';
 
         // Check that other configuration arrays have same length as images array
@@ -138,6 +140,7 @@ var SimpleElementGallery = function(config) {
      */
     seg.insertCSS = function() {
         $("<style>").prop("type", "text/css").html(
+            "#seg_wrapper {position:relative;width:100%;height:100%;}"+
             "#seg_click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"+
             "#seg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"+
             "#seg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"+
@@ -151,7 +154,7 @@ var SimpleElementGallery = function(config) {
             "#seg_prev > div, #seg_next > div, #seg_navigator_prev > div, "+
                 "#seg_navigator_next > div {height:100%;width:100%;}"+
             "#seg_navigator_prev, #seg_navigator_next {display:block;float:left;width:40px;"+
-                "color:#FFF;text-decoration:none;font-size:40px;text-align:center;"+
+                "color:#000;text-decoration:none;font-size:40px;text-align:center;"+
                 "position:relative;}"+
             ".seg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"+
                 "line-height:17px;font-size:11px;color:#FFF;font-weight:bold;background:#000;"+
@@ -160,7 +163,7 @@ var SimpleElementGallery = function(config) {
             ".seg_navigator_action, #seg_navigator_current {z-index:99;position:absolute;"+
                 "cursor:pointer;background:url(i/iefix.png);}"+
             ".seg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
-            ".seg_thumb_border {z-index:99;position:absolute;border: 1px solid #FFF;opacity:0;}"+
+            ".seg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
             ".seg_navigator_thumb img {position:absolute;}"
         ).appendTo("head");
     };
@@ -169,9 +172,10 @@ var SimpleElementGallery = function(config) {
      * seg.createGallery initializes the gallery element and preloads the first image.
      */
     seg.createGallery = function() {
-        $('<div/>', {id: 'seg_click'}       ).appendTo(seg.gallery);
-        $('<div/>', {id: 'seg_animator'}    ).appendTo(seg.gallery);
-        $('<div/>', {id: 'seg_background'}  ).appendTo(seg.gallery);
+        $('<div/>', {id: 'seg_wrapper'}     ).appendTo(seg.gallery);
+        $('<div/>', {id: 'seg_click'}       ).appendTo('#seg_wrapper');
+        $('<div/>', {id: 'seg_animator'}    ).appendTo('#seg_wrapper');
+        $('<div/>', {id: 'seg_background'}  ).appendTo('#seg_wrapper');
 
         firstImage = new Image();
         firstImage.src = seg.getImage();
@@ -243,7 +247,7 @@ var SimpleElementGallery = function(config) {
                 class: 'seg_navigator_thumb',
                 style: 'left:'+position+'px;'+
                        'height:'+seg.thumb_height+'px;'+
-                      'width:'+seg.thumb_width+'px;',
+                       'width:'+seg.thumb_width+'px;',
             };
             $('<div/>', prop).appendTo('#seg_navigator_thumbs');
 
@@ -254,7 +258,8 @@ var SimpleElementGallery = function(config) {
             }
 
             var border_style = 'height:'+(seg.thumb_height-2)+'px;'+
-                               'width:'+(seg.thumb_width-2)+'px;';
+                               'width:'+(seg.thumb_width-2)+'px;'+
+                               'border:1px solid '+seg.active_color+';';
             if (i == 5) border_style += 'opacity:1;';
             $('<div/>', {class:'seg_thumb_border', style: border_style}).appendTo('#seg_thumb_'+i);
 
@@ -290,7 +295,7 @@ var SimpleElementGallery = function(config) {
                            'height:'+$(parent).height()+'px;'+
                            'width:'+$(parent).width()+'px;';
         }
-        if (!image) button_style += 'top:-3px;';
+        if (!image) button_style += 'top:-3px;color:'+seg.button_color+';';
 
         $('<a/>', {id: element, href: '#', style: button_style}).appendTo(parent);
 
@@ -346,7 +351,7 @@ var SimpleElementGallery = function(config) {
      * @param ratio The image aspect ratio used to determine cover or contain.
      */
     seg.setBackground = function(e, ratio) {
-        background = seg.bg_color+' url('+seg.getImage()+') no-repeat fixed 50% 50%';
+        background = seg.bg_color+' url('+seg.getImage()+') no-repeat 50% 50%';
         $(e).css('background', background);
 
         if (seg.contain == 'all' ||
