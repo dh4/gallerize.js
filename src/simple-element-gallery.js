@@ -218,8 +218,12 @@ var SimpleElementGallery = function(config) {
                               +'width:'+(seg.thumb_width-2)+'px;';
             if (i == 5) border_style += 'opacity:1;';
             $('<div/>', {class:'seg_thumb_border', style: border_style}).appendTo('#seg_thumb_'+i);
-            $('<img/>', {src: current_thumb, style: 'width:'+seg.thumb_width+'px'})
-                .appendTo('#seg_thumb_'+i);
+
+            var thumb_style = 'background: url('+seg.getThumbImage(adjustment)+') no-repeat 50% 50%;'
+                             +'background-size: cover;'
+                             +'height:'+seg.thumb_height+'px;'
+                             +'width:'+seg.thumb_width+'px;';
+            $('<div/>', {class:'seg_thumb_image', style: thumb_style}).appendTo('#seg_thumb_'+i);
         }
 
         // Create next button
