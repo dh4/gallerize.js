@@ -287,15 +287,15 @@ var SimpleElementGallery = function(config) {
             parent = '#seg_navigator';
             element = 'seg_navigator_'+button;
             button_style = 'height:'+seg.thumb_height+'px;'+
-                           'line-height:'+seg.thumb_height+'px;';
+                           'line-height:'+(seg.thumb_height-6)+'px;';
         } else {
             parent = (button == 'prev') ? seg.prev : seg.next;
             element = 'seg_'+button;
-            button_style = 'line-height:'+$(parent).height()+'px;'+
+            button_style = 'line-height:'+($(parent).height()-6)+'px;'+
                            'height:'+$(parent).height()+'px;'+
                            'width:'+$(parent).width()+'px;';
         }
-        if (!image) button_style += 'top:-3px;color:'+seg.button_color+';';
+        if (!image) button_style += 'color:'+seg.button_color+';';
 
         $('<a/>', {id: element, href: '#', style: button_style}).appendTo(parent);
 
