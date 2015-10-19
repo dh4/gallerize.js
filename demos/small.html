@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Simple Element Gallery Large Demo</title>
+    <title>Simple Element Gallery Small Demo</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="../src/simple-element-gallery.js"></script>
     <style>
@@ -12,53 +12,28 @@
         font-family:sans-serif;
     }
 
-    html, body, #gallery {
-        height:100%;
+    #wrapper {
+        width:800px;
+        margin:0 auto;
+        padding-top:50px;
     }
 
-    #nav_wrapper {
-        position:fixed;
-        top:0;
-        width:800px;
-        left:50%;
-        z-index:100;
+    #gallery {
+        width:700px;
+        height:522px;
+        margin:0 50px;
     }
 
     #navigator {
         z-index:100;
-        position:relative;
-        right:50%;
+        width:800px;
         height:110px;
-        background:rgba(0, 0, 0, 0.5);
-    }
-
-    #prev {
-        left:0;
-    }
-
-    #next {
-        right:0;
-    }
-
-    #prev, #next {
-        z-index:100;
-        position:absolute;
-        top:40%;
-        background:rgba(0,0,0,0.5);
-        height:70px;
-        width:50px;
     }
 
     #text {
-        height:80px;
-        width:360px;
-        padding:15px 20px;
-        position:fixed;
-        bottom:100px;
-        left:100px;
-        z-index:200;
-        background:rgba(0,0,0,0.6);
-        color:#FFF;
+        width:700px;
+        padding:15px 50px;
+        color:#333;
         font-size:18px;
     }
 
@@ -75,22 +50,19 @@
     </style>
 </head>
 <body>
-    <div id="gallery"></div>
-    <div id="nav_wrapper">
+    <div id="wrapper">
+        <div id="gallery"></div>
         <div id="navigator"></div>
+        <div id="prev"></div>
+        <div id="next"></div>
+        <div id="text"></div>
     </div>
-    <div id="prev"></div>
-    <div id="next"></div>
-    <div id="text"></div>
 <script>
 $(document).ready(function() {
     var seg = new SimpleElementGallery({
         gallery: '#gallery',
         nav: '#navigator',
-        nav_buttons: false,
-        prev: '#prev',
-        next: '#next',
-        delay: 10000,
+        fade: 500,
         images: [
             'images/rumney.jpg',
             'images/redrivergorge.jpg',
@@ -103,18 +75,6 @@ $(document).ready(function() {
             'images/thumbs/centralpark.jpg',
             'images/thumbs/browncounty.jpg'
         ],
-        links: [
-            null,
-            null,
-            'http://example.com/',
-            null
-        ],
-        captions: [
-            'Rumney, NH',
-            'Red River Gorge, KY',
-            'Central Park, NY',
-            'Brown County, IN'
-        ],
         text_element: '#text',
         text: [
             '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
@@ -122,10 +82,7 @@ $(document).ready(function() {
             '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
             '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
         ],
-        bg_color: '#000',
-        button_color: '#FFF',
-        active_color: '#FFF',
-        contain: 'portrait'
+        contain: 'all'
     });
     seg.start();
 });
