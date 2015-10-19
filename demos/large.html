@@ -46,6 +46,30 @@
         height:70px;
         width:50px;
     }
+
+    #text {
+        height:80px;
+        width:360px;
+        padding:15px 20px;
+        position:fixed;
+        bottom:100px;
+        left:100px;
+        z-index:200;
+        background:rgba(0,0,0,0.6);
+        color:#FFF;
+        font-size:18px;
+    }
+
+    .text_header {
+        font-weight:bold;
+        font-size:25px;
+        padding-bottom:5px;
+    }
+
+    .text_small {
+        padding-top:5px;
+        font-size:14px;
+    }
     </style>
     <style>
     #seg_click {
@@ -174,6 +198,7 @@
     <div id="nav_wrapper"><div id="navigator"></div></div>
     <div id="prev"></div>
     <div id="next"></div>
+    <div id="text"></div>
 <script>
 $(document).ready(function() {
     var seg = new SimpleElementGallery({
@@ -203,6 +228,13 @@ $(document).ready(function() {
             'Red River Gorge, KY',
             'Central Park, NY',
             'Brown County, IN'
+        ],
+        text_element: '#text',
+        text: [
+            '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
+            '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
+            '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
+            '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
         ],
         bg_color: '#FFF',
         contain: 'portrait'
