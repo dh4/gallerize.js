@@ -37,21 +37,23 @@ var SimpleElementGallery = function(config) {
      */
     seg.init = function() {
         c = config;
-        (c.gallery !== undefined)   ? seg.gallery = config.gallery      : seg.log('gallery_missing');
-        (c.images !== undefined)    ? seg.images = config.images        : seg.log('images_missing');
-        (c.thumbs !== undefined)    ? seg.thumbs = config.thumbs        : seg.thumbs = null;
-        (c.thumb_ratio !== undefined) ? seg.thumb_ratio = config.thumb_ratio : seg.thumb_ratio = 1.4;
-        (c.nav !== undefined)       ? seg.nav = config.nav              : seg.nav = null;
-        (c.nav_buttons !== undefined) ? seg.nav_buttons = config.nav_buttons : seg.nav_buttons = true;
-        (c.prev !== undefined)      ? seg.prev = config.prev            : seg.prev = null;
-        (c.next !== undefined)      ? seg.next = config.next            : seg.next = null;
-        (c.captions !== undefined)  ? seg.captions = config.captions    : seg.captions = null;
-        (c.links !== undefined)     ? seg.links = config.links          : seg.links = null;
-        (c.delay !== undefined)     ? seg.delay = config.delay          : seg.delay = 5000;
-        (c.auto !== undefined)      ? seg.auto = config.auto            : seg.auto = true;
-        (c.fade !== undefined)      ? seg.fade = config.fade            : seg.fade = 1000;
-        (c.bg_color !== undefined)  ? seg.bg_color = config.bg_color    : seg.bg_color = '#FFF';
-        (c.contain !== undefined)   ? seg.contain = config.contain      : seg.contain = 'none';
+        (c.gallery !== undefined)   ? seg.gallery = c.gallery      : seg.log('gallery_missing');
+        (c.images !== undefined)    ? seg.images = c.images        : seg.log('images_missing');
+        (c.thumbs !== undefined)    ? seg.thumbs = c.thumbs        : seg.thumbs = null;
+        (c.thumb_ratio !== undefined) ? seg.thumb_ratio = c.thumb_ratio : seg.thumb_ratio = 1.4;
+        (c.nav !== undefined)       ? seg.nav = c.nav              : seg.nav = null;
+        (c.nav_buttons !== undefined) ? seg.nav_buttons = c.nav_buttons : seg.nav_buttons = true;
+        (c.prev !== undefined)      ? seg.prev = c.prev            : seg.prev = null;
+        (c.next !== undefined)      ? seg.next = c.next            : seg.next = null;
+        (c.text !== undefined)      ? seg.text = c.text            : seg.text = null;
+        (c.text_element !== undefined) ? seg.text_element = c.text_element : seg.text_element = null;
+        (c.captions !== undefined)  ? seg.captions = c.captions    : seg.captions = null;
+        (c.links !== undefined)     ? seg.links = c.links          : seg.links = null;
+        (c.delay !== undefined)     ? seg.delay = c.delay          : seg.delay = 5000;
+        (c.auto !== undefined)      ? seg.auto = c.auto            : seg.auto = true;
+        (c.fade !== undefined)      ? seg.fade = c.fade            : seg.fade = 1000;
+        (c.bg_color !== undefined)  ? seg.bg_color = c.bg_color    : seg.bg_color = '#FFF';
+        (c.contain !== undefined)   ? seg.contain = c.contain      : seg.contain = 'none';
 
         if (seg.thumbs && seg.images.length != seg.thumbs.length) seg.log('thumbs_count');
         if (seg.links && seg.images.length != seg.links.length) seg.log('links_count');
@@ -89,6 +91,7 @@ var SimpleElementGallery = function(config) {
         if (seg.nav) seg.createNavigator();
         if (seg.prev) seg.createButton('prev');
         if (seg.next) seg.createButton('next');
+        if (seg.text && seg.text_element) seg.createText();
 
         seg.preloadImage();
         if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1)}, seg.delay);
@@ -129,6 +132,14 @@ var SimpleElementGallery = function(config) {
             seg.setBackground("#seg_background", this.width / this.height);
             if (seg.links) seg.setLink();
         }
+    }
+
+    /**
+     * seg.createText creates the initializes the text element.
+     */
+    seg.createText = function() {
+        $('<div/>', {id: 'seg_text_inner'} ).appendTo(seg.text_element);
+        $("#seg_text_inner").html(seg.text[seg.current % seg.images.length]);
     }
 
     /**
@@ -244,7 +255,7 @@ var SimpleElementGallery = function(config) {
         $('#seg_'+button).html(arrow);
 
         $('#seg_'+button).click(function() {
-            seg.changeImage(1);
+            seg.changeImage((button == 'prev') ? -1 : 1);
         });
     }
 
@@ -300,6 +311,9 @@ var SimpleElementGallery = function(config) {
         }
     }
 
+    /**
+     * seg.setLink attaches a URL to the #seg_click element above the image
+     */
     seg.setLink = function() {
         link = seg.links[seg.current % seg.images.length];
         if (link) {
@@ -369,6 +383,12 @@ var SimpleElementGallery = function(config) {
                 $(".seg_navigator_thumb").each(function() {
                     seg.adjustThumb(this, offset);
                 });
+            }
+
+            if (seg.text && seg.text_element) {
+                $("#seg_text_inner").animate({opacity: 0}, seg.fade / 2, function() {
+                    $("#seg_text_inner").html(seg.text[seg.current % seg.images.length]);
+                }).animate({opacity: 1}, seg.fade / 2);
             }
         }
     }
