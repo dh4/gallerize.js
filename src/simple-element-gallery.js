@@ -425,7 +425,7 @@ var SimpleElementGallery = function(config) {
 
             $("#seg_animator").animate({opacity: 0}, seg.fade, function() {
                 seg.setBackground(this, ratio);
-            }).animate({opacity: 1}, 0, function() {
+            }).animate({opacity: 1}, 200, function() {
                 if (seg.links) seg.setLink();
                 seg.active = false;
                 if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1);}, seg.delay);
