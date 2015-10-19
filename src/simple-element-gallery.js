@@ -37,41 +37,48 @@ var SimpleElementGallery = function(config) {
      */
     seg.init = function() {
         c = config;
-        (c.gallery !== undefined)   ? seg.gallery = c.gallery      : seg.log('gallery_missing');
-        (c.images !== undefined)    ? seg.images = c.images        : seg.log('images_missing');
-        (c.thumbs !== undefined)    ? seg.thumbs = c.thumbs        : seg.thumbs = null;
-        (c.nav !== undefined)       ? seg.nav = c.nav              : seg.nav = null;
-        (c.nav_buttons !== undefined) ? seg.nav_buttons = c.nav_buttons : seg.nav_buttons = true;
-        (c.prev !== undefined)      ? seg.prev = c.prev            : seg.prev = null;
-        (c.next !== undefined)      ? seg.next = c.next            : seg.next = null;
-        (c.prev_image !== undefined) ? seg.prev_image = c.prev_image : seg.prev_image = null;
-        (c.next_image !== undefined) ? seg.next_image = c.next_image : seg.next_image = null;
-        (c.captions !== undefined)  ? seg.captions = c.captions    : seg.captions = null;
-        (c.links !== undefined)     ? seg.links = c.links          : seg.links = null;
-        (c.text !== undefined)      ? seg.text = c.text            : seg.text = null;
-        (c.text_element !== undefined) ? seg.text_element = c.text_element : seg.text_element = null;
-        (c.auto !== undefined)      ? seg.auto = c.auto            : seg.auto = true;
-        (c.delay !== undefined)     ? seg.delay = c.delay          : seg.delay = 5000;
-        (c.fade !== undefined)      ? seg.fade = c.fade            : seg.fade = 1000;
-        (c.bg_color !== undefined)  ? seg.bg_color = c.bg_color    : seg.bg_color = '#FFF';
-        (c.contain !== undefined)   ? seg.contain = c.contain      : seg.contain = 'none';
 
-        if (seg.thumbs && seg.images.length != seg.thumbs.length) seg.log('thumbs_count');
-        if (seg.links && seg.images.length != seg.links.length) seg.log('links_count');
-        if (seg.captions && seg.images.length != seg.captions.length) seg.log('captions_count');
+        // Show errors for missing required configuration options
+        if (c.gallery !== undefined )   seg.log('gallery_missing');
+        if (c.images !== undefined )    seg.log('images_missing');
+
+        // Grab configuration options or set default values
+        seg.gallery         = (c.gallery !== undefined)         ? c.gallery         : null;
+        seg.images          = (c.images !== undefined)          ? c.images          : null;
+        seg.thumbs          = (c.thumbs !== undefined)          ? c.thumbs          : null;
+        seg.nav             = (c.nav !== undefined)             ? c.nav             : null;
+        seg.nav_buttons     = (c.nav_buttons !== undefined)     ? c.nav_buttons     : true;
+        seg.prev            = (c.prev !== undefined)            ? c.prev            : null;
+        seg.next            = (c.next !== undefined)            ? c.next            : null;
+        seg.prev_image      = (c.prev_image !== undefined)      ? c.prev_image      : null;
+        seg.next_image      = (c.next_image !== undefined)      ? c.next_image      : null;
+        seg.captions        = (c.captions !== undefined)        ? c.captions        : null;
+        seg.links           = (c.links !== undefined)           ? c.links           : null;
+        seg.text            = (c.text !== undefined)            ? c.text            : null;
+        seg.text_element    = (c.text_element !== undefined)    ? c.text_element    : null;
+        seg.auto            = (c.auto !== undefined)            ? c.auto            : true;
+        seg.delay           = (c.delay !== undefined)           ? c.delay           : 5000;
+        seg.fade            = (c.fade !== undefined)            ? c.fade            : 1000;
+        seg.bg_color        = (c.bg_color !== undefined)        ? c.bg_color        : '#FFF';
+        seg.contain         = (c.contain !== undefined)         ? c.contain         : 'none';
+
+        // Check that other configuration arrays have same length as images array
+        if (seg.thumbs && seg.images.length != seg.thumbs.length)       seg.log('thumbs_count');
+        if (seg.links && seg.images.length != seg.links.length)         seg.log('links_count');
+        if (seg.captions && seg.images.length != seg.captions.length)   seg.log('captions_count');
 
         seg.active = false;
-        seg.current = seg.images.length * 10000;
+        seg.current = seg.images.length * 10000; // High number so we will never go below 0
 
         // Thumbnail navigator shows 5 images, so make sure we have enough in the rotation
         // that user never sees a blank thumbnail
         iterations_array = {4:3, 3:4, 2:5, 1:10};
-        (iterations_array[seg.images.length])
-            ? seg.thumb_iterations = iterations_array[seg.images.length]
-            : (seg.images.length > 10) ? seg.thumb_iterations = 1
-                                       : seg.thumb_iterations = 2;
+        if (iterations_array[seg.images.length])
+            seg.thumb_iterations = iterations_array[seg.images.length];
+        else
+            seg.thumb_iterations = (seg.images.length > 10) ? 1 : 2;
 
-        // Calculate thumbnail size based on how large the nav element is
+        // Calculate thumbnail size and padding based on how large the nav element is
         seg.thumb_hpadding = Math.round($(seg.nav).width() * 0.015);
         seg.thumb_vpadding = Math.round($(seg.nav).width() * 0.01);
         seg.thumbs_wrapper_width = $(seg.nav).width() - (seg.thumb_hpadding * 2);
@@ -79,11 +86,13 @@ var SimpleElementGallery = function(config) {
         seg.thumb_width = Math.round((seg.thumbs_wrapper_width - (seg.thumb_hpadding * 4)) / 5);
         seg.thumb_height = Math.round($(seg.nav).height() - (seg.thumb_vpadding * 2));
         seg.nav_wrapper_padding = ($(seg.nav).height() - seg.thumb_height) / 2;
+
+        // Calculate position of thumbnails
         seg.thumb_offset = seg.thumb_width + seg.thumb_hpadding;
         seg.thumb_most_left = 3 * seg.thumb_offset * -1;
         seg.thumb_most_right = (seg.images.length * seg.thumb_iterations - 3) * seg.thumb_offset;
         seg.thumb_wrap = Math.abs(seg.thumb_most_left) + seg.thumb_most_right;
-    }
+    };
 
     /**
      * seg.start is used to initialize the gallery and navigation elements
@@ -98,8 +107,8 @@ var SimpleElementGallery = function(config) {
         if (seg.text && seg.text_element) seg.createText();
 
         seg.preloadImage();
-        if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1)}, seg.delay);
-    }
+        if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1);}, seg.delay);
+    };
 
     /**
      * seg.log displays a message to the Javascript console
@@ -111,15 +120,15 @@ var SimpleElementGallery = function(config) {
 
         switch (values[1]) {
             case 'missing':
-                console.error("Simple Element Gallery: '%s' is missing from the class "
-                             +"initialization. Please add it.", values[0]);
+                console.error("Simple Element Gallery: '%s' is missing from the class "+
+                              "initialization. Please add it.", values[0]);
                 break;
             case 'count':
-                console.warn("Simple Element Gallery: Number of %s does not equal number of "
-                            +"images. This will cause unintended consequences.", values[0]);
+                console.warn("Simple Element Gallery: Number of %s does not equal number of "+
+                             "images. This will cause unintended consequences.", values[0]);
                 break;
         }
-    }
+    };
 
     /**
      * seg.insertCSS inserts the CSS rules into the DOM. This is so we don't have to
@@ -127,32 +136,32 @@ var SimpleElementGallery = function(config) {
      */
     seg.insertCSS = function() {
         $("<style>").prop("type", "text/css").html(
-            "#seg_click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"
-            +"#seg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"
-            +"#seg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"
-                +"height:100%;}"
-            +".seg_cover {background-size:cover !important;}"
-            +".seg_contain {background-size:contain !important;}"
-            +"#seg_navigator_wrapper {position:absolute;left:50%;}"
-            +"#seg_navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"
-            +"#seg_prev, #seg_next {display:block;z-index:97;position:relative;color:#FFF;"
-                +"text-decoration:none;font-size:40px;text-align:center;}"
-            +"#seg_prev > div, #seg_next > div, #seg_navigator_prev > div, "
-                +"#seg_navigator_next > div {height:100%;width:100%;}"
-            +"#seg_navigator_prev, #seg_navigator_next {display:block;float:left;width:40px;"
-                +"color:#FFF;text-decoration:none;font-size:40px;text-align:center;"
-                +"position:relative;}"
-            +".seg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"
-                +"line-height:17px;font-size:11px;color:#FFF;font-weight:bold;background:#000;"
-                +"background:rgba(0,0,0,0.7);text-align:center;}"
-            +"#seg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"
-            +".seg_navigator_action, #seg_navigator_current {z-index:99;position:absolute;"
-                +"cursor:pointer;background:url(i/iefix.png);}"
-            +".seg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"
-            +".seg_thumb_border {z-index:99;position:absolute;border: 1px solid #FFF;opacity:0;}"
-            +".seg_navigator_thumb img {position:absolute;}"
+            "#seg_click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"+
+            "#seg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"+
+            "#seg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"+
+                "height:100%;}"+
+            ".seg_cover {background-size:cover !important;}"+
+            ".seg_contain {background-size:contain !important;}"+
+            "#seg_navigator_wrapper {position:absolute;left:50%;}"+
+            "#seg_navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"+
+            "#seg_prev, #seg_next {display:block;z-index:97;position:relative;color:#FFF;"+
+                "text-decoration:none;font-size:40px;text-align:center;}"+
+            "#seg_prev > div, #seg_next > div, #seg_navigator_prev > div, "+
+                "#seg_navigator_next > div {height:100%;width:100%;}"+
+            "#seg_navigator_prev, #seg_navigator_next {display:block;float:left;width:40px;"+
+                "color:#FFF;text-decoration:none;font-size:40px;text-align:center;"+
+                "position:relative;}"+
+            ".seg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"+
+                "line-height:17px;font-size:11px;color:#FFF;font-weight:bold;background:#000;"+
+                "background:rgba(0,0,0,0.7);text-align:center;}"+
+            "#seg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"+
+            ".seg_navigator_action, #seg_navigator_current {z-index:99;position:absolute;"+
+                "cursor:pointer;background:url(i/iefix.png);}"+
+            ".seg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
+            ".seg_thumb_border {z-index:99;position:absolute;border: 1px solid #FFF;opacity:0;}"+
+            ".seg_navigator_thumb img {position:absolute;}"
         ).appendTo("head");
-    }
+    };
 
     /**
      * seg.createGallery initializes the gallery element and preloads the first image.
@@ -168,8 +177,8 @@ var SimpleElementGallery = function(config) {
             seg.setBackground("#seg_animator", this.width / this.height);
             seg.setBackground("#seg_background", this.width / this.height);
             if (seg.links) seg.setLink();
-        }
-    }
+        };
+    };
 
     /**
      * seg.createText creates the initializes the text element.
@@ -177,39 +186,39 @@ var SimpleElementGallery = function(config) {
     seg.createText = function() {
         $('<div/>', {id: 'seg_text_inner'} ).appendTo(seg.text_element);
         $("#seg_text_inner").html(seg.text[seg.current % seg.images.length]);
-    }
+    };
 
     /**
      * seg.createNavigator initializes the navigation element.
      */
     seg.createNavigator = function() {
         $('<div/>', {id: 'seg_navigator_wrapper'}).appendTo(seg.nav);
-        var wrapper_style = 'height:'+seg.thumb_height+'px;'
-                           +'width:'+$(seg.nav).width()+'px;'
-                           +'padding:'+seg.nav_wrapper_padding+'px 0;';
+        var wrapper_style = 'height:'+seg.thumb_height+'px;'+
+                            'width:'+$(seg.nav).width()+'px;'+
+                            'padding:'+seg.nav_wrapper_padding+'px 0;';
         $('<div/>', {id: 'seg_navigator', style: wrapper_style}).appendTo('#seg_navigator_wrapper');
 
         // Create previous button
         if (seg.nav_buttons) seg.createButton('prev', true);
 
-        var thumbs_style = 'height:'+$(seg.nav).height()+'px;'
-                          +'width:'+seg.thumbs_wrapper_width+'px;'
-                          +'margin:0 '+seg.thumb_hpadding+'px;';
+        var thumbs_style = 'height:'+$(seg.nav).height()+'px;'+
+                           'width:'+seg.thumbs_wrapper_width+'px;'+
+                           'margin:0 '+seg.thumb_hpadding+'px;';
         $('<div/>', {id: 'seg_navigator_thumbs', style: thumbs_style}).appendTo('#seg_navigator');
 
         // Create clickable placeholders. The thumbnail images will move under these.
         for (i = -2; i <= 2; i++) {
             position = seg.thumb_offset * (i + 2);
-            (i == 0) ? width = seg.thumb_width - 2 : width = seg.thumb_width;
-            (i == 0) ? height = seg.thumb_height - 2 : height = seg.thumb_height;
+            width   = (i === 0) ? seg.thumb_width - 2   : seg.thumb_width;
+            height  = (i === 0) ? seg.thumb_height - 2  : seg.thumb_height;
             prop = {
                 class: 'seg_navigator_action',
                 'data-offset': i,
-                style: 'left:'+position+'px;'
-                      +'height:'+height+'px;'
-                      +'width:'+width+'px;',
-            }
-            if (i == 0) prop.id = 'seg_navigator_current';
+                style: 'left:'+position+'px;'+
+                       'height:'+height+'px;'+
+                       'width:'+width+'px;',
+            };
+            if (i === 0) prop.id = 'seg_navigator_current';
             $('<div/>', prop).appendTo('#seg_navigator_thumbs');
         }
         $('.seg_navigator_action').each(function() {
@@ -224,39 +233,39 @@ var SimpleElementGallery = function(config) {
 
             // Need to account for the fact the first image is the 6th (including hidden)
             // shown in the thumbnail rotator
-            adjustment = i + seg.images.length * 10 - 5;
+            adjust = i + seg.images.length * 10 - 5;
 
-            current_thumb = seg.getThumbImage(adjustment);
+            current_thumb = seg.getThumbImage(adjust);
             prop = {
                 id: 'seg_thumb_'+i,
                 class: 'seg_navigator_thumb',
-                style: 'left:'+position+'px;'
-                      +'height:'+seg.thumb_height+'px;'
-                      +'width:'+seg.thumb_width+'px;',
-            }
+                style: 'left:'+position+'px;'+
+                       'height:'+seg.thumb_height+'px;'+
+                      'width:'+seg.thumb_width+'px;',
+            };
             $('<div/>', prop).appendTo('#seg_navigator_thumbs');
 
             if (seg.captions) {
                 $('<div/>', {class:'seg_thumb_caption'}).appendTo('#seg_thumb_'+i);
-                caption = seg.captions[adjustment % seg.images.length];
+                caption = seg.captions[adjust % seg.images.length];
                 $('#seg_thumb_'+i+' .seg_thumb_caption').html(caption);
             }
 
-            var border_style = 'height:'+(seg.thumb_height-2)+'px;'
-                              +'width:'+(seg.thumb_width-2)+'px;';
+            var border_style = 'height:'+(seg.thumb_height-2)+'px;'+
+                               'width:'+(seg.thumb_width-2)+'px;';
             if (i == 5) border_style += 'opacity:1;';
             $('<div/>', {class:'seg_thumb_border', style: border_style}).appendTo('#seg_thumb_'+i);
 
-            var thumb_style = 'background: url('+seg.getThumbImage(adjustment)+') no-repeat 50% 50%;'
-                             +'background-size: cover;'
-                             +'height:'+seg.thumb_height+'px;'
-                             +'width:'+seg.thumb_width+'px;';
+            var thumb_style = 'background: url('+seg.getThumbImage(adjust)+') no-repeat 50% 50%;'+
+                              'background-size: cover;'+
+                              'height:'+seg.thumb_height+'px;'+
+                              'width:'+seg.thumb_width+'px;';
             $('<div/>', {class:'seg_thumb_image', style: thumb_style}).appendTo('#seg_thumb_'+i);
         }
 
         // Create next button
         if (seg.nav_buttons) seg.createButton('next', true);
-    }
+    };
 
     /**
      * seg.createButton creates the 'prev' and 'next' buttons
@@ -265,27 +274,27 @@ var SimpleElementGallery = function(config) {
      * @param nav Whether button appears in nav or in free-standing element
      */
     seg.createButton = function(button, nav) {
-        (button == 'prev') ? image = seg.prev_image : image = seg.next_image;
+        image = (button == 'prev') ? seg.prev_image : seg.next_image;
 
         if (nav) {
             parent = '#seg_navigator';
             element = 'seg_navigator_'+button;
-            button_style = 'height:'+seg.thumb_height+'px;'
-                          +'line-height:'+seg.thumb_height+'px;';
+            button_style = 'height:'+seg.thumb_height+'px;'+
+                           'line-height:'+seg.thumb_height+'px;';
         } else {
-            (button == 'prev') ? parent = seg.prev : parent = seg.next;
+            parent = (button == 'prev') ? seg.prev : seg.next;
             element = 'seg_'+button;
-            button_style = 'line-height:'+$(parent).height()+'px;'
-                          +'height:'+$(parent).height()+'px;'
-                          +'width:'+$(parent).width()+'px;';
+            button_style = 'line-height:'+$(parent).height()+'px;'+
+                           'height:'+$(parent).height()+'px;'+
+                           'width:'+$(parent).width()+'px;';
         }
-        if (!image) button_style += 'top:-3px;'
+        if (!image) button_style += 'top:-3px;';
 
         $('<a/>', {id: element, href: '#', style: button_style}).appendTo(parent);
 
         if (image) {
-            var button_img_style = 'background: url('+image+') no-repeat 50% 50%;'
-                                  +'background-size: contain;';
+            var button_img_style = 'background: url('+image+') no-repeat 50% 50%;'+
+                                   'background-size: contain;';
             $('<div/>', {style: button_img_style}).appendTo('#'+element);
         } else {
             $('#'+element).html((button == 'prev') ? '&laquo;' : '&raquo;');
@@ -294,7 +303,7 @@ var SimpleElementGallery = function(config) {
         $('#'+element).click(function() {
             seg.changeImage((button == 'prev') ? -1 : 1);
         });
-    }
+    };
 
     /**
      * seg.getImage returns a given image from the image array.
@@ -304,7 +313,7 @@ var SimpleElementGallery = function(config) {
     seg.getImage = function(image) {
         if (!image) image = seg.current;
         return seg.images[image % seg.images.length];
-    }
+    };
 
     /**
      * seg.getThumbImage returns a given thumbnail image if provided, or the full image.
@@ -317,7 +326,7 @@ var SimpleElementGallery = function(config) {
             return seg.thumbs[image % seg.images.length];
         else
             return seg.images[image % seg.images.length];
-    }
+    };
 
     /**
      * seg.preloadImage preloads the next image so there is no delay in the rotation
@@ -325,7 +334,7 @@ var SimpleElementGallery = function(config) {
     seg.preloadImage = function() {
         nextImage = new Image();
         nextImage.src = seg.getImage(seg.current + 1);
-    }
+    };
 
     /**
      * seg.setBackground sets the css background property and cover/contain class
@@ -338,15 +347,15 @@ var SimpleElementGallery = function(config) {
         background = seg.bg_color+' url('+seg.getImage()+') no-repeat fixed 50% 50%';
         $(e).css('background', background);
 
-        if (seg.contain == 'all'
-            || (seg.contain == 'landscape' && ratio > 1)
-            || (seg.contain == 'portrait' && ratio <= 1)
+        if (seg.contain == 'all' ||
+            (seg.contain == 'landscape' && ratio > 1) ||
+            (seg.contain == 'portrait' && ratio <= 1)
            ) {
             $(e).removeClass("seg_cover").addClass("seg_contain");
         } else {
             $(e).removeClass('seg_contain').addClass('seg_cover');
         }
-    }
+    };
 
     /**
      * seg.setLink attaches a URL to the #seg_click element above the image
@@ -358,7 +367,7 @@ var SimpleElementGallery = function(config) {
         } else {
             $("#seg_click").css("cursor","default").attr('onclick','');
         }
-    }
+    };
 
     /**
      * seg.adjustThumb adjusts the position of thumbnails by the given offset
@@ -384,7 +393,7 @@ var SimpleElementGallery = function(config) {
             $(e).children('.seg_thumb_border').animate({opacity: 1}, seg.fade);
         else if (origin == seg.thumb_offset * 2)
             $(e).children('.seg_thumb_border').animate({opacity: 0}, seg.fade);
-    }
+    };
 
     /**
      * seg.changeImage is where the real action occurs. This animates the transition.
@@ -394,9 +403,9 @@ var SimpleElementGallery = function(config) {
      */
     seg.changeImage = function(offset) {
         // Don't allow image to change if animation is occuring or no offset
-        if (seg.active || offset == 0) return;
+        if (seg.active || offset === 0) return;
 
-        seg.current = seg.current + offset
+        seg.current = seg.current + offset;
 
         img = new Image();
         img.src = seg.getImage();
@@ -412,7 +421,7 @@ var SimpleElementGallery = function(config) {
             }).animate({opacity: 1}, 0, function() {
                 if (seg.links) seg.setLink();
                 seg.active = false;
-                if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1)}, seg.delay);
+                if (seg.auto) seg.timeout = setTimeout(function(){seg.changeImage(1);}, seg.delay);
                 seg.preloadImage();
             });
 
@@ -427,9 +436,9 @@ var SimpleElementGallery = function(config) {
                     $("#seg_text_inner").html(seg.text[seg.current % seg.images.length]);
                 }).animate({opacity: 1}, seg.fade / 2);
             }
-        }
-    }
+        };
+    };
 
     // Initialize the class parameters
     seg.init();
-}
+};
