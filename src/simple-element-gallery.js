@@ -72,14 +72,14 @@ var SimpleElementGallery = function(config) {
                                        : seg.thumb_iterations = 2;
 
         // Calculate thumbnail size based on how large the nav element is
-        var thumb_hpadding = Math.round($(seg.nav).width() * 0.015);
-        var thumb_vpadding = Math.round($(seg.nav).width() * 0.01);
-        (seg.nav_buttons) ? seg.thumbs_wrapper_width = $(seg.nav).width() - 80 - (thumb_hpadding * 2)
-                          : seg.thumbs_wrapper_width = $(seg.nav).width() - (thumb_hpadding * 2);
-        seg.thumb_width = Math.round((seg.thumbs_wrapper_width - (thumb_hpadding * 4)) / 5);
-        seg.thumb_height = Math.round($(seg.nav).height() - (thumb_vpadding * 2));
+        seg.thumb_hpadding = Math.round($(seg.nav).width() * 0.015);
+        seg.thumb_vpadding = Math.round($(seg.nav).width() * 0.01);
+        seg.thumbs_wrapper_width = $(seg.nav).width() - (seg.thumb_hpadding * 2);
+        if (seg.nav_buttons) seg.thumbs_wrapper_width = seg.thumbs_wrapper_width - 80;
+        seg.thumb_width = Math.round((seg.thumbs_wrapper_width - (seg.thumb_hpadding * 4)) / 5);
+        seg.thumb_height = Math.round($(seg.nav).height() - (seg.thumb_vpadding * 2));
         seg.nav_wrapper_padding = ($(seg.nav).height() - seg.thumb_height) / 2;
-        seg.thumb_offset = seg.thumb_width + thumb_hpadding;
+        seg.thumb_offset = seg.thumb_width + seg.thumb_hpadding;
         seg.thumb_most_left = 3 * seg.thumb_offset * -1;
         seg.thumb_most_right = (seg.images.length * seg.thumb_iterations - 3) * seg.thumb_offset;
         seg.thumb_wrap = Math.abs(seg.thumb_most_left) + seg.thumb_most_right;
@@ -159,7 +159,8 @@ var SimpleElementGallery = function(config) {
         if (seg.nav_buttons) seg.createButton('prev', true);
 
         var thumbs_style = 'height:'+$(seg.nav).height()+'px;'
-               +'width:'+seg.thumbs_wrapper_width+'px;';
+                          +'width:'+seg.thumbs_wrapper_width+'px;'
+                          +'margin:0 '+seg.thumb_hpadding+'px;';
         $('<div/>', {id: 'seg_navigator_thumbs', style: thumbs_style}).appendTo('#seg_navigator');
 
         // Create clickable placeholders. The thumbnail images will move under these.
