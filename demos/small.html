@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Simple Element Gallery Small Demo</title>
+    <title>vGallery.js Small Demo</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="../src/simple-element-gallery.js"></script>
+    <script src="../src/vgallery.js"></script>
     <style>
     body {
         margin:0;
@@ -59,7 +59,7 @@
     </div>
 <script>
 $(document).ready(function() {
-    var seg = new SimpleElementGallery({
+    var vg = new vGallery({
         gallery: '#gallery',
         nav: '#navigator',
         fade: 500,
@@ -84,7 +84,7 @@ $(document).ready(function() {
         ],
         contain: 'all'
     });
-    seg.start();
+    vg.start();
 });
 </script>
 </body>

@@ -2,7 +2,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            files: ['Gruntfile.js', 'src/<%= pkg.name %>.js'],
+            files: ['Gruntfile.js', 'src/vgallery.js'],
             options: {
                 globals: {
                     jQuery: true
@@ -22,8 +22,8 @@ module.exports = function(grunt) {
                         ' **/\n'
             },
             build: {
-                src: 'src/<%= pkg.name %>.js',
-                dest: 'min/<%= pkg.name %>.min.js'
+                src: 'src/vgallery.js',
+                dest: 'min/vgallery-<%= pkg.version %>.min.js'
             }
         }
     });
