@@ -415,6 +415,9 @@ var vGallery = function(config) {
                 vg.ratios[vg.images.indexOf(imgSrc)] = this.width / this.height;
                 if (onload) onload();
             };
+            image.onerror = function() {
+                if (onload) onload();
+            };
         } else {
             if (onload) onload();
         }
