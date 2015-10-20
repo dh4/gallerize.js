@@ -72,6 +72,10 @@ var vGallery = function(config) {
         if (vg.links && vg.images.length != vg.links.length)         vg.log('links_count');
         if (vg.captions && vg.images.length != vg.captions.length)   vg.log('captions_count');
 
+        // Check that gallery and nav elements have a height and width greater than zero
+        if ($(vg.gallery).height() === 0 || $(vg.gallery).width() === 0)     vg.log('gallery_size');
+        if (vg.nav && ($(vg.nav).height() === 0 || $(vg.nav).width() === 0)) vg.log('nav_size');
+
         vg.active = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
         vg.preload = Array();
@@ -174,6 +178,9 @@ var vGallery = function(config) {
                 console.warn("vGallery.js: Number of %s does not equal number of "+
                              "images. This will cause unintended consequences.", values[0]);
                 break;
+            case 'size':
+                console.warn("vGallery.js: %s element has a height or width of 0. "+
+                             "This will cause nothing to show.", values[0]);
         }
     };
 
