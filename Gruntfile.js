@@ -22,6 +22,8 @@ module.exports = function(grunt) {
                         ' * <%= pkg.name %> <%= pkg.version %>\n'+
                         ' * Copyright (c) 2015, Dan Hasting\n'+
                         ' * All rights reserved.\n'+
+                        ' *\n'+
+                        ' * https://github.com/dh4/vGallery.js\n'+
                         ' **/\n'
             },
             build: {
@@ -61,6 +63,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.registerTask('default', ['jshint', 'uglify']);
-    grunt.registerTask('package', ['copy:main', 'compress:main']);
+    grunt.registerTask('default', ['jshint']);
+    grunt.registerTask('package', ['uglify', 'copy', 'compress']);
 };
