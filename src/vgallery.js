@@ -75,6 +75,7 @@ var vGallery = function(config) {
         vg.active = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
         vg.preload = Array();
+        vg.ratios = Array();
 
         // Thumbnail navigator shows 5 images, so make sure we have enough in the rotation
         // that user never sees a blank thumbnail
@@ -218,8 +219,8 @@ var vGallery = function(config) {
      * vg.setGallery preloads the first image.
      */
     vg.setGallery = function() {
-        vg.setBackground("#vg_animator", this.width / this.height);
-        vg.setBackground("#vg_background", this.width / this.height);
+        vg.setBackground('#vg_animator');
+        vg.setBackground('#vg_background');
         if (vg.links) vg.setLink();
     };
 
@@ -386,6 +387,9 @@ var vGallery = function(config) {
 
     /**
      * vg.loadImage loads an image if it hasn't been loaded, then calls the onload function.
+     *
+     * @param offset The offset from the current image to preload
+     * @param onload A function to call after image has loaded
      */
     vg.loadImage = function(offset, onload) {
         var imgSrc = vg.getImage(vg.current + offset);
@@ -396,6 +400,7 @@ var vGallery = function(config) {
             image.src = imgSrc;
             image.onload = function() {
                 vg.preload.push(imgSrc);
+                vg.ratios[vg.images.indexOf(imgSrc)] = this.width / this.height;
                 if (onload) onload();
             };
         } else {
@@ -408,12 +413,12 @@ var vGallery = function(config) {
      * for the given element
      *
      * @param e The element to modify.
-     * @param ratio The image aspect ratio used to determine cover or contain.
      */
-    vg.setBackground = function(e, ratio) {
+    vg.setBackground = function(e) {
         var background = vg.bg_color+' url('+vg.getImage()+') no-repeat 50% 50%';
         $(e).css('background', background);
 
+        var ratio = vg.ratios[vg.current % vg.images.length];
         var parent_ratio = $(vg.gallery).width() / $(vg.gallery).height();
 
         if (vg.contain == 'all' ||
@@ -482,11 +487,10 @@ var vGallery = function(config) {
 
         vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
-            var ratio = this.width / this.height;
-            vg.setBackground('#vg_background', ratio);
+            vg.setBackground('#vg_background');
 
             $('#vg_animator').animate({opacity: 0}, vg.fade, function() {
-                vg.setBackground(this, ratio);
+                vg.setBackground(this);
             }).animate({opacity: 1}, 200, function() {
                 if (vg.links) vg.setLink();
                 vg.active = false;
