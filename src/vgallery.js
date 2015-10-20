@@ -147,8 +147,8 @@ var vGallery = function(config) {
                 "height:100%;}"+
             ".vg_cover {background-size:cover !important;}"+
             ".vg_contain {background-size:contain !important;}"+
-            "#vg_navigator_wrapper {position:absolute;left:50%;}"+
-            "#vg_navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"+
+            "#vg_navigator_wrapper {position:absolute;right:50%;}"+
+            "#vg_navigator {z-index:97;position:relative;left:50%;padding-top:8px; }"+
             "#vg_prev, #vg_next {display:block;z-index:97;position:relative;color:#FFF;"+
                 "text-decoration:none;font-size:40px;text-align:center;}"+
             "#vg_prev > div, #vg_next > div, #vg_navigator_prev > div, "+
