@@ -2,6 +2,13 @@
 
 vGallery.js is a jQuery-based image fader designed to be as versatile as possible. it was born out of my frustration finding an image gallery that was versatile enough to use for multiple different applications. Every one I found was designed with a certain look or orientation in mind. vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text).
 
+Click on the following demos to view them (you can view the source code in the demos directory):
+
+[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/large.jpg" alt="Large Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/large.html)
+[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/small.jpg" alt="Small Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/small.html)
+[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/jumbotron.html)
+
+
 ## Usage
 
 Make sure you have [jQuery](https://jquery.com/) installed.
