@@ -207,13 +207,12 @@ var vGallery = function(config) {
             "#vg_navigator_prev, #vg_navigator_next {float:left;color:#000;}"+
             ".vg_button {position:relative;cursor:pointer;text-align:center;}"+
             ".vg_button > div {height:100%;width:100%;}"+
-            ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
-                "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
             "#vg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"+
             ".vg_navigator_action {z-index:99;position:absolute;cursor:pointer;}"+
             ".vg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
-            ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
-            ".vg_navigator_thumb img {position:absolute;}"
+            ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
+                "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
+            ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"
         ).appendTo("head");
     };
 
@@ -320,7 +319,8 @@ var vGallery = function(config) {
             if (i == 5) border_style += 'opacity:1;';
             $('<div/>', {class:'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
 
-            var thumb_style = 'background: url('+vg.getThumbImage(adjust)+') no-repeat 50% 50%;'+
+            var thumbnail = vg.getThumbImage(adjust);
+            var thumb_style = 'background: '+vg.bg_color+' url('+thumbnail+') no-repeat 50% 50%;'+
                               'background-size: cover;'+
                               'height:'+vg.thumb_height+'px;'+
                               'width:'+vg.thumb_width+'px;';
