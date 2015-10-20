@@ -1,12 +1,15 @@
+/* global module */
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             files: ['Gruntfile.js', 'src/vgallery.js'],
             options: {
-                globals: {
-                    jQuery: true
-                },
+                undef: true,
+                unused: true,
+                browser: true,
+                devel: true,
+                jquery: true,
             },
         },
         watch: {
