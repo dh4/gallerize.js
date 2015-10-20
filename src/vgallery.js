@@ -39,8 +39,8 @@ var vGallery = function(config) {
         c = config;
 
         // Show errors for missing required configuration options
-        if (c.gallery !== undefined )   vg.log('gallery_missing');
-        if (c.images !== undefined )    vg.log('images_missing');
+        if (c.gallery === undefined)    vg.log('gallery_missing');
+        if (c.images === undefined)     vg.log('images_missing');
 
         // Grab configuration options or set default values
         vg.gallery      = (c.gallery !== undefined)         ? c.gallery         : null;
@@ -140,31 +140,31 @@ var vGallery = function(config) {
      */
     vg.insertCSS = function() {
         $("<style>").prop("type", "text/css").html(
-            "#vg.wrapper {position:relative;width:100%;height:100%;}"+
-            "#vg.click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"+
-            "#vg.animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"+
-            "#vg.background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"+
+            "#vg_wrapper {position:relative;width:100%;height:100%;}"+
+            "#vg_click {z-index:96;position:absolute;top:0;left:0;width:100%;height:100%;}"+
+            "#vg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"+
+            "#vg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"+
                 "height:100%;}"+
-            ".vg.cover {background-size:cover !important;}"+
-            ".vg.contain {background-size:contain !important;}"+
-            "#vg.navigator_wrapper {position:absolute;left:50%;}"+
-            "#vg.navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"+
-            "#vg.prev, #vg.next {display:block;z-index:97;position:relative;color:#FFF;"+
+            ".vg_cover {background-size:cover !important;}"+
+            ".vg_contain {background-size:contain !important;}"+
+            "#vg_navigator_wrapper {position:absolute;left:50%;}"+
+            "#vg_navigator {z-index:97;position:relative;right:50%;padding-top:8px; }"+
+            "#vg_prev, #vg_next {display:block;z-index:97;position:relative;color:#FFF;"+
                 "text-decoration:none;font-size:40px;text-align:center;}"+
-            "#vg.prev > div, #vg.next > div, #vg.navigator_prev > div, "+
-                "#vg.navigator_next > div {height:100%;width:100%;}"+
-            "#vg.navigator_prev, #vg.navigator_next {display:block;float:left;width:40px;"+
+            "#vg_prev > div, #vg_next > div, #vg_navigator_prev > div, "+
+                "#vg_navigator_next > div {height:100%;width:100%;}"+
+            "#vg_navigator_prev, #vg_navigator_next {display:block;float:left;width:40px;"+
                 "color:#000;text-decoration:none;font-size:40px;text-align:center;"+
                 "position:relative;}"+
-            ".vg.thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"+
+            ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;height:18px;"+
                 "line-height:17px;font-size:11px;color:#FFF;font-weight:bold;background:#000;"+
                 "background:rgba(0,0,0,0.7);text-align:center;}"+
-            "#vg.navigator_thumbs {position:relative;float:left;overflow:hidden;}"+
-            ".vg.navigator_action, #vg.navigator_current {z-index:99;position:absolute;"+
+            "#vg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"+
+            ".vg_navigator_action, #vg_navigator_current {z-index:99;position:absolute;"+
                 "cursor:pointer;background:url(i/iefix.png);}"+
-            ".vg.navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
-            ".vg.thumb_border {z-index:99;position:absolute;opacity:0;}"+
-            ".vg.navigator_thumb img {position:absolute;}"
+            ".vg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
+            ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
+            ".vg_navigator_thumb img {position:absolute;}"
         ).appendTo("head");
     };
 
@@ -172,16 +172,16 @@ var vGallery = function(config) {
      * vg.createGallery initializes the gallery element and preloads the first image.
      */
     vg.createGallery = function() {
-        $('<div/>', {id: 'vg.wrapper'}     ).appendTo(vg.gallery);
-        $('<div/>', {id: 'vg.click'}       ).appendTo('#vg.wrapper');
-        $('<div/>', {id: 'vg.animator'}    ).appendTo('#vg.wrapper');
-        $('<div/>', {id: 'vg.background'}  ).appendTo('#vg.wrapper');
+        $('<div/>', {id: 'vg_wrapper'}     ).appendTo(vg.gallery);
+        $('<div/>', {id: 'vg_click'}       ).appendTo('#vg_wrapper');
+        $('<div/>', {id: 'vg_animator'}    ).appendTo('#vg_wrapper');
+        $('<div/>', {id: 'vg_background'}  ).appendTo('#vg_wrapper');
 
         firstImage = new Image();
         firstImage.src = vg.getImage();
         firstImage.onload = function() {
-            vg.setBackground("#vg.animator", this.width / this.height);
-            vg.setBackground("#vg.background", this.width / this.height);
+            vg.setBackground("#vg_animator", this.width / this.height);
+            vg.setBackground("#vg_background", this.width / this.height);
             if (vg.links) vg.setLink();
         };
     };
@@ -190,19 +190,19 @@ var vGallery = function(config) {
      * vg.createText creates the initializes the text element.
      */
     vg.createText = function() {
-        $('<div/>', {id: 'vg.text_inner'} ).appendTo(vg.text_element);
-        $("#vg.text_inner").html(vg.text[vg.current % vg.images.length]);
+        $('<div/>', {id: 'vg_text_inner'} ).appendTo(vg.text_element);
+        $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
     };
 
     /**
      * vg.createNavigator initializes the navigation element.
      */
     vg.createNavigator = function() {
-        $('<div/>', {id: 'vg.navigator_wrapper'}).appendTo(vg.nav);
+        $('<div/>', {id: 'vg_navigator_wrapper'}).appendTo(vg.nav);
         var wrapper_style = 'height:'+vg.thumb_height+'px;'+
                             'width:'+$(vg.nav).width()+'px;'+
                             'padding:'+vg.nav_wrapper_padding+'px 0;';
-        $('<div/>', {id: 'vg.navigator', style: wrapper_style}).appendTo('#vg.navigator_wrapper');
+        $('<div/>', {id: 'vg_navigator', style: wrapper_style}).appendTo('#vg_navigator_wrapper');
 
         // Create previous button
         if (vg.nav_buttons) vg.createButton('prev', true);
@@ -210,7 +210,7 @@ var vGallery = function(config) {
         var thumbs_style = 'height:'+$(vg.nav).height()+'px;'+
                            'width:'+vg.thumbs_wrapper_width+'px;'+
                            'margin:0 '+vg.thumb_hpadding+'px;';
-        $('<div/>', {id: 'vg.navigator_thumbs', style: thumbs_style}).appendTo('#vg.navigator');
+        $('<div/>', {id: 'vg_navigator_thumbs', style: thumbs_style}).appendTo('#vg_navigator');
 
         // Create clickable placeholders. The thumbnail images will move under these.
         for (i = -2; i <= 2; i++) {
@@ -218,16 +218,16 @@ var vGallery = function(config) {
             width   = (i === 0) ? vg.thumb_width - 2   : vg.thumb_width;
             height  = (i === 0) ? vg.thumb_height - 2  : vg.thumb_height;
             prop = {
-                class: 'vg.navigator_action',
+                class: 'vg_navigator_action',
                 'data-offset': i,
                 style: 'left:'+position+'px;'+
                        'height:'+height+'px;'+
                        'width:'+width+'px;',
             };
-            if (i === 0) prop.id = 'vg.navigator_current';
-            $('<div/>', prop).appendTo('#vg.navigator_thumbs');
+            if (i === 0) prop.id = 'vg_navigator_current';
+            $('<div/>', prop).appendTo('#vg_navigator_thumbs');
         }
-        $('.vg.navigator_action').each(function() {
+        $('.vg_navigator_action').each(function() {
             $(this).click(function() {
                 vg.changeImage($(this).data('offset'));
             });
@@ -243,31 +243,31 @@ var vGallery = function(config) {
 
             current_thumb = vg.getThumbImage(adjust);
             prop = {
-                id: 'vg.thumb_'+i,
-                class: 'vg.navigator_thumb',
+                id: 'vg_thumb_'+i,
+                class: 'vg_navigator_thumb',
                 style: 'left:'+position+'px;'+
                        'height:'+vg.thumb_height+'px;'+
                        'width:'+vg.thumb_width+'px;',
             };
-            $('<div/>', prop).appendTo('#vg.navigator_thumbs');
+            $('<div/>', prop).appendTo('#vg_navigator_thumbs');
 
             if (vg.captions) {
-                $('<div/>', {class:'vg.thumb_caption'}).appendTo('#vg.thumb_'+i);
+                $('<div/>', {class:'vg_thumb_caption'}).appendTo('#vg_thumb_'+i);
                 caption = vg.captions[adjust % vg.images.length];
-                $('#vg.thumb_'+i+' .vg.thumb_caption').html(caption);
+                $('#vg_thumb_'+i+' .vg_thumb_caption').html(caption);
             }
 
             var border_style = 'height:'+(vg.thumb_height-2)+'px;'+
                                'width:'+(vg.thumb_width-2)+'px;'+
                                'border:1px solid '+vg.active_color+';';
             if (i == 5) border_style += 'opacity:1;';
-            $('<div/>', {class:'vg.thumb_border', style: border_style}).appendTo('#vg.thumb_'+i);
+            $('<div/>', {class:'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
 
             var thumb_style = 'background: url('+vg.getThumbImage(adjust)+') no-repeat 50% 50%;'+
                               'background-size: cover;'+
                               'height:'+vg.thumb_height+'px;'+
                               'width:'+vg.thumb_width+'px;';
-            $('<div/>', {class:'vg.thumb_image', style: thumb_style}).appendTo('#vg.thumb_'+i);
+            $('<div/>', {class:'vg_thumb_image', style: thumb_style}).appendTo('#vg_thumb_'+i);
         }
 
         // Create next button
@@ -284,13 +284,13 @@ var vGallery = function(config) {
         image = (button == 'prev') ? vg.prev_image : vg.next_image;
 
         if (nav) {
-            parent = '#vg.navigator';
-            element = 'vg.navigator_'+button;
+            parent = '#vg_navigator';
+            element = 'vg_navigator_'+button;
             button_style = 'height:'+vg.thumb_height+'px;'+
                            'line-height:'+(vg.thumb_height-6)+'px;';
         } else {
             parent = (button == 'prev') ? vg.prev : vg.next;
-            element = 'vg.'+button;
+            element = 'vg_'+button;
             button_style = 'line-height:'+($(parent).height()-6)+'px;'+
                            'height:'+$(parent).height()+'px;'+
                            'width:'+$(parent).width()+'px;';
@@ -358,21 +358,21 @@ var vGallery = function(config) {
             (vg.contain == 'landscape' && ratio > 1) ||
             (vg.contain == 'portrait' && ratio <= 1)
            ) {
-            $(e).removeClass("vg.cover").addClass("vg.contain");
+            $(e).removeClass('vg_cover').addClass('vg_contain');
         } else {
-            $(e).removeClass('vg.contain').addClass('vg.cover');
+            $(e).removeClass('vg_contain').addClass('vg_cover');
         }
     };
 
     /**
-     * vg.setLink attaches a URL to the #vg.click element above the image
+     * vg.setLink attaches a URL to the #vg_click element above the image
      */
     vg.setLink = function() {
         link = vg.links[vg.current % vg.images.length];
         if (link) {
-            $("#vg.click").css("cursor","pointer").attr('onclick','location.href=\''+link+'\';');
+            $('#vg_click').css('cursor','pointer').attr('onclick',"location.href='"+link+"';");
         } else {
-            $("#vg.click").css("cursor","default").attr('onclick','');
+            $('#vg_click').css('cursor','default').attr('onclick','');
         }
     };
 
@@ -397,9 +397,9 @@ var vGallery = function(config) {
         }
 
         if (destination == vg.thumb_offset * 2)
-            $(e).children('.vg.thumb_border').animate({opacity: 1}, vg.fade);
+            $(e).children('.vg_thumb_border').animate({opacity: 1}, vg.fade);
         else if (origin == vg.thumb_offset * 2)
-            $(e).children('.vg.thumb_border').animate({opacity: 0}, vg.fade);
+            $(e).children('.vg_thumb_border').animate({opacity: 0}, vg.fade);
     };
 
     /**
@@ -421,9 +421,9 @@ var vGallery = function(config) {
             vg.active = true;
 
             ratio = this.width / this.height;
-            vg.setBackground("#vg.background", ratio);
+            vg.setBackground('#vg_background', ratio);
 
-            $("#vg.animator").animate({opacity: 0}, vg.fade, function() {
+            $('#vg_animator').animate({opacity: 0}, vg.fade, function() {
                 vg.setBackground(this, ratio);
             }).animate({opacity: 1}, 200, function() {
                 if (vg.links) vg.setLink();
@@ -433,14 +433,14 @@ var vGallery = function(config) {
             });
 
             if (vg.nav) {
-                $(".vg.navigator_thumb").each(function() {
+                $('.vg_navigator_thumb').each(function() {
                     vg.adjustThumb(this, offset);
                 });
             }
 
             if (vg.text && vg.text_element) {
-                $("#vg.text_inner").animate({opacity: 0}, vg.fade / 2, function() {
-                    $("#vg.text_inner").html(vg.text[vg.current % vg.images.length]);
+                $('#vg_text_inner').animate({opacity: 0}, vg.fade / 2, function() {
+                    $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
                 }).animate({opacity: 1}, vg.fade / 2);
             }
         };
