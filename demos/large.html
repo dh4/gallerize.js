@@ -3,10 +3,71 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vGallery.js Large Demo</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="../src/vgallery.js"></script>
     <style>
+    @media screen and (max-width:1000px) {
+        body #nav_wrapper {
+            width:500px;
+        }
+
+        body #navigator {
+            height:80px;
+        }
+
+        body #text {
+            height:70px;
+            width:300px;
+            bottom:50px;
+            left:50px;
+            font-size:14px;
+        }
+
+        body .text_header {
+            font-size:20px;
+        }
+
+        body .text_small {
+            font-size:10px;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        body #nav_wrapper {
+            width:90%;
+        }
+
+        body #navigator {
+            height:65px;
+        }
+
+        body #text {
+            height:60px;
+            width:100%;
+            left:0;
+            bottom:0;
+            font-size:12px;
+            text-align:center;
+            padding:10px 0;
+        }
+
+        body .text_header {
+            font-size:20px;
+        }
+
+        body .text_small {
+            font-size:10px;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        body #navigator {
+            height:50px;
+        }
+    }
+
     body {
         margin:0;
         font-family:sans-serif;
@@ -47,6 +108,7 @@
         background:rgba(0,0,0,0.5);
         height:70px;
         width:50px;
+        font-size:40px;
     }
 
     #text {
@@ -54,8 +116,8 @@
         width:360px;
         padding:15px 20px;
         position:fixed;
-        bottom:100px;
-        left:100px;
+        bottom:50px;
+        left:50px;
         z-index:200;
         background:rgba(0,0,0,0.6);
         color:#FFF;
@@ -104,10 +166,10 @@ $(document).ready(function() {
             'images/thumbs/browncounty.jpg'
         ],
         captions: [
-            'Rumney, NH',
-            'Red River Gorge, KY',
-            'Central Park, NY',
-            'Brown County, IN'
+            'Rumney',
+            'Red River Gorge',
+            'Central Park',
+            'Brown County'
         ],
         text_element: '#text',
         text: [
@@ -119,7 +181,7 @@ $(document).ready(function() {
         bg_color: '#000',
         button_color: '#FFF',
         active_color: '#FFF',
-        contain: 'portrait'
+        contain: 'parent'
     });
     vg.start();
 });

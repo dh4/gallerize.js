@@ -3,10 +3,49 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vGallery.js Jumbotron Demo</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="../src/vgallery.js"></script>
     <style>
+    @media screen and (max-width: 1000px) {
+        body #wrapper {
+            width:100%;
+        }
+
+        body #gallery {
+            width:100%;
+        }
+
+        body #text {
+            width:100%;
+            height:60px;
+            padding:20px 0;
+            font-size:14px;
+            text-align:center;
+            left:0;
+            bottom:10px;
+        }
+
+        body .text_header {
+            font-size:20px;
+        }
+
+        body .text_small {
+            font-size:10px;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        body #gallery {
+            height:300px;
+        }
+
+        body #prev, body #next {
+            height:300px;
+        }
+    }
+
     body {
         margin:0;
         font-family:sans-serif;
@@ -31,6 +70,7 @@
         top:50px;
         opacity:0.7;
         z-index:100;
+        font-size:40px;
     }
 
     #prev {
