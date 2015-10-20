@@ -34,7 +34,7 @@ var vGallery = function(config) {
     var vg = this;
 
     /**
-     * vg.init initializes the class parameters
+     * vg.init initializes the class.
      */
     vg.init = function() {
         var c = config;
@@ -93,7 +93,7 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.computeThumbSize calculates the size and position of thumbnails based on the nav element
+     * vg.computeThumbSize calculates the size and position of thumbnails based on the nav element.
      */
     vg.computeThumbSize = function() {
         // Calculate thumbnail size and padding based on how large the nav element is
@@ -165,7 +165,7 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.log displays a message to the Javascript console
+     * vg.log displays a message to the Javascript console.
      *
      * @param value Key of message to display.
      */
@@ -332,10 +332,10 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createButton creates the 'prev' and 'next' buttons
+     * vg.createButton creates the 'prev' and 'next' buttons.
      *
      * @param button The button to create: 'prev' or 'next'.
-     * @param nav Whether button appears in nav or in free-standing element
+     * @param nav Whether button appears in nav or in free-standing element.
      */
     vg.createButton = function(button, nav) {
         var image = (button == 'prev') ? vg.prev_image : vg.next_image;
@@ -400,8 +400,8 @@ var vGallery = function(config) {
     /**
      * vg.loadImage loads an image if it hasn't been loaded, then calls the onload function.
      *
-     * @param offset The offset from the current image to preload
-     * @param onload A function to call after image has loaded
+     * @param offset The offset from the current image to preload.
+     * @param onload A function to call after image has loaded.
      */
     vg.loadImage = function(offset, onload) {
         var imgSrc = vg.getImage(vg.current + offset);
@@ -426,7 +426,7 @@ var vGallery = function(config) {
 
     /**
      * vg.setBackground sets the css background property and cover/contain class
-     * for the given element
+     * for the given element.
      *
      * @param e The element to modify.
      */
@@ -450,7 +450,7 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.setLink attaches a URL to the #vg_click element above the image
+     * vg.setLink attaches a URL to the #vg_click element above the image.
      */
     vg.setLink = function() {
         var link = vg.links[vg.current % vg.images.length];
@@ -462,7 +462,7 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.adjustThumb adjusts the position of thumbnails by the given offset
+     * vg.adjustThumb adjusts the position of thumbnails by the given offset.
      *
      * @param e The thumbnail element to adjust.
      * @param offset The offset to adjust the thumbnail element by.
@@ -528,6 +528,5 @@ var vGallery = function(config) {
         });
     };
 
-    // Initialize the class parameters
     vg.init();
 };
