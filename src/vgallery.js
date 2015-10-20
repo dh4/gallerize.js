@@ -136,6 +136,8 @@ var vGallery = function(config) {
         $(window).resize(function() {
             if (resize_timeout) clearTimeout(resize_timeout);
             resize_timeout = setTimeout(function() {
+                vg.setBackground('#vg_animator');
+
                 if (vg.nav) {
                     vg.computeThumbSize();
                     $('#vg_navigator_wrapper').remove();
