@@ -2,6 +2,8 @@
 
 vGallery.js is a jQuery-based image fader designed to be as versatile as possible. it was born out of my frustration finding an image gallery that was versatile enough to use for multiple different applications. Every one I found was designed with a certain look or orientation in mind. vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text).
 
+vGallery.js makes liberal use of `background-size` which is not supported in IE8 and below. If you are looking for an image gallery that displays well in those browsers, this is not for you.
+
 Click on the following demos to view them (you can view the source code in the demos directory):
 
 [<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/large.jpg" alt="Large Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/large.html)
@@ -15,7 +17,7 @@ Make sure you have [jQuery](https://jquery.com/) installed.
 
 Download the latest release from the [releases](https://github.com/dh4/vGallery.js/releases) page and install it into the \<head\> tag of the page you want the gallery to show:
 ```
-<script type="text/javascript" src="js/vgallery-<VERSION>.min.js"></script>
+<script type="text/javascript" src="vgallery-<VERSION>.min.js"></script>
 ```
 
 Then initialize the gallery by creating a new vGallery object and calling start(). The following should be placed before the \</body\> tag:
@@ -34,7 +36,13 @@ $(document).ready(function() {
 </script>
 ```
 
-The above shows the minimal configuration. See the section below for more options
+The above shows the minimal configuration. See the configuration section below for more options.
+
+### Styling
+
+vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `nav`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
+
+Look at the examples in the demos directory for good starting points on styling the gallery.
 
 
 ## Configuration
@@ -127,11 +135,12 @@ The border color around the active thumbnail. Default is `#000`.
 
 ##### contain
 
-What images should use `background-size:contain` vs `background-size:cover`. There are four options:  
+What images should use `background-size:contain` vs `background-size:cover`. There are five options:  
 `none`: All images will be cropped to fill the gallery element.  
 `all`: All images will be contained within the gallery element and no cropping will occur.  
 `portrait`: Only portrait images will be contained within the gallery. Landscape images will be cropped to fill the gallery element.  
 `landscape`: Only landscape images will be contained within the gallery. Portrait images will be cropped.  
+`parent`: vGallery.js will use the size of the `gallery` to determine the best way to display the image. If the gallery element is in a portrait orientation, portrait images will be cropped to fill the element and landscape images will be contained within the element (and vice versa).
 
 The default is `none`.
 
