@@ -417,6 +417,7 @@ var vGallery = function(config) {
             };
             image.onerror = function() {
                 if (onload) onload();
+                console.error("vGallery.js: '%s' not found.", imgSrc);
             };
         } else {
             if (onload) onload();
