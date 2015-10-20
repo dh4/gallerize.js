@@ -122,6 +122,8 @@ var vGallery = function(config) {
      * and start the rotation timer.
      */
     vg.start = function() {
+        vg.active = true;
+
         vg.insertCSS();
         vg.createGallery();
         if (vg.nav) vg.createNavigator();
@@ -131,6 +133,7 @@ var vGallery = function(config) {
 
         vg.loadImage(0, function() {
             vg.setGallery();
+            vg.active = false;
             if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
             vg.loadImage(1);
         });
