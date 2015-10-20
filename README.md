@@ -1,8 +1,10 @@
 # vGallery.js [![Build Status](https://travis-ci.org/dh4/vGallery.js.svg?branch=master)](https://travis-ci.org/dh4/vGallery.js)
 
-vGallery.js is a jQuery-based image fader designed to be as versatile as possible. it was born out of my frustration finding an image gallery that was versatile enough to use for multiple different applications. Every one I found was designed with a certain look or orientation in mind. vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text).
+vGallery.js is a responsive, jQuery-based image fader designed to be as versatile as possible. It was born out of my frustration attempting to find an image gallery that was versatile enough for me to style it to display the way I wanted for various different use cases. Every one I found was designed to be basically immutable with a certain look or orientation in mind, making it difficult to style without resorting to hacks.
 
-vGallery.js makes liberal use of `background-size` which is not supported in IE8 and below. If you are looking for an image gallery that displays well in those browsers, this is not for you.
+vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
+
+It makes liberal use of `background-size` which is not supported in IE8 and below. If you are looking for an image gallery that displays well in those browsers, this is not for you.
 
 Click on the following demos to view them (you can view the source code in the demos directory):
 
