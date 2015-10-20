@@ -117,39 +117,40 @@ var vGallery = function(config) {
      * and start the rotation timer.
      */
     vg.start = function() {
-        vg.loadImage(0, function() {
-            vg.insertCSS();
-            vg.createGallery();
-            if (vg.nav) vg.createNavigator();
-            if (vg.prev) vg.createButton('prev', false);
-            if (vg.next) vg.createButton('next', false);
-            if (vg.text && vg.text_element) vg.createText();
+        vg.insertCSS();
+        vg.createGallery();
+        if (vg.nav) vg.createNavigator();
+        if (vg.prev) vg.createButton('prev', false);
+        if (vg.next) vg.createButton('next', false);
+        if (vg.text && vg.text_element) vg.createText();
 
+        vg.loadImage(0, function() {
+            vg.setGallery();
             if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
             vg.loadImage(1);
+        });
 
-            // Listen for window resizing. Nav elements need to be adjusted after
-            var resize_timeout = false;
-            $(window).resize(function() {
-                if (resize_timeout) clearTimeout(resize_timeout);
-                resize_timeout = setTimeout(function() {
-                    if (vg.nav) {
-                        vg.computeThumbSize();
-                        $('#vg_navigator_wrapper').remove();
-                        vg.createNavigator();
-                    }
+        // Listen for window resizing. Nav elements need to be adjusted after
+        var resize_timeout = false;
+        $(window).resize(function() {
+            if (resize_timeout) clearTimeout(resize_timeout);
+            resize_timeout = setTimeout(function() {
+                if (vg.nav) {
+                    vg.computeThumbSize();
+                    $('#vg_navigator_wrapper').remove();
+                    vg.createNavigator();
+                }
 
-                    if (vg.prev) {
-                        $('#vg_prev').remove();
-                        vg.createButton('prev', false);
-                    }
+                if (vg.prev) {
+                    $('#vg_prev').remove();
+                    vg.createButton('prev', false);
+                }
 
-                    if (vg.next) {
-                        $('#vg_next').remove();
-                        vg.createButton('next', false);
-                    }
-                }, 50);
-            });
+                if (vg.next) {
+                    $('#vg_next').remove();
+                    vg.createButton('next', false);
+                }
+            }, 50);
         });
     };
 
@@ -204,14 +205,19 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createGallery initializes the gallery element and preloads the first image.
+     * vg.createGallery initializes the gallery element.
      */
     vg.createGallery = function() {
         $('<div/>', {id: 'vg_wrapper'}     ).appendTo(vg.gallery);
         $('<a/>',   {id: 'vg_click'}       ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_animator'}    ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_background'}  ).appendTo('#vg_wrapper');
+    };
 
+    /**
+     * vg.setGallery preloads the first image.
+     */
+    vg.setGallery = function() {
         vg.setBackground("#vg_animator", this.width / this.height);
         vg.setBackground("#vg_background", this.width / this.height);
         if (vg.links) vg.setLink();
@@ -476,7 +482,6 @@ var vGallery = function(config) {
 
         vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
-
             var ratio = this.width / this.height;
             vg.setBackground('#vg_background', ratio);
 
