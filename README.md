@@ -1,4 +1,4 @@
-# vGallery.js
+# vGallery.js [![Build Status](https://travis-ci.org/dh4/vGallery.js.svg?branch=master)](https://travis-ci.org/dh4/vGallery.js)
 
 vGallery.js is a jQuery-based image fader designed to be as versatile as possible. it was born out of my frustration finding an image gallery that was versatile enough to use for multiple different applications. Every one I found was designed with a certain look or orientation in mind. vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text).
 
