@@ -13,7 +13,7 @@ Click on the following demos to view them (you can view the source code in the d
 
 Make sure you have [jQuery](https://jquery.com/) installed.
 
-Download the latest release from the [releases](https://github.com/dh4/vGallery.js/releases) page and install it into the <head> tag of the page you want the gallery to show:
+Download the latest release from the [releases](https://github.com/dh4/vGallery.js/releases) page and install it into the \<head\> tag of the page you want the gallery to show:
 ```
 <script type="text/javascript" src="js/vgallery-<VERSION>.min.js"></script>
 ```
