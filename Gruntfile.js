@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                         flatten: true,
                         expand: true,
                         src: [
-                            'src/vgallery-<%= pkg.version %>.js',
+                            'build/vgallery-<%= pkg.version %>.js',
                             'build/vgallery-<%= pkg.version %>.min.js',
                             'LICENSE'
                         ],
