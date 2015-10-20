@@ -74,6 +74,7 @@ var vGallery = function(config) {
 
         vg.active = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
+        vg.preload = Array();
 
         // Thumbnail navigator shows 5 images, so make sure we have enough in the rotation
         // that user never sees a blank thumbnail
@@ -116,37 +117,39 @@ var vGallery = function(config) {
      * and start the rotation timer.
      */
     vg.start = function() {
-        vg.insertCSS();
-        vg.createGallery();
-        if (vg.nav) vg.createNavigator();
-        if (vg.prev) vg.createButton('prev', false);
-        if (vg.next) vg.createButton('next', false);
-        if (vg.text && vg.text_element) vg.createText();
+        vg.loadImage(0, function() {
+            vg.insertCSS();
+            vg.createGallery();
+            if (vg.nav) vg.createNavigator();
+            if (vg.prev) vg.createButton('prev', false);
+            if (vg.next) vg.createButton('next', false);
+            if (vg.text && vg.text_element) vg.createText();
 
-        vg.preloadImage();
-        if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
+            if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
+            vg.loadImage(1);
 
-        // Listen for window resizing. Nav elements need to be adjusted after
-        var resize_timeout = false;
-        $(window).resize(function() {
-            if (resize_timeout) clearTimeout(resize_timeout);
-            resize_timeout = setTimeout(function() {
-                if (vg.nav) {
-                    vg.computeThumbSize();
-                    $('#vg_navigator_wrapper').remove();
-                    vg.createNavigator();
-                }
+            // Listen for window resizing. Nav elements need to be adjusted after
+            var resize_timeout = false;
+            $(window).resize(function() {
+                if (resize_timeout) clearTimeout(resize_timeout);
+                resize_timeout = setTimeout(function() {
+                    if (vg.nav) {
+                        vg.computeThumbSize();
+                        $('#vg_navigator_wrapper').remove();
+                        vg.createNavigator();
+                    }
 
-                if (vg.prev) {
-                    $('#vg_prev').remove();
-                    vg.createButton('prev', false);
-                }
+                    if (vg.prev) {
+                        $('#vg_prev').remove();
+                        vg.createButton('prev', false);
+                    }
 
-                if (vg.next) {
-                    $('#vg_next').remove();
-                    vg.createButton('next', false);
-                }
-            }, 50);
+                    if (vg.next) {
+                        $('#vg_next').remove();
+                        vg.createButton('next', false);
+                    }
+                }, 50);
+            });
         });
     };
 
@@ -209,13 +212,9 @@ var vGallery = function(config) {
         $('<div/>', {id: 'vg_animator'}    ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_background'}  ).appendTo('#vg_wrapper');
 
-        var firstImage = new Image();
-        firstImage.src = vg.getImage();
-        firstImage.onload = function() {
-            vg.setBackground("#vg_animator", this.width / this.height);
-            vg.setBackground("#vg_background", this.width / this.height);
-            if (vg.links) vg.setLink();
-        };
+        vg.setBackground("#vg_animator", this.width / this.height);
+        vg.setBackground("#vg_background", this.width / this.height);
+        if (vg.links) vg.setLink();
     };
 
     /**
@@ -380,11 +379,22 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.preloadImage preloads the next image so there is no delay in the rotation
+     * vg.loadImage loads an image if it hasn't been loaded, then calls the onload function.
      */
-    vg.preloadImage = function() {
-        var nextImage = new Image();
-        nextImage.src = vg.getImage(vg.current + 1);
+    vg.loadImage = function(offset, onload) {
+        var imgSrc = vg.getImage(vg.current + offset);
+
+        // Check if image has already been loaded
+        if (vg.preload.indexOf(imgSrc) == -1) {
+            var image = new Image();
+            image.src = imgSrc;
+            image.onload = function() {
+                vg.preload.push(imgSrc);
+                if (onload) onload();
+            };
+        } else {
+            if (onload) onload();
+        }
     };
 
     /**
@@ -461,13 +471,11 @@ var vGallery = function(config) {
         // Don't allow image to change if animation is occuring or no offset
         if (vg.active || offset === 0) return;
 
+        vg.active = true;
         vg.current = vg.current + offset;
 
-        var img = new Image();
-        img.src = vg.getImage();
-        img.onload = function() {
+        vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
-            vg.active = true;
 
             var ratio = this.width / this.height;
             vg.setBackground('#vg_background', ratio);
@@ -478,7 +486,7 @@ var vGallery = function(config) {
                 if (vg.links) vg.setLink();
                 vg.active = false;
                 if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
-                vg.preloadImage();
+                vg.loadImage(1);
             });
 
             if (vg.nav) {
@@ -492,7 +500,7 @@ var vGallery = function(config) {
                     $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
                 }).animate({opacity: 1}, vg.fade / 2);
             }
-        };
+        });
     };
 
     // Initialize the class parameters
