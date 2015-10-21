@@ -42,7 +42,7 @@ The above shows the minimal configuration. See the configuration section below f
 
 ### Styling
 
-vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
+vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `indicators`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
 vGallery.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
 
@@ -71,7 +71,7 @@ An array of thumbnails to use. This should match up with the `images` array and 
 
 ##### thumbnails
 
-The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty.
+The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty. Overrides `indicators`.
 
 ##### th_buttons
 
@@ -84,6 +84,34 @@ The text color to use for the prev/next buttons in the thumbnail navigation. Def
 ##### th_active_color
 
 The border color around the active thumbnail. Default is `#000`.
+
+##### indicators
+
+The element to display an indicator navigation in. You can style this element to your liking, but it should be empty.
+
+##### indicator_color
+
+The color for inactive indicators. Default is `#999`.
+
+##### indicator_acolor
+
+The color for the active indicator. Default is `#FFF`.
+
+##### indicator_round
+
+Boolean to make indicators round. Default is `false` (indicators will be square).
+
+##### indicator_opacity
+
+Opacity of inactive indicators. Should be between 0 and 1. Default is `1`.
+
+##### indicator_image
+
+Image to use for inactive indicators. Overrides `indicator_color`.
+
+##### indicator_aimage
+
+Image to use for the active indicator. Overrides `indicator_acolor`.
 
 ##### counter
 
@@ -170,6 +198,7 @@ An example configuration using all options:
 ```
 <div id="gallery"></div>
 <div id="thumbnails"></div>
+<div id="indicators"></div>
 <div id="counter"></div>
 <div id="prev"></div>
 <div id="next"></div>
@@ -191,6 +220,13 @@ $(document).ready(function() {
         th_buttons: false,
         th_button_color: '#FFF',
         th_active_color: '#FFF',
+        indicators: '#indicators',
+        indicator_color: '#CCC',
+        indicator_acolor: '#000',
+        indicator_round: true,
+        indicator_opacity: 0.5,
+        indicator_image: 'path/to/indicator/inactive.png',
+        indicator_aimage: 'path/to/indicator/active.png',
         counter: '#counter',
         prev: '#prev',
         next: '#next',
