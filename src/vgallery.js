@@ -49,10 +49,11 @@ var vGallery = function(config) {
         vg.thumbs       = (c.thumbs !== undefined)          ? c.thumbs          : null;
         vg.nav          = (c.nav !== undefined)             ? c.nav             : null;
         vg.nav_buttons  = (c.nav_buttons !== undefined)     ? c.nav_buttons     : true;
+        vg.counter      = (c.counter     !== undefined)     ? c.counter         : null;
         vg.prev         = (c.prev !== undefined)            ? c.prev            : null;
         vg.next         = (c.next !== undefined)            ? c.next            : null;
-        vg.prev_text    = (c.prev_text !== undefined)       ? c.prev_text       : '&laquo;';
-        vg.next_text    = (c.next_text !== undefined)       ? c.next_text       : '&raquo;';
+        vg.prev_text    = (c.prev_text !== undefined)       ? c.prev_text       : '&#10094;';
+        vg.next_text    = (c.next_text !== undefined)       ? c.next_text       : '&#10095;';
         vg.prev_image   = (c.prev_image !== undefined)      ? c.prev_image      : null;
         vg.next_image   = (c.next_image !== undefined)      ? c.next_image      : null;
         vg.captions     = (c.captions !== undefined)        ? c.captions        : null;
@@ -105,7 +106,7 @@ var vGallery = function(config) {
         vg.thumb_height = Math.round($(vg.nav).height() - (vg.thumb_vpadding * 2));
 
         // Calculate button size
-        vg.button_size = (vg.thumb_height > 60) ? 40 : (vg.thumb_height > 50) ? 30 : 20;
+        vg.button_size = (vg.thumb_height > 60) ? 30 : (vg.thumb_height > 50) ? 25 : 20;
 
         vg.thumbs_wrapper_width = $(vg.nav).width() - (vg.thumb_hpadding * 2);
         if (vg.nav_buttons) vg.thumbs_wrapper_width = vg.thumbs_wrapper_width - vg.button_size * 2;
@@ -132,6 +133,7 @@ var vGallery = function(config) {
         if (vg.prev) vg.createButton('prev', false);
         if (vg.next) vg.createButton('next', false);
         if (vg.text && vg.text_element) vg.createText();
+        vg.updateCounter();
 
         vg.loadImage(0, function() {
             vg.setGallery();
@@ -385,6 +387,14 @@ var vGallery = function(config) {
     };
 
     /**
+     * vg.updateCounter updates the counter element with the current position
+     */
+    vg.updateCounter = function() {
+        if (vg.counter)
+            $(vg.counter).html((vg.current % vg.images.length + 1)+' of '+vg.images.length);
+    };
+
+    /**
      * vg.getImage returns a given image from the image array.
      *
      * @param image Image to fetch, defaults to vg.current.
@@ -522,6 +532,7 @@ var vGallery = function(config) {
 
             $('#vg_animator').animate({opacity: 0}, vg.fade, function() {
                 vg.setBackground(this);
+                vg.updateCounter();
             }).animate({opacity: 1}, 200, function() {
                 if (vg.links) vg.setLink();
                 vg.active = false;
