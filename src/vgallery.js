@@ -40,45 +40,50 @@ var vGallery = function(config) {
         var c = config;
 
         // Show errors for missing required configuration options
-        if (c.gallery === undefined)    vg.log('gallery_missing');
-        if (c.images === undefined)     vg.log('images_missing');
+        if (c.gallery === undefined)    vg.log('gallery:missing');
+        if (c.images === undefined)     vg.log('images:missing');
 
         // Grab configuration options or set default values
-        vg.gallery      = (c.gallery !== undefined)         ? c.gallery         : null;
-        vg.images       = (c.images !== undefined)          ? c.images          : null;
-        vg.thumbs       = (c.thumbs !== undefined)          ? c.thumbs          : null;
-        vg.nav          = (c.nav !== undefined)             ? c.nav             : null;
-        vg.nav_buttons  = (c.nav_buttons !== undefined)     ? c.nav_buttons     : true;
-        vg.counter      = (c.counter     !== undefined)     ? c.counter         : null;
-        vg.prev         = (c.prev !== undefined)            ? c.prev            : null;
-        vg.next         = (c.next !== undefined)            ? c.next            : null;
-        vg.prev_text    = (c.prev_text !== undefined)       ? c.prev_text       : '&#10094;';
-        vg.next_text    = (c.next_text !== undefined)       ? c.next_text       : '&#10095;';
-        vg.prev_image   = (c.prev_image !== undefined)      ? c.prev_image      : null;
-        vg.next_image   = (c.next_image !== undefined)      ? c.next_image      : null;
-        vg.captions     = (c.captions !== undefined)        ? c.captions        : null;
-        vg.links        = (c.links !== undefined)           ? c.links           : null;
-        vg.text         = (c.text !== undefined)            ? c.text            : null;
-        vg.text_element = (c.text_element !== undefined)    ? c.text_element    : null;
-        vg.auto         = (c.auto !== undefined)            ? c.auto            : true;
-        vg.pause        = (c.pause !== undefined)           ? c.pause           : true;
-        vg.delay        = (c.delay !== undefined)           ? c.delay           : 5000;
-        vg.fade         = (c.fade !== undefined)            ? c.fade            : 1000;
-        vg.bg_color     = (c.bg_color !== undefined)        ? c.bg_color        : '#FFF';
-        vg.button_color = (c.button_color !== undefined)    ? c.button_color    : '#000';
-        vg.active_color = (c.active_color !== undefined)    ? c.active_color    : '#000';
-        vg.loading_img  = (c.loading_img !== undefined)     ? c.loading_img     : null;
-        vg.loading_all  = (c.loading_all !== undefined)     ? c.loading_all     : true;
-        vg.contain      = (c.contain !== undefined)         ? c.contain         : 'none';
+        vg.gallery          = (c.gallery !== undefined)         ? c.gallery         : null;
+        vg.images           = (c.images !== undefined)          ? c.images          : null;
+        vg.image_bg_color   = (c.image_bg_color !== undefined)  ? c.image_bg_color  : '#FFF';
+        vg.th_images        = (c.th_images !== undefined)       ? c.th_images       : null;
+        vg.thumbnails       = (c.thumbnails !== undefined)      ? c.thumbnails      : null;
+        vg.th_captions      = (c.th_captions !== undefined)     ? c.th_captions     : null;
+        vg.th_buttons       = (c.th_buttons !== undefined)      ? c.th_buttons      : true;
+        vg.th_button_color  = (c.th_button_color !== undefined) ? c.th_button_color : '#000';
+        vg.th_active_color  = (c.th_active_color !== undefined) ? c.th_active_color : '#000';
+        vg.counter          = (c.counter !== undefined)         ? c.counter         : null;
+        vg.prev             = (c.prev !== undefined)            ? c.prev            : null;
+        vg.next             = (c.next !== undefined)            ? c.next            : null;
+        vg.prev_text        = (c.prev_text !== undefined)       ? c.prev_text       : '&#10094;';
+        vg.next_text        = (c.next_text !== undefined)       ? c.next_text       : '&#10095;';
+        vg.prev_image       = (c.prev_image !== undefined)      ? c.prev_image      : null;
+        vg.next_image       = (c.next_image !== undefined)      ? c.next_image      : null;
+        vg.links            = (c.links !== undefined)           ? c.links           : null;
+        vg.text             = (c.text !== undefined)            ? c.text            : null;
+        vg.text_element     = (c.text_element !== undefined)    ? c.text_element    : null;
+        vg.auto             = (c.auto !== undefined)            ? c.auto            : true;
+        vg.pause            = (c.pause !== undefined)           ? c.pause           : true;
+        vg.delay            = (c.delay !== undefined)           ? c.delay           : 5000;
+        vg.fade             = (c.fade !== undefined)            ? c.fade            : 1000;
+        vg.loading_image    = (c.loading_image !== undefined)   ? c.loading_image   : null;
+        vg.loading_all      = (c.loading_all !== undefined)     ? c.loading_all     : true;
+        vg.contain          = (c.contain !== undefined)         ? c.contain         : 'none';
 
         // Check that other configuration arrays have same length as images array
-        if (vg.thumbs && vg.images.length != vg.thumbs.length)       vg.log('thumbs_count');
-        if (vg.links && vg.images.length != vg.links.length)         vg.log('links_count');
-        if (vg.captions && vg.images.length != vg.captions.length)   vg.log('captions_count');
+        if (vg.th_images && vg.images.length != vg.th_images.length)
+            vg.log('th_images:count');
+        if (vg.links && vg.images.length != vg.links.length)
+            vg.log('links:count');
+        if (vg.th_captions && vg.images.length != vg.th_captions.length)
+            vg.log('th_captions:count');
 
-        // Check that gallery and nav elements have a height and width greater than zero
-        if ($(vg.gallery).height() === 0 || $(vg.gallery).width() === 0)     vg.log('gallery_size');
-        if (vg.nav && ($(vg.nav).height() === 0 || $(vg.nav).width() === 0)) vg.log('nav_size');
+        // Check that gallery and thumbnail elements have a height and width greater than zero
+        if ($(vg.gallery).height() === 0 || $(vg.gallery).width() === 0)
+            vg.log('gallery:size');
+        if (vg.thumbnails && ($(vg.thumbnails).height() === 0 || $(vg.thumbnails).width() === 0))
+            vg.log('thumbnails:size');
 
         vg.active = vg.hover = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
@@ -98,22 +103,23 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.computeThumbSize calculates the size and position of thumbnails based on the nav element.
+     * vg.computeThumbSize calculates the size and position of thumbnails based on the
+     * thumbnail element.
      */
     vg.computeThumbSize = function() {
-        // Calculate thumbnail size and padding based on how large the nav element is
-        vg.thumb_hpadding = Math.round($(vg.nav).width() * 0.015);
-        vg.thumb_vpadding = Math.round($(vg.nav).width() * 0.01);
+        // Calculate thumbnail size and padding based on how large the thumbnail element is
+        vg.thumb_hpadding = Math.round($(vg.thumbnails).width() * 0.015);
+        vg.thumb_vpadding = Math.round($(vg.thumbnails).width() * 0.01);
 
-        vg.thumb_height = Math.round($(vg.nav).height() - (vg.thumb_vpadding * 2));
+        vg.thumb_height = Math.round($(vg.thumbnails).height() - (vg.thumb_vpadding * 2));
 
         // Calculate button size
         vg.button_size = (vg.thumb_height > 60) ? 30 : (vg.thumb_height > 50) ? 25 : 20;
 
-        vg.thumbs_wrapper_width = $(vg.nav).width() - (vg.thumb_hpadding * 2);
-        if (vg.nav_buttons) vg.thumbs_wrapper_width = vg.thumbs_wrapper_width - vg.button_size * 2;
+        vg.thumbs_wrapper_width = $(vg.thumbnails).width() - (vg.thumb_hpadding * 2);
+        if (vg.th_buttons) vg.thumbs_wrapper_width = vg.thumbs_wrapper_width - vg.button_size * 2;
         vg.thumb_width = Math.round((vg.thumbs_wrapper_width - (vg.thumb_hpadding * 4)) / 5);
-        vg.nav_wrapper_padding = ($(vg.nav).height() - vg.thumb_height) / 2;
+        vg.th_wrapper_padding = ($(vg.thumbnails).height() - vg.thumb_height) / 2;
 
         // Calculate position of thumbnails
         vg.thumb_offset = vg.thumb_width + vg.thumb_hpadding;
@@ -131,7 +137,7 @@ var vGallery = function(config) {
 
         vg.insertCSS();
         vg.createGallery();
-        if (vg.nav) vg.createNavigator();
+        if (vg.thumbnails) vg.createThumbnailNavigator();
         if (vg.prev) vg.createButton('prev', false);
         if (vg.next) vg.createButton('next', false);
         if (vg.text && vg.text_element) vg.createText();
@@ -151,10 +157,10 @@ var vGallery = function(config) {
             resize_timeout = setTimeout(function() {
                 vg.setBackground('#vg_animator');
 
-                if (vg.nav) {
+                if (vg.thumbnails) {
                     vg.computeThumbSize();
-                    $('#vg_navigator_wrapper').remove();
-                    vg.createNavigator();
+                    $('#vg_th_nav_wrapper').remove();
+                    vg.createThumbnailNavigator();
                 }
 
                 if (vg.prev) {
@@ -200,7 +206,7 @@ var vGallery = function(config) {
      * @param value Key of message to display.
      */
     vg.log = function(value) {
-        var values = value.split('_');
+        var values = value.split(':');
 
         switch (values[1]) {
             case 'missing':
@@ -230,15 +236,15 @@ var vGallery = function(config) {
             "#vg_loading {z-index:96;position:absolute;width:100%;height:100%;}"+
             ".vg_cover {background-size:cover !important;}"+
             ".vg_contain {background-size:contain !important;}"+
-            "#vg_navigator_wrapper {position:absolute;right:50%;}"+
-            "#vg_navigator {z-index:97;position:relative;left:50%;}"+
+            "#vg_th_nav_wrapper {position:absolute;right:50%;}"+
+            "#vg_thumbnails {z-index:97;position:relative;left:50%;}"+
             "#vg_prev, #vg_next {z-index:97;color:#FFF;}"+
-            "#vg_navigator_prev, #vg_navigator_next {float:left;color:#000;}"+
+            "#vg_th_nav_prev, #vg_th_nav_next {float:left;color:#000;}"+
             ".vg_button {position:relative;cursor:pointer;text-align:center;}"+
             ".vg_button > div {height:100%;width:100%;}"+
-            "#vg_navigator_thumbs {position:relative;float:left;overflow:hidden;}"+
-            ".vg_navigator_action {z-index:99;position:absolute;cursor:pointer;}"+
-            ".vg_navigator_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
+            "#vg_th_nav_thumbs {position:relative;float:left;overflow:hidden;}"+
+            ".vg_th_nav_action {z-index:99;position:absolute;cursor:pointer;}"+
+            ".vg_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
             ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
             ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"
@@ -254,12 +260,13 @@ var vGallery = function(config) {
         $('<div/>', {id: 'vg_animator'}    ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_background'}  ).appendTo('#vg_wrapper');
 
-        $('#vg_background').css('background', vg.bg_color);
+        $('#vg_background').css('background', vg.image_bg_color);
 
-        if (vg.loading_img) {
+        if (vg.loading_image) {
             $('<div />', {id: 'vg_loading'}).appendTo('#vg_wrapper');
             $('#vg_loading').css('opacity', 0)
-                .css('background', vg.bg_color+' url("'+vg.loading_img+'") no-repeat 50% 50%')
+                .css('background', vg.image_bg_color+' url("'+
+                    vg.loading_image+'") no-repeat 50% 50%')
                 .animate({opacity: 1}, vg.fade);
         }
     };
@@ -278,29 +285,29 @@ var vGallery = function(config) {
      */
     vg.createText = function() {
         // Hide text element. We will display it when the first image loads.
-        if (vg.loading_img) $(vg.text_element).css('visibility', 'hidden');
+        if (vg.loading_image) $(vg.text_element).css('visibility', 'hidden');
 
         $('<div/>', {id: 'vg_text_inner'} ).appendTo(vg.text_element);
         $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
     };
 
     /**
-     * vg.createNavigator initializes the navigation element.
+     * vg.createThumbnailNavigator initializes the thumbnail navigation element.
      */
-    vg.createNavigator = function() {
-        $('<div/>', {id: 'vg_navigator_wrapper'}).appendTo(vg.nav);
+    vg.createThumbnailNavigator = function() {
+        $('<div/>', {id: 'vg_th_nav_wrapper'}).appendTo(vg.thumbnails);
         var wrapper_style = 'height:'+vg.thumb_height+'px;'+
-                            'width:'+$(vg.nav).width()+'px;'+
-                            'padding:'+vg.nav_wrapper_padding+'px 0;';
-        $('<div/>', {id: 'vg_navigator', style: wrapper_style}).appendTo('#vg_navigator_wrapper');
+                            'width:'+$(vg.thumbnails).width()+'px;'+
+                            'padding:'+vg.th_wrapper_padding+'px 0;';
+        $('<div/>', {id: 'vg_thumbnails', style: wrapper_style}).appendTo('#vg_th_nav_wrapper');
 
         // Create previous button
-        if (vg.nav_buttons) vg.createButton('prev', true);
+        if (vg.th_buttons) vg.createButton('prev', true);
 
-        var thumbs_style = 'height:'+$(vg.nav).height()+'px;'+
+        var thumbs_style = 'height:'+$(vg.thumbnails).height()+'px;'+
                            'width:'+vg.thumbs_wrapper_width+'px;'+
                            'margin:0 '+vg.thumb_hpadding+'px;';
-        $('<div/>', {id: 'vg_navigator_thumbs', style: thumbs_style}).appendTo('#vg_navigator');
+        $('<div/>', {id: 'vg_th_nav_thumbs', style: thumbs_style}).appendTo('#vg_thumbnails');
 
         // Create clickable placeholders. The thumbnail images will move under these.
         var i, position, prop;
@@ -310,16 +317,16 @@ var vGallery = function(config) {
 
             position = vg.thumb_offset * (i + 2);
             prop = {
-                class: 'vg_navigator_action',
+                class: 'vg_th_nav_action',
                 'data-offset': i,
                 style: 'left:'+position+'px;'+
                        'height:'+height+'px;'+
                        'width:'+width+'px;',
             };
-            if (i === 0) prop.id = 'vg_navigator_current';
-            $('<div/>', prop).appendTo('#vg_navigator_thumbs');
+            if (i === 0) prop.id = 'vg_th_nav_current';
+            $('<div/>', prop).appendTo('#vg_th_nav_thumbs');
         }
-        $('.vg_navigator_action').each(function() {
+        $('.vg_th_nav_action').each(function() {
             $(this).click(function() {
                 vg.changeImage($(this).data('offset'));
             });
@@ -334,14 +341,14 @@ var vGallery = function(config) {
             position = vg.thumb_offset * (i - 3);
             prop = {
                 id: 'vg_thumb_'+i,
-                class: 'vg_navigator_thumb',
+                class: 'vg_th_nav_thumb',
                 style: 'left:'+position+'px;'+
                        'height:'+vg.thumb_height+'px;'+
                        'width:'+vg.thumb_width+'px;',
             };
-            $('<div/>', prop).appendTo('#vg_navigator_thumbs');
+            $('<div/>', prop).appendTo('#vg_th_nav_thumbs');
 
-            if (vg.captions) {
+            if (vg.th_captions) {
                 var caption_size  = (vg.thumb_height > 80) ? [18, 11] :
                                     (vg.thumb_height > 60) ? [15, 10] :
                                     (vg.thumb_height > 50) ? [12,  9] :
@@ -350,18 +357,18 @@ var vGallery = function(config) {
                                     "font-size:"+caption_size[1]+"px;";
                 $('<div/>', {class:'vg_thumb_caption', style: caption_style})
                     .appendTo('#vg_thumb_'+i);
-                var caption = vg.captions[adjust % vg.images.length];
+                var caption = vg.th_captions[adjust % vg.images.length];
                 $('#vg_thumb_'+i+' .vg_thumb_caption').html(caption);
             }
 
             var border_style = 'height:'+(vg.thumb_height-2)+'px;'+
                                'width:'+(vg.thumb_width-2)+'px;'+
-                               'border:1px solid '+vg.active_color+';';
+                               'border:1px solid '+vg.th_active_color+';';
             if (i == 5) border_style += 'opacity:1;';
             $('<div/>', {class:'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
 
-            var thumbnail = vg.getThumbImage(adjust);
-            var thumb_style = 'background: '+vg.bg_color+' url('+thumbnail+') no-repeat 50% 50%;'+
+            var thumb = vg.getThumbImage(adjust);
+            var thumb_style = 'background: '+vg.image_bg_color+' url('+thumb+') no-repeat 50% 50%;'+
                               'background-size: cover;'+
                               'height:'+vg.thumb_height+'px;'+
                               'width:'+vg.thumb_width+'px;';
@@ -369,26 +376,27 @@ var vGallery = function(config) {
         }
 
         // Create next button
-        if (vg.nav_buttons) vg.createButton('next', true);
+        if (vg.th_buttons) vg.createButton('next', true);
     };
 
     /**
      * vg.createButton creates the 'prev' and 'next' buttons.
      *
      * @param button The button to create: 'prev' or 'next'.
-     * @param nav Whether button appears in nav or in free-standing element.
+     * @param nav Whether button appears in thumbnail nav or in free-standing element.
      */
     vg.createButton = function(button, nav) {
         var image = (button == 'prev') ? vg.prev_image : vg.next_image;
         var parent, element, button_style;
 
         if (nav) {
-            parent = '#vg_navigator';
-            element = 'vg_navigator_'+button;
+            parent = '#vg_thumbnails';
+            element = 'vg_th_nav_'+button;
             button_style = 'line-height:'+(vg.thumb_height-6)+'px;'+
                            'height:'+vg.thumb_height+'px;'+
                            'width:'+vg.button_size+'px;'+
-                           'font-size:'+vg.button_size+'px;';
+                           'font-size:'+vg.button_size+'px;'+
+                           'color:'+vg.th_button_color+';';
         } else {
             parent = (button == 'prev') ? vg.prev : vg.next;
             element = 'vg_'+button;
@@ -396,8 +404,6 @@ var vGallery = function(config) {
                            'height:'+$(parent).height()+'px;'+
                            'width:'+$(parent).width()+'px;';
         }
-        if (!image)
-            button_style += 'color:'+vg.button_color+';';
 
         $('<div/>', {id: element, class: 'vg_button', style: button_style})
             .appendTo(parent);
@@ -483,7 +489,7 @@ var vGallery = function(config) {
      * @param e The element to modify.
      */
     vg.setBackground = function(e) {
-        var background = vg.bg_color+' url('+vg.getImage()+') no-repeat 50% 50%';
+        var background = vg.image_bg_color+' url('+vg.getImage()+') no-repeat 50% 50%';
         $(e).css('background', background);
 
         var ratio = vg.ratios[vg.current % vg.images.length];
@@ -571,8 +577,8 @@ var vGallery = function(config) {
                 vg.loadImage(1);
             });
 
-            if (vg.nav) {
-                $('.vg_navigator_thumb').each(function() {
+            if (vg.thumbnails) {
+                $('.vg_th_nav_thumb').each(function() {
                     vg.adjustThumb(this, offset);
                 });
             }

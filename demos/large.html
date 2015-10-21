@@ -9,11 +9,11 @@
     <script src="../src/vgallery.js"></script>
     <style>
     @media screen and (max-width:1000px) {
-        body #nav_wrapper {
+        body #thumb_wrapper {
             width:500px;
         }
 
-        body #navigator {
+        body #thumbnails {
             height:80px;
         }
 
@@ -35,11 +35,11 @@
     }
 
     @media screen and (max-width: 600px) {
-        body #nav_wrapper {
+        body #thumb_wrapper {
             width:90%;
         }
 
-        body #navigator {
+        body #thumbnails {
             height:65px;
         }
 
@@ -77,7 +77,7 @@
         height:100%;
     }
 
-    #nav_wrapper {
+    #thumb_wrapper {
         position:fixed;
         top:0;
         width:800px;
@@ -85,7 +85,7 @@
         z-index:100;
     }
 
-    #navigator {
+    #thumbnails {
         z-index:100;
         position:relative;
         right:50%;
@@ -138,8 +138,8 @@
 </head>
 <body>
     <div id="gallery"></div>
-    <div id="nav_wrapper">
-        <div id="navigator"></div>
+    <div id="thumb_wrapper">
+        <div id="thumbnails"></div>
     </div>
     <div id="prev"></div>
     <div id="next"></div>
@@ -148,41 +148,40 @@
 $(document).ready(function() {
     var vg = new vGallery({
         gallery: '#gallery',
-        nav: '#navigator',
-        nav_buttons: false,
-        prev: '#prev',
-        next: '#next',
-        pause: false,
-        delay: 10000,
         images: [
             'images/rumney.jpg',
             'images/redrivergorge.jpg',
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        thumbs: [
+        image_bg_color: '#000',
+        th_images: [
             'images/thumbs/rumney.jpg',
             'images/thumbs/redrivergorge.jpg',
             'images/thumbs/centralpark.jpg',
             'images/thumbs/browncounty.jpg'
         ],
-        captions: [
+        thumbnails: '#thumbnails',
+        th_captions: [
             'Rumney',
             'Red River Gorge',
             'Central Park',
             'Brown County'
         ],
-        text_element: '#text',
+        th_buttons: false,
+        th_active_color: '#FFF',
+        prev: '#prev',
+        next: '#next',
         text: [
             '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
             '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
             '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
             '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
         ],
-        bg_color: '#000',
-        button_color: '#FFF',
-        active_color: '#FFF',
-        loading_img: 'images/loading_white.gif',
+        text_element: '#text',
+        pause: false,
+        delay: 10000,
+        loading_image: 'images/loading_white.gif',
         contain: 'parent'
     });
     vg.start();
