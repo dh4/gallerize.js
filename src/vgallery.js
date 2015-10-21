@@ -61,6 +61,7 @@ var vGallery = function(config) {
         vg.text         = (c.text !== undefined)            ? c.text            : null;
         vg.text_element = (c.text_element !== undefined)    ? c.text_element    : null;
         vg.auto         = (c.auto !== undefined)            ? c.auto            : true;
+        vg.pause        = (c.pause !== undefined)           ? c.pause           : true;
         vg.delay        = (c.delay !== undefined)           ? c.delay           : 5000;
         vg.fade         = (c.fade !== undefined)            ? c.fade            : 1000;
         vg.bg_color     = (c.bg_color !== undefined)        ? c.bg_color        : '#FFF';
@@ -79,10 +80,11 @@ var vGallery = function(config) {
         if ($(vg.gallery).height() === 0 || $(vg.gallery).width() === 0)     vg.log('gallery_size');
         if (vg.nav && ($(vg.nav).height() === 0 || $(vg.nav).width() === 0)) vg.log('nav_size');
 
-        vg.active = false;
+        vg.active = vg.hover = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
         vg.preload = Array();
         vg.ratios = Array();
+        vg.remaining = vg.delay;
 
         // Thumbnail navigator shows 5 images, so make sure we have enough in the rotation
         // that user never sees a blank thumbnail
@@ -138,7 +140,7 @@ var vGallery = function(config) {
         vg.loadImage(0, function() {
             vg.setGallery();
             vg.active = false;
-            if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
+            vg.startTimer();
             vg.loadImage(1);
         });
 
@@ -166,6 +168,30 @@ var vGallery = function(config) {
                 }
             }, 50);
         });
+
+        if (vg.auto && vg.pause) {
+            $(vg.gallery).hover(function() {
+                vg.hover = true;
+                vg.remaining -= new Date() - vg.timeoutStart;
+                clearTimeout(vg.timeout);
+            }, function() {
+                vg.hover = false;
+                vg.startTimer(vg.remaining);
+            });
+        }
+    };
+
+    /**
+     * vg.startTimer starts the countdown until the gallery rotates
+     *
+     * @param delay The time in milliseconds to count down.
+     */
+    vg.startTimer = function(delay) {
+        if (vg.auto) {
+            clearTimeout(vg.timeout);
+            vg.timeoutStart = new Date();
+            vg.timeout = setTimeout(function(){vg.changeImage(1);}, (delay) ? delay : vg.delay);
+        }
     };
 
     /**
@@ -536,7 +562,8 @@ var vGallery = function(config) {
             }).animate({opacity: 1}, 200, function() {
                 if (vg.links) vg.setLink();
                 vg.active = false;
-                if (vg.auto) vg.timeout = setTimeout(function(){vg.changeImage(1);}, vg.delay);
+                vg.remaining = vg.delay;
+                if (!vg.hover) vg.startTimer();
                 vg.loadImage(1);
             });
 

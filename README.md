@@ -119,6 +119,10 @@ Element to display rotating text within. You can style this element to your liki
 
 Boolean to automatically advance the gallery based on `delay`. Default is `true`.
 
+##### pause
+
+Boolean to pause rotation timer when mouse hovers over gallery. Has no effect if `auto` is false. Default is `true`.
+
 ##### delay
 
 Time in milliseconds to wait before advancing the gallery. Default is `5000` (5 seconds).
@@ -203,6 +207,7 @@ $(document).ready(function() {
         ],
         text_element: '#text',
         auto: false,
+        pause: false,
         delay: 10000,
         fade: 500,
         bg_color: '#000',
