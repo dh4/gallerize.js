@@ -20,7 +20,7 @@
             margin:0;
         }
 
-        body #navigator {
+        body #thumbnails {
             width:100%;
             height:65px;
         }
@@ -46,7 +46,7 @@
             height:250px;
         }
 
-        body #navigator {
+        body #thumbnails {
             height:50px;
         }
     }
@@ -68,7 +68,7 @@
         margin:0 40px;
     }
 
-    #navigator {
+    #thumbnails {
         z-index:100;
         width:600px;
         height:80px;
@@ -96,7 +96,7 @@
 <body>
     <div id="wrapper">
         <div id="gallery"></div>
-        <div id="navigator"></div>
+        <div id="thumbnails"></div>
         <div id="prev"></div>
         <div id="next"></div>
         <div id="text"></div>
@@ -105,29 +105,29 @@
 $(document).ready(function() {
     var vg = new vGallery({
         gallery: '#gallery',
-        nav: '#navigator',
-        auto: false,
-        fade: 500,
         images: [
             'images/rumney.jpg',
             'images/redrivergorge.jpg',
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        thumbs: [
+        th_images: [
             'images/thumbs/rumney.jpg',
             'images/thumbs/redrivergorge.jpg',
             'images/thumbs/centralpark.jpg',
             'images/thumbs/browncounty.jpg'
         ],
-        text_element: '#text',
+        thumbnails: '#thumbnails',
         text: [
             '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
             '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
             '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
             '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
         ],
-        loading_img: 'images/loading.gif',
+        text_element: '#text',
+        auto: false,
+        fade: 500,
+        loading_image: 'images/loading.gif',
         contain: 'all'
     });
     vg.start();

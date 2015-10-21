@@ -42,7 +42,7 @@ The above shows the minimal configuration. See the configuration section below f
 
 ### Styling
 
-vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `nav`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
+vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
 vGallery.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
 
@@ -61,17 +61,29 @@ The element to display the gallery in. You can style this element how you want, 
 
 An array of images to display. You can use absolute or relative paths.
 
-##### thumbs
+##### image_bg_color
+
+The color to fill blank areas when an image does not fully cover the gallery element. Default is `#FFF`.
+
+##### th_images
 
 An array of thumbnails to use. This should match up with the `images` array and have the same number of items. If not specified, vGallery.js will use the `images` array for thumbnails instead.
 
-##### nav
+##### thumbnails
 
-The element to display the navigation in. You can style this element to your liking, but it should be empty.
+The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty.
 
-##### nav_buttons
+##### th_buttons
 
-Boolean to show or hide the prev/next buttons in the navigation element. Default is `true`.
+Boolean to show or hide the prev/next buttons in the thumbnail navigation element. Default is `true`.
+
+##### th_button_color
+
+The text color to use for the prev/next buttons in the thumbnail navigation. Default is `#000`.
+
+##### th_active_color
+
+The border color around the active thumbnail. Default is `#000`.
 
 ##### counter
 
@@ -79,11 +91,11 @@ Element to display a counter in. Will appear in format "(current) of (total)".
 
 ##### prev
 
-Element to display an additional previous button within.
+Element to display a previous button within.
 
 ##### next
 
-Element to display an additional next button within.
+Element to display a next button within.
 
 ##### prev_text
 
@@ -133,18 +145,6 @@ Time in milliseconds to wait before advancing the gallery. Default is `5000` (5 
 
 Time in milliseconds the fade animation will last. Default is `1000` (1 second).
 
-##### bg_color
-
-The color to fill blank areas when an image does not fully cover the gallery element. Default is `#FFF`.
-
-##### button_color
-
-The text color to use for the prev/next buttons. Default is `#000`.
-
-##### active_color
-
-The border color around the active thumbnail. Default is `#000`.
-
 ##### loading_img
 
 Image to display when gallery image is loading.
@@ -169,7 +169,7 @@ The default is `none`.
 An example configuration using all options:
 ```
 <div id="gallery"></div>
-<div id="nav"></div>
+<div id="thumbnails"></div>
 <div id="counter"></div>
 <div id="prev"></div>
 <div id="next"></div>
@@ -182,12 +182,15 @@ $(document).ready(function() {
             'path/to/image/one.jpg',
             'path/to/image/two.jpg'
         ],
-        thumbs: [
+        image_bg_color: '#000',
+        th_images: [
             'path/to/thumb/one.jpg',
             'path/to/thumb/two.jpg'
         ],
-        nav: '#nav',
-        nav_buttons: false,
+        thumbnails: '#thumbnails',
+        th_buttons: false,
+        th_button_color: '#FFF',
+        th_active_color: '#FFF',
         counter: '#counter',
         prev: '#prev',
         next: '#next',
@@ -212,9 +215,6 @@ $(document).ready(function() {
         pause: false,
         delay: 10000,
         fade: 500,
-        bg_color: '#000',
-        button_color: '#FFF',
-        active_color: '#FFF',
         loading_img: 'path/to/loading/image.gif',
         loading_all: true,
         contain: 'portrait'
