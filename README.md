@@ -42,7 +42,7 @@ The above shows the minimal configuration. See the configuration section below f
 
 ### Styling
 
-vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `nav`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
+vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `nav`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
 Look at the examples in the demos directory for good starting points on styling the gallery.
 
@@ -71,6 +71,10 @@ The element to display the navigation in. You can style this element to your lik
 
 Boolean to show or hide the prev/next buttons in the navigation element. Default is `true`.
 
+##### counter
+
+Element to display a counter in. Will appear in format "(current) of (total)".
+
 ##### prev
 
 Element to display an additional previous button within.
@@ -81,11 +85,11 @@ Element to display an additional next button within.
 
 ##### prev_text
 
-Text to use for previous button. Default is `&laquo;`.
+Text to use for previous button. Default is &#10094;.
 
 ##### next_text
 
-Text to use for next button. Default is `&raquo;`.
+Text to use for next button. Default is &#10095;.
 
 ##### prev_image
 
@@ -160,6 +164,7 @@ An example configuration using all options:
 ```
 <div id="gallery"></div>
 <div id="nav"></div>
+<div id="counter"></div>
 <div id="prev"></div>
 <div id="next"></div>
 <div id="text"></div>
@@ -177,6 +182,7 @@ $(document).ready(function() {
         ],
         nav: '#nav',
         nav_buttons: false,
+        counter: '#counter',
         prev: '#prev',
         next: '#next',
         prev_text: '<',
@@ -202,6 +208,8 @@ $(document).ready(function() {
         bg_color: '#000',
         button_color: '#FFF',
         active_color: '#FFF',
+        loading_img: 'path/to/loading/image.gif',
+        loading_all: true,
         contain: 'portrait'
     });
     vg.start();

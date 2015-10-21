@@ -53,6 +53,7 @@
 
     #wrapper {
         width:1000px;
+        height:500px;
         position:relative;
         margin:0 auto;
         padding-top:50px;
@@ -63,18 +64,32 @@
         height:500px;
     }
 
+    #counter {
+        width:75px;
+        height:50px;
+        line-height:50px;
+        position:absolute;
+        bottom:0;
+        right:100px;
+        z-index:100;
+        color:#FFF;
+        text-align:center;
+        font-size:22px;
+        font-weight:bold;
+    }
+
     #prev, #next {
         width:50px;
-        height:500px;
+        height:50px;
         position:absolute;
-        top:50px;
-        opacity:0.7;
+        bottom:0;
         z-index:100;
-        font-size:40px;
+        font-size:20px;
+        color:#FFF;
     }
 
     #prev {
-        left:0;
+        right:50px;
     }
 
     #next {
@@ -87,7 +102,7 @@
         padding:15px 20px;
         position:absolute;
         bottom:20px;
-        left:50px;
+        left:20px;
         z-index:200;
         background:rgba(0,0,0,0.6);
         color:#FFF;
@@ -109,6 +124,7 @@
 <body>
     <div id="wrapper">
         <div id="gallery"></div>
+        <div id="counter"></div>
         <div id="prev"></div>
         <div id="next"></div>
         <div id="text"></div>
@@ -123,6 +139,7 @@ $(document).ready(function() {
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
+        counter: '#counter',
         next: '#next',
         prev: '#prev',
         text_element: '#text',
@@ -138,6 +155,7 @@ $(document).ready(function() {
             'http://example.com/',
             null
         ],
+        button_color: '#FFF',
         loading_img: 'images/loading.gif'
     });
     vg.start();
