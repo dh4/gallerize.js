@@ -53,6 +53,13 @@ var vGallery = function(config) {
         vg.th_buttons       = (c.th_buttons !== undefined)      ? c.th_buttons      : true;
         vg.th_button_color  = (c.th_button_color !== undefined) ? c.th_button_color : '#000';
         vg.th_active_color  = (c.th_active_color !== undefined) ? c.th_active_color : '#000';
+        vg.indicators       = (c.indicators !== undefined)      ? c.indicators      : null;
+        vg.indicator_color  = (c.indicator_color !== undefined)   ? c.indicator_color   : '#999';
+        vg.indicator_acolor = (c.indicator_acolor !== undefined)  ? c.indicator_acolor  : '#FFF';
+        vg.indicator_round  = (c.indicator_round !== undefined)   ? c.indicator_round   : false;
+        vg.indicator_opacity= (c.indicator_opacity !== undefined) ? c.indicator_opacity : null;
+        vg.indicator_image  = (c.indicator_image !== undefined)   ? c.indicator_image   : null;
+        vg.indicator_aimage = (c.indicator_aimage !== undefined)  ? c.indicator_aimage  : null;
         vg.counter          = (c.counter !== undefined)         ? c.counter         : null;
         vg.prev             = (c.prev !== undefined)            ? c.prev            : null;
         vg.next             = (c.next !== undefined)            ? c.next            : null;
@@ -99,7 +106,8 @@ var vGallery = function(config) {
         else
             vg.thumb_iterations = (vg.images.length > 10) ? 1 : 2;
 
-        vg.computeThumbSize();
+        if (vg.thumbnails) vg.computeThumbSize();
+        if (!vg.thumbnails && vg.indicators) vg.computeIndicatorSize();
     };
 
     /**
@@ -129,6 +137,23 @@ var vGallery = function(config) {
     };
 
     /**
+     * vg.computeIndicatorSize calculates the size of indicators based on the
+     * indicator element.
+     */
+    vg.computeIndicatorSize = function() {
+        // Calculate indicator size and padding based on how large the indicator element is
+        vg.indicator_size = Math.round($(vg.indicators).height() * 0.5);
+        vg.indicator_hpadding = Math.round(($(vg.indicators).height() - vg.indicator_size) / 4);
+        vg.indicator_vpadding = Math.round(($(vg.indicators).height() - vg.indicator_size) / 2);
+
+        // Setup background variables
+        vg.indicator_bg = (vg.indicator_image) ?
+            'url("'+vg.indicator_image+'") no-repeat 50% 50%' : vg.indicator_color;
+        vg.indicator_active_bg = (vg.indicator_aimage) ?
+            'url("'+vg.indicator_aimage+'") no-repeat 50% 50%' : vg.indicator_acolor;
+    };
+
+    /**
      * vg.start is used to initialize the gallery and navigation elements
      * and start the rotation timer.
      */
@@ -138,6 +163,7 @@ var vGallery = function(config) {
         vg.insertCSS();
         vg.createGallery();
         if (vg.thumbnails) vg.createThumbnailNavigator();
+        if (!vg.thumbnails && vg.indicators) vg.createIndicatorNavigator();
         if (vg.prev) vg.createButton('prev', false);
         if (vg.next) vg.createButton('next', false);
         if (vg.text && vg.text_element) vg.createText();
@@ -247,7 +273,8 @@ var vGallery = function(config) {
             ".vg_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
             ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
-            ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"
+            ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
+            ".vg_indicator {float:left;cursor:pointer;background-size:contain !important;}"
         ).appendTo("head");
     };
 
@@ -355,7 +382,7 @@ var vGallery = function(config) {
                                                              [10,  8] ;
                 var caption_style = "line-height:"+caption_size[0]+"px;"+
                                     "font-size:"+caption_size[1]+"px;";
-                $('<div/>', {class:'vg_thumb_caption', style: caption_style})
+                $('<div/>', {class: 'vg_thumb_caption', style: caption_style})
                     .appendTo('#vg_thumb_'+i);
                 var caption = vg.th_captions[adjust % vg.images.length];
                 $('#vg_thumb_'+i+' .vg_thumb_caption').html(caption);
@@ -365,18 +392,50 @@ var vGallery = function(config) {
                                'width:'+(vg.thumb_width-2)+'px;'+
                                'border:1px solid '+vg.th_active_color+';';
             if (i == 5) border_style += 'opacity:1;';
-            $('<div/>', {class:'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
+            $('<div/>', {class: 'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
 
             var thumb = vg.getThumbImage(adjust);
             var thumb_style = 'background: '+vg.image_bg_color+' url('+thumb+') no-repeat 50% 50%;'+
                               'background-size: cover;'+
                               'height:'+vg.thumb_height+'px;'+
                               'width:'+vg.thumb_width+'px;';
-            $('<div/>', {class:'vg_thumb_image', style: thumb_style}).appendTo('#vg_thumb_'+i);
+            $('<div/>', {class: 'vg_thumb_image', style: thumb_style}).appendTo('#vg_thumb_'+i);
         }
 
         // Create next button
         if (vg.th_buttons) vg.createButton('next', true);
+    };
+
+    /**
+     * vg.createIndicatorNavigator initializes the indicator navigation element.
+     */
+    vg.createIndicatorNavigator = function() {
+        $('<div/>', {id: 'vg_indicator_wrapper'}).appendTo(vg.indicators);
+
+        var handler = function() {
+            vg.changeImage($(this).data('image') - (vg.current % vg.images.length));
+        };
+
+        for (var i = 0; i < vg.images.length; i++) {
+            var prop = {
+                id: 'vg_indicator_'+i,
+                class: 'vg_indicator',
+                'data-image': i,
+                style: 'width:'+vg.indicator_size+'px;'+
+                       'height:'+vg.indicator_size+'px;'+
+                       'margin:'+vg.indicator_vpadding+'px '+vg.indicator_hpadding+'px;'+
+                       'background:'+vg.indicator_bg+';'+
+                       'opacity:'+vg.indicator_opacity+';'
+            };
+            if (vg.indicator_round) prop.style += 'border-radius:'+vg.indicator_size+'px;';
+
+            $('<div/>', prop).appendTo('#vg_indicator_wrapper');
+
+            $('#vg_indicator_'+i).click(handler);
+
+            if (i == vg.current % vg.images.length)
+                $('#vg_indicator_'+i).css('background', vg.indicator_active_bg).css('opacity', 1);
+        }
     };
 
     /**
@@ -547,6 +606,17 @@ var vGallery = function(config) {
     };
 
     /**
+     * vg.updateIndicators updates the indicator navigation
+     */
+    vg.updateIndicators = function() {
+        $('.vg_indicator').each(function() {
+            $(this).css('background', vg.indicator_bg).css('opacity', vg.indicator_opacity);
+        });
+        $('#vg_indicator_'+(vg.current % vg.images.length))
+            .css('background', vg.indicator_active_bg).css('opacity', 1);
+    };
+
+    /**
      * vg.changeImage is where the real action occurs. This animates the transition.
      *
      * @param offset The image offset to adjust to. Positive for forward in the
@@ -582,6 +652,8 @@ var vGallery = function(config) {
                     vg.adjustThumb(this, offset);
                 });
             }
+
+            if (!vg.thumbnails && vg.indicators) vg.updateIndicators();
 
             if (vg.text && vg.text_element) {
                 $('#vg_text_inner').animate({opacity: 0}, vg.fade / 2, function() {
