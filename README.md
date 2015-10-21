@@ -44,6 +44,8 @@ The above shows the minimal configuration. See the configuration section below f
 
 vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `nav`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
+vGallery.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
+
 Look at the examples in the demos directory for good starting points on styling the gallery.
 
 
