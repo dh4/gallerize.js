@@ -277,6 +277,9 @@ var vGallery = function(config) {
      * vg.createText creates the initializes the text element.
      */
     vg.createText = function() {
+        // Hide text element. We will display it when the first image loads.
+        if (vg.loading_img) $(vg.text_element).css('visibility', 'hidden');
+
         $('<div/>', {id: 'vg_text_inner'} ).appendTo(vg.text_element);
         $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
     };
@@ -459,6 +462,7 @@ var vGallery = function(config) {
             image.onload = function() {
                 vg.preload.push(imgSrc);
                 vg.ratios[vg.images.indexOf(imgSrc)] = this.width / this.height;
+                $(vg.text_element).css('visibility', 'visible');
                 $('#vg_loading').css('z-index', 0).css('opacity', 1);
                 if (onload) onload();
             };
