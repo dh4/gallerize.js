@@ -135,6 +135,14 @@ The text color to use for the prev/next buttons. Default is `#000`.
 
 The border color around the active thumbnail. Default is `#000`.
 
+##### loading_img
+
+Image to display when gallery image is loading.
+
+##### loading_all
+
+Boolean to show loading image for all images or just the first. Default is `true`.
+
 ##### contain
 
 What images should use `background-size:contain` vs `background-size:cover`. There are five options:  

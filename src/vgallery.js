@@ -65,6 +65,8 @@ var vGallery = function(config) {
         vg.bg_color     = (c.bg_color !== undefined)        ? c.bg_color        : '#FFF';
         vg.button_color = (c.button_color !== undefined)    ? c.button_color    : '#000';
         vg.active_color = (c.active_color !== undefined)    ? c.active_color    : '#000';
+        vg.loading_img  = (c.loading_img !== undefined)     ? c.loading_img     : null;
+        vg.loading_all  = (c.loading_all !== undefined)     ? c.loading_all     : true;
         vg.contain      = (c.contain !== undefined)         ? c.contain         : 'none';
 
         // Check that other configuration arrays have same length as images array
@@ -194,11 +196,10 @@ var vGallery = function(config) {
     vg.insertCSS = function() {
         $("<style>").prop("type", "text/css").html(
             "#vg_wrapper {position:relative;width:100%;height:100%;}"+
-            "#vg_click {z-index:93;display:block;position:absolute;top:0;left:0;width:100%;"+
-                "height:100%;}"+
-            "#vg_animator {z-index:95;position:absolute;top:0px;left:0px;width:100%;height:100%;}"+
-            "#vg_background {z-index:94;position:absolute;top:0px;left:0px;width:100%;"+
-                "height:100%;}"+
+            "#vg_click {z-index:93;display:block;position:absolute;width:100%;height:100%;}"+
+            "#vg_animator {z-index:95;position:absolute;width:100%;height:100%;}"+
+            "#vg_background {z-index:94;position:absolute;width:100%;height:100%;}"+
+            "#vg_loading {z-index:96;position:absolute;width:100%;height:100%;}"+
             ".vg_cover {background-size:cover !important;}"+
             ".vg_contain {background-size:contain !important;}"+
             "#vg_navigator_wrapper {position:absolute;right:50%;}"+
@@ -224,6 +225,14 @@ var vGallery = function(config) {
         $('<a/>',   {id: 'vg_click'}       ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_animator'}    ).appendTo('#vg_wrapper');
         $('<div/>', {id: 'vg_background'}  ).appendTo('#vg_wrapper');
+
+        $('#vg_background').css('background', vg.bg_color);
+
+        if (vg.loading_img) {
+            $('<div />', {id: 'vg_loading'}).appendTo('#vg_wrapper');
+            $('#vg_loading').css('background',
+                                 vg.bg_color+' url("'+vg.loading_img+'") no-repeat 50% 50%');
+        }
     };
 
     /**
@@ -413,6 +422,7 @@ var vGallery = function(config) {
             image.onload = function() {
                 vg.preload.push(imgSrc);
                 vg.ratios[vg.images.indexOf(imgSrc)] = this.width / this.height;
+                $('#vg_loading').css('z-index', 0).css('opacity', 1);
                 if (onload) onload();
             };
             image.onerror = function() {
@@ -420,6 +430,7 @@ var vGallery = function(config) {
                 console.error("vGallery.js: '%s' not found.", imgSrc);
             };
         } else {
+            $('#vg_loading').css('z-index', 0).css('opacity', 1);
             if (onload) onload();
         }
     };
@@ -500,6 +511,9 @@ var vGallery = function(config) {
 
         vg.active = true;
         vg.current = vg.current + offset;
+
+        if (vg.loading_all) $('#vg_loading').css('opacity', 0).css('z-index', 96)
+                                            .animate({opacity: 0.5}, vg.fade);
 
         vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
