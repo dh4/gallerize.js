@@ -230,8 +230,9 @@ var vGallery = function(config) {
 
         if (vg.loading_img) {
             $('<div />', {id: 'vg_loading'}).appendTo('#vg_wrapper');
-            $('#vg_loading').css('background',
-                                 vg.bg_color+' url("'+vg.loading_img+'") no-repeat 50% 50%');
+            $('#vg_loading').css('opacity', 0)
+                .css('background', vg.bg_color+' url("'+vg.loading_img+'") no-repeat 50% 50%')
+                .animate({opacity: 1}, vg.fade);
         }
     };
 
