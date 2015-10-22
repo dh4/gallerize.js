@@ -86,11 +86,22 @@ var vGallery = function(config) {
         if (vg.th_captions && vg.images.length != vg.th_captions.length)
             vg.log('th_captions:count');
 
+        // Check that elements exist
+        if ($(vg.gallery).length === 0)                         vg.log('gallery:exists');
+        if (vg.thumbnails && $(vg.thumbnails).length === 0)     vg.log('thumbnails:exists');
+        if (vg.indicators && $(vg.indicators).length === 0)     vg.log('indicators:exists');
+        if (vg.counter && $(vg.counter).length === 0)           vg.log('counter:exists');
+        if (vg.prev && $(vg.prev).length === 0)                 vg.log('prev:exists');
+        if (vg.next && $(vg.next).length === 0)                 vg.log('next:exists');
+        if (vg.text_element && $(vg.text_element).length === 0) vg.log('text:exists');
+
         // Check that gallery and thumbnail elements have a height and width greater than zero
         if ($(vg.gallery).height() === 0 || $(vg.gallery).width() === 0)
             vg.log('gallery:size');
         if (vg.thumbnails && ($(vg.thumbnails).height() === 0 || $(vg.thumbnails).width() === 0))
             vg.log('thumbnails:size');
+        if (vg.indicators && ($(vg.indicators).height() === 0))
+            vg.log('indicators:size');
 
         vg.active = vg.hover = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
@@ -239,6 +250,9 @@ var vGallery = function(config) {
                 console.error("vGallery.js: '%s' is missing from the class "+
                               "initialization. Please add it.", values[0]);
                 break;
+            case 'exists':
+                console.error("vGallery.js: %s element does not exist. ", values[0]);
+                break;
             case 'count':
                 console.warn("vGallery.js: Number of %s does not equal number of "+
                              "images. This will cause unintended consequences.", values[0]);
@@ -246,6 +260,7 @@ var vGallery = function(config) {
             case 'size':
                 console.warn("vGallery.js: %s element has a height or width of 0. "+
                              "This will cause nothing to show.", values[0]);
+                break;
         }
     };
 
