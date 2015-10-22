@@ -139,23 +139,33 @@ $(document).ready(function() {
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        counter: '#counter',
-        next: '#next',
-        prev: '#prev',
         links: [
             null,
             null,
             'http://example.com/',
             null
         ],
-        text: [
-            '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
-            '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
-            '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
-            '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
-        ],
-        text_element: '#text',
-        loading_image: 'images/loading.gif'
+        text: {
+            element: '#text',
+            items: [
+                '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
+                '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
+                '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
+                '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
+            ],
+        },
+        next: {
+            element: '#next',
+        },
+        prev: {
+            element: '#prev',
+        },
+        counter: {
+            element: '#counter',
+        },
+        loading: {
+            image: 'images/loading.gif'
+        },
     });
     vg.start();
 });
