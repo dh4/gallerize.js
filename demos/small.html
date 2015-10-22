@@ -111,24 +111,30 @@ $(document).ready(function() {
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        th_images: [
-            'images/thumbs/rumney.jpg',
-            'images/thumbs/redrivergorge.jpg',
-            'images/thumbs/centralpark.jpg',
-            'images/thumbs/browncounty.jpg'
-        ],
-        thumbnails: '#thumbnails',
-        text: [
-            '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
-            '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
-            '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
-            '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
-        ],
-        text_element: '#text',
         auto: false,
         fade: 500,
-        loading_image: 'images/loading.gif',
-        contain: 'all'
+        contain: 'all',
+        thumbnails: {
+            element: '#thumbnails',
+            images: [
+                'images/thumbs/rumney.jpg',
+                'images/thumbs/redrivergorge.jpg',
+                'images/thumbs/centralpark.jpg',
+                'images/thumbs/browncounty.jpg'
+            ],
+        },
+        text: {
+            element: '#text',
+            items: [
+                '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
+                '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
+                '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
+                '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
+            ],
+        },
+        loading: {
+            image: 'images/loading.gif',
+        },
     });
     vg.start();
 });
