@@ -289,7 +289,15 @@ var vGallery = function(config) {
             ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
             ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
-            ".vg_indicator {float:left;cursor:pointer;background-size:contain !important;}"
+            ".vg_indicator {float:left;cursor:pointer;background-size:contain !important;}"+
+            "@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }"+
+            "@keyframes fadeOut { from {opacity:1;} to {opacity:0;} }"+
+            "@keyframes fadeInHalf { from {opacity:0;} to {opacity:0.5;} }"+
+            ".fadeIn {opacity:1;animation: fadeIn "+vg.fade+"ms forwards;}"+
+            ".fadeOut {opacity:0;animation: fadeOut "+vg.fade+"ms forwards;}"+
+            ".fadeInHalf {opacity:0.5;animation: fadeInHalf "+vg.fade+"ms forwards;}"+
+            ".fadeInQuick {opacity:1;animation: fadeIn "+(vg.fade / 2)+"ms forwards;}"+
+            ".fadeOutQuick {opacity:0;animation: fadeOut "+(vg.fade / 2)+"ms forwards;}"
         ).appendTo("head");
     };
 
@@ -309,7 +317,7 @@ var vGallery = function(config) {
             $('#vg_loading').css('opacity', 0)
                 .css('background', vg.image_bg_color+' url("'+
                     vg.loading_image+'") no-repeat 50% 50%')
-                .animate({opacity: 1}, vg.fade);
+                .addClass('fadeIn');
         }
     };
 
@@ -520,8 +528,8 @@ var vGallery = function(config) {
      */
     vg.getThumbImage = function(image) {
         if (!image) image = vg.current;
-        if (vg.thumbs)
-            return vg.thumbs[image % vg.images.length];
+        if (vg.th_images)
+            return vg.th_images[image % vg.images.length];
         else
             return vg.images[image % vg.images.length];
     };
@@ -615,9 +623,9 @@ var vGallery = function(config) {
         }
 
         if (destination == vg.thumb_offset * 2)
-            $(e).children('.vg_thumb_border').animate({opacity: 1}, vg.fade);
+            $(e).children('.vg_thumb_border').removeClass('fadeOut').addClass('fadeIn');
         else if (origin == vg.thumb_offset * 2)
-            $(e).children('.vg_thumb_border').animate({opacity: 0}, vg.fade);
+            $(e).children('.vg_thumb_border').removeClass('fadeIn').addClass('fadeOut');
     };
 
     /**
@@ -645,22 +653,24 @@ var vGallery = function(config) {
         vg.current = vg.current + offset;
 
         if (vg.loading_all) $('#vg_loading').css('opacity', 0).css('z-index', 96)
-                                            .animate({opacity: 0.5}, vg.fade);
+                                            .removeClass('fadeInHalf').addClass('fadeInHalf');
 
         vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
             vg.setBackground('#vg_background');
 
-            $('#vg_animator').animate({opacity: 0}, vg.fade, function() {
-                vg.setBackground(this);
+            $('#vg_animator').addClass('fadeOut');
+            // .one('animationend', function() {
+            setTimeout(function() {
+                vg.setBackground('#vg_animator');
+                $('#vg_animator').removeClass('fadeOut');
                 vg.updateCounter();
-            }).animate({opacity: 1}, 200, function() {
                 if (vg.links) vg.setLink();
                 vg.active = false;
                 vg.remaining = vg.delay;
                 if (!vg.hover) vg.startTimer();
                 vg.loadImage(1);
-            });
+            }, vg.fade + 100);
 
             if (vg.thumbnails) {
                 $('.vg_th_nav_thumb').each(function() {
@@ -671,9 +681,14 @@ var vGallery = function(config) {
             if (!vg.thumbnails && vg.indicators) vg.updateIndicators();
 
             if (vg.text && vg.text_element) {
-                $('#vg_text_inner').animate({opacity: 0}, vg.fade / 2, function() {
-                    $('#vg_text_inner').html(vg.text[vg.current % vg.images.length]);
-                }).animate({opacity: 1}, vg.fade / 2);
+                var animateText = function() {
+                    $('#vg_text_inner').html(vg.text[vg.current % vg.images.length])
+                        .removeClass('fadeOutQuick').addClass('fadeInQuick');
+                };
+                $('#vg_text_inner').addClass('fadeOutQuick').one('animationend', animateText);
+
+                // Fix for browsers that don't support CSS3 animations
+                setTimeout(animateText, vg.fade + 100);
             }
         });
     };
