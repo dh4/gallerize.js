@@ -324,6 +324,7 @@ var vGallery = function(config) {
             ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
             ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
+            "#vg_indicator_wrapper {z-index:97;position:relative;}"+
             ".vg_indicator {float:left;cursor:pointer;background-size:contain !important;}"
         ).appendTo("head");
     };
