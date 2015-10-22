@@ -286,6 +286,7 @@ var vGallery = function(config) {
             "#vg_th_nav_thumbs {position:relative;float:left;overflow:hidden;}"+
             ".vg_th_nav_action {z-index:99;position:absolute;cursor:pointer;}"+
             ".vg_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
+            ".vg_thumb_transition {transition:left "+vg.fade+"ms;}"+
             ".vg_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
             ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
@@ -614,12 +615,12 @@ var vGallery = function(config) {
 
         if (destination < vg.thumb_most_left) {
             position = destination + vg.thumb_wrap;
-            $(e).css('left', position+'px');
+            $(e).removeClass('vg_thumb_transition').css('left', position+'px');
         } else if (destination > vg.thumb_most_right) {
             position = destination - vg.thumb_wrap;
-            $(e).css('left', position+'px');
+            $(e).removeClass('vg_thumb_transition').css('left', position+'px');
         } else {
-            $(e).animate({left: destination+'px'}, vg.fade);
+            $(e).addClass('vg_thumb_transition').css('left', destination+'px');
         }
 
         if (destination == vg.thumb_offset * 2)
