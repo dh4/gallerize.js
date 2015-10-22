@@ -1,6 +1,10 @@
 # vGallery.js [![Build Status](https://travis-ci.org/dh4/vGallery.js.svg?branch=master)](https://travis-ci.org/dh4/vGallery.js)
 
-vGallery.js is a responsive, jQuery-based image fader designed to be as versatile as possible. It was born out of my frustration attempting to find an image gallery that was versatile enough for me to style it to display the way I wanted for various different use cases. Every one I found was designed to be basically immutable with a certain look or orientation in mind, making it difficult to style without resorting to hacks.
+vGallery.js is a responsive, jQuery-based image fader designed to be as versatile as possible.
+
+#### Why another image gallery?
+
+It was born out of my frustration attempting to find an image gallery that was versatile enough for me to style to display the way I want for various different use cases. The vast majority of image galleries are designed to be plug and play with a default, fairly immutable styling and layout, making it difficult to get them to look any different without resorting to hacks.
 
 vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
 
@@ -73,6 +77,10 @@ An array of thumbnails to use. This should match up with the `images` array and 
 
 The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty. Overrides `indicators`.
 
+##### th_captions
+
+Array of captions to display below the thumbnail images. This should have the same number of items as the `images` array.
+
 ##### th_buttons
 
 Boolean to show or hide the prev/next buttons in the thumbnail navigation element. Default is `true`.
@@ -140,10 +148,6 @@ Path to image to use for previous button. Overrides `prev_text`.
 ##### next_image
 
 Path to image to use for next button. Overrides `next_text`.
-
-##### captions
-
-Array of captions to display below the thumbnail images in the navigation. This should have the same number of items as the `images` array.
 
 ##### links
 
@@ -217,6 +221,10 @@ $(document).ready(function() {
             'path/to/thumb/two.jpg'
         ],
         thumbnails: '#thumbnails',
+        th_captions: [
+            'Caption One',
+            'Caption Two'
+        ],
         th_buttons: false,
         th_button_color: '#FFF',
         th_active_color: '#FFF',
@@ -234,10 +242,6 @@ $(document).ready(function() {
         next_text: '>',
         prev_image: 'path/to/prev/image.jpg',
         next_image: 'path/to/next/image.jpg',
-        captions: [
-            'Caption One',
-            'Caption Two'
-        ],
         links: [
             'http://example.com',
             null
