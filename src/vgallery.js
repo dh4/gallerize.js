@@ -235,6 +235,12 @@ var vGallery = function(config) {
                     vg.createThumbnailNavigator();
                 }
 
+                if (!vg.th.element && vg.in.element) {
+                    vg.computeIndicatorSize();
+                    $('#vg_indicator_wrapper').remove();
+                    vg.createIndicatorNavigator();
+                }
+
                 if (vg.prev.element) {
                     $('#vg_prev').remove();
                     vg.createButton('prev', false);
