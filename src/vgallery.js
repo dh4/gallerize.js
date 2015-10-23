@@ -383,7 +383,7 @@ var vGallery = function(config) {
             var loading = $$('div', {id: 'vg_loading'});
             loading.style.opacity = 0;
             loading.style.background = vg.bg_color+' url("'+vg.loading.image+'") no-repeat 50% 50%';
-            loading.classList.add('fadeIn');
+            setTimeout(function() {loading.classList.add('fadeIn');}, 1000);
             wrapper.appendChild(loading);
         }
     };
