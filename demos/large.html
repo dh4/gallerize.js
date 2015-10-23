@@ -154,35 +154,45 @@ $(document).ready(function() {
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        image_bg_color: '#000',
-        th_images: [
-            'images/thumbs/rumney.jpg',
-            'images/thumbs/redrivergorge.jpg',
-            'images/thumbs/centralpark.jpg',
-            'images/thumbs/browncounty.jpg'
-        ],
-        thumbnails: '#thumbnails',
-        th_captions: [
-            'Rumney',
-            'Red River Gorge',
-            'Central Park',
-            'Brown County'
-        ],
-        th_buttons: false,
-        th_active_color: '#FFF',
-        prev: '#prev',
-        next: '#next',
-        text: [
-            '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
-            '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
-            '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
-            '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
-        ],
-        text_element: '#text',
+        bg_color: '#000',
         pause: false,
         delay: 10000,
-        loading_image: 'images/loading_white.gif',
-        contain: 'parent'
+        contain: 'parent',
+        thumbnails: {
+            element: '#thumbnails',
+            images: [
+                'images/thumbs/rumney.jpg',
+                'images/thumbs/redrivergorge.jpg',
+                'images/thumbs/centralpark.jpg',
+                'images/thumbs/browncounty.jpg'
+            ],
+            captions: [
+                'Rumney',
+                'Red River Gorge',
+                'Central Park',
+                'Brown County'
+            ],
+            buttons: false,
+            active_color: '#FFF',
+        },
+        text: {
+            element: '#text',
+            items: [
+                '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
+                '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
+                '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
+                '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
+            ],
+        },
+        prev: {
+            element: '#prev',
+        },
+        next: {
+            element: '#next',
+        },
+        loading: {
+            image: 'images/loading_white.gif',
+        },
     });
     vg.start();
 });
