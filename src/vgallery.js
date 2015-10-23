@@ -129,8 +129,8 @@ var vGallery = function(config) {
         vg.in = vg.indicators;
 
         // Show errors for missing required configuration options
-        if (vg.gallery === undefined)    vg.log('gallery:missing');
-        if (vg.images === undefined)     vg.log('images:missing');
+        if (vg.gallery === null)    vg.log('gallery:missing');
+        if (vg.images === null)     vg.log('images:missing');
 
         // Check that other configuration arrays have same length as images array
         if (vg.th.images && vg.images.length != vg.th.images.length)
@@ -139,24 +139,6 @@ var vGallery = function(config) {
             vg.log('links:count');
         if (vg.th.captions && vg.images.length != vg.th.captions.length)
             vg.log('thumbnails.captions:count');
-
-        // Check that elements exist
-        if ($(vg.gallery).length === 0) vg.log('gallery:exists');
-        var elements = ['thumbnails', 'indicators', 'counter', 'prev', 'next', 'text'];
-        for (var i = 0; i < elements.length; i++) {
-            var e = elements[i];
-            if (vg[e] && vg[e].element && $(vg[e].element).length === 0) vg.log(e+':exists');
-        }
-
-        // Check that gallery and thumbnail elements have a height and width greater than zero
-        if ($(vg.gallery).clientHeight === 0 || $(vg.gallery).clientWidth === 0)
-            vg.log('gallery:size');
-        if (vg.th.element && ($(vg.th.element).clientHeight === 0 ||
-            $(vg.th.element).clientWidth === 0)
-           )
-            vg.log('thumbnails:size');
-        if (vg.in.element && ($(vg.in.element).clientHeight === 0))
-            vg.log('indicators:size');
 
         vg.active = vg.hover = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
@@ -228,6 +210,24 @@ var vGallery = function(config) {
      * and start the rotation timer.
      */
     vg.start = function() {
+        // Check that elements exist
+        if ($(vg.gallery).length === 0) vg.log('gallery:exists');
+        var elements = ['thumbnails', 'indicators', 'counter', 'prev', 'next', 'text'];
+        for (var i = 0; i < elements.length; i++) {
+            var e = elements[i];
+            if (vg[e] && vg[e].element && $(vg[e].element).length === 0) vg.log(e+':exists');
+        }
+
+        // Check that gallery and thumbnail elements have a height and width greater than zero
+        if ($(vg.gallery).clientHeight === 0 || $(vg.gallery).clientWidth === 0)
+            vg.log('gallery:size');
+        if (vg.th.element && ($(vg.th.element).clientHeight === 0 ||
+            $(vg.th.element).clientWidth === 0)
+           )
+            vg.log('thumbnails:size');
+        if (vg.in.element && ($(vg.in.element).clientHeight === 0))
+            vg.log('indicators:size');
+
         vg.active = true;
 
         vg.insertCSS();
@@ -313,8 +313,8 @@ var vGallery = function(config) {
 
         switch (values[1]) {
             case 'missing':
-                console.error("vGallery.js: '%s' is missing from the class "+
-                              "initialization. Please add it.", values[0]);
+                console.error("vGallery.js: '%s' is missing from the configuration. "+
+                              "Please add it.", values[0]);
                 break;
             case 'exists':
                 console.error("vGallery.js: %s element does not exist. ", values[0]);
