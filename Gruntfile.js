@@ -9,7 +9,6 @@ module.exports = function(grunt) {
                 unused: true,
                 browser: true,
                 devel: true,
-                jquery: true,
             },
         },
         watch: {

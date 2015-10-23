@@ -1,6 +1,6 @@
 # vGallery.js [![Build Status](https://travis-ci.org/dh4/vGallery.js.svg?branch=master)](https://travis-ci.org/dh4/vGallery.js)
 
-vGallery.js is a responsive, jQuery-based image fader designed to be as versatile as possible.
+vGallery.js is a responsive image fader designed to be as versatile as possible. It uses CSS3 transitions and pure Javascript.
 
 #### Why another image gallery?
 
@@ -19,8 +19,6 @@ Click on the following demos to view them (you can view the source code in the d
 
 ## Usage
 
-Make sure you have [jQuery](https://jquery.com/) installed.
-
 Download the latest release from the [releases](https://github.com/dh4/vGallery.js/releases) page and install it into the \<head\> tag of the page you want the gallery to show:
 ```
 <script type="text/javascript" src="vgallery-<VERSION>.min.js"></script>
@@ -29,14 +27,14 @@ Download the latest release from the [releases](https://github.com/dh4/vGallery.
 Then initialize the gallery by creating a new vGallery object and calling start(). The following should be placed before the \</body\> tag:
 ```
 <script type="text/javascript">
-$(document).ready(function() {
-    var vg = new vGallery({
-        gallery: '#gallery',
-        images: [
-            'path/to/image/one.jpg',
-            'path/to/image/two.jpg'
-        ]
-    });
+var vg = new vGallery({
+    gallery: '#gallery',
+    images: [
+        'path/to/image/one.jpg',
+        'path/to/image/two.jpg',
+    ],
+});
+document.addEventListener('DOMContentLoaded', function() {
     vg.start();
 });
 </script>
@@ -296,72 +294,72 @@ An example configuration using all options:
 <div id="next"></div>
 <div id="text"></div>
 <script>
-$(document).ready(function() {
-    var vg = new vGallery({
-        gallery: '#gallery',
+var vg = new vGallery({
+    gallery: '#gallery',
+    images: [
+        'path/to/image/one.jpg',
+        'path/to/image/two.jpg'
+    ],
+    links: [
+        'http://example.com',
+        null
+    ],
+    bg_color: '#FFF',
+    auto: true,
+    pause: true,
+    delay: 5000,
+    fade: 1000,
+    contain: 'portrait',
+    thumbnails: {
+        element: '#thumbnails',
         images: [
-            'path/to/image/one.jpg',
-            'path/to/image/two.jpg'
+            'path/to/thumb/one.jpg',
+            'path/to/thumb/two.jpg'
         ],
-        links: [
-            'http://example.com',
-            null
+        captions: [
+            'Caption One',
+            'Caption Two'
         ],
-        bg_color: '#FFF',
-        auto: true,
-        pause: true,
-        delay: 5000,
-        fade: 1000,
-        contain: 'portrait',
-        thumbnails: {
-            element: '#thumbnails',
-            images: [
-                'path/to/thumb/one.jpg',
-                'path/to/thumb/two.jpg'
-            ],
-            captions: [
-                'Caption One',
-                'Caption Two'
-            ],
-            buttons: true,
-            button_color: '#000',
-            active_color: '#000',
-        },
-        indicators: {
-            element: '#indicators',
-            color: '#999',
-            acolor: '#FFF',
-            round: false,
-            opacity: 1,
-            image: 'path/to/indicator/inactive.png',
-            aimage: 'path/to/indicator/active.png',
-        },
-        text: {
-            element: '#text',
-            items: [
-                '<b>Text One</b>',
-                'Text Two'
-            ],
-        },
-        prev: {
-            element: '#prev',
-            text: '&laquo;',
-            image: 'path/to/prev/image.jpg',
-        },
-        next: {
-            element: '#next',
-            text: '&raquo;',
-            image: 'path/to/next/image.jpg',
-        },
-        counter: {
-            element: '#counter',
-            separator: ' of ',
-        },
-        loading: {
-            image: 'path/to/loading/image.gif',
-            all: true,
-        },
-    });
+        buttons: true,
+        button_color: '#000',
+        active_color: '#000',
+    },
+    indicators: {
+        element: '#indicators',
+        color: '#999',
+        acolor: '#FFF',
+        round: false,
+        opacity: 1,
+        image: 'path/to/indicator/inactive.png',
+        aimage: 'path/to/indicator/active.png',
+    },
+    text: {
+        element: '#text',
+        items: [
+            '<b>Text One</b>',
+            'Text Two'
+        ],
+    },
+    prev: {
+        element: '#prev',
+        text: '&laquo;',
+        image: 'path/to/prev/image.jpg',
+    },
+    next: {
+        element: '#next',
+        text: '&raquo;',
+        image: 'path/to/next/image.jpg',
+    },
+    counter: {
+        element: '#counter',
+        separator: ' of ',
+    },
+    loading: {
+        image: 'path/to/loading/image.gif',
+        all: true,
+    },
+});
+document.addEventListener('DOMContentLoaded', function() {
     vg.start();
 });
 </script>
