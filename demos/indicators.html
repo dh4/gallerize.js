@@ -5,7 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vGallery.js Indicators Demo</title>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="../src/vgallery.js"></script>
     <style>
     @media screen and (max-width: 1000px) {
@@ -146,33 +145,33 @@
         <div id="text"></div>
     </div>
 <script>
-$(document).ready(function() {
-    var vg = new vGallery({
-        gallery: '#gallery',
-        images: [
-            'images/rumney.jpg',
-            'images/redrivergorge.jpg',
-            'images/centralpark.jpg',
-            'images/browncounty.jpg'
+var vg = new vGallery({
+    gallery: '#gallery',
+    images: [
+        'images/rumney.jpg',
+        'images/redrivergorge.jpg',
+        'images/centralpark.jpg',
+        'images/browncounty.jpg'
+    ],
+    indicators: {
+        element: '#indicators',
+        round: true,
+        opacity:0.5,
+    },
+    text: {
+        element: '#text',
+        items: [
+            '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
+            '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
+            '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
+            '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
         ],
-        indicators: {
-            element: '#indicators',
-            round: true,
-            opacity:0.5,
-        },
-        text: {
-            element: '#text',
-            items: [
-                '<div class="text_header">Rumney, NH</div>Looking over a cliff edge below Jimmy Cliff<div class="text_small">July 2015</div>',
-                '<div class="text_header">Red River Gorge, KY</div>The Madness Cave at the Motherlode<div class="text_small">May 2015</div>',
-                '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
-                '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
-            ],
-        },
-        loading: {
-            image: 'images/loading.gif',
-        },
-    });
+    },
+    loading: {
+        image: 'images/loading.gif',
+    },
+});
+document.addEventListener('DOMContentLoaded', function() {
     vg.start();
 });
 </script>
