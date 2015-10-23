@@ -8,7 +8,9 @@ It was born out of my frustration attempting to find an image gallery that was v
 
 vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
 
-It makes liberal use of `background-size` which is not supported in IE8 and below. If you are looking for an image gallery that displays well in those browsers, this is not for you.
+It makes liberal use of `background-size` and Javascript methods such as `addEventListener` which are not supported in IE8 and below. If you are looking for an image gallery that displays in those browsers, this is not for you.
+
+To get this working in IE9, you'll need to copy the shim [here](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) and load it into your page. Note that IE9 doesn't support CSS3 transitions, so there will be no transition between images in that browser.
 
 Click on the following demos to view them (you can view the source code in the demos directory):
 
