@@ -57,135 +57,39 @@ Look at the examples in the demos directory for good starting points on styling 
 
 The following configuration options are available. The only required configuration options are `gallery` and `images`.
 
-##### gallery
+#### gallery
 
 The element to display the gallery in. You can style this element how you want, but the contents should be empty.
 
-##### images
+#### images
 
 An array of images to display. You can use absolute or relative paths.
 
-##### image_bg_color
-
-The color to fill blank areas when an image does not fully cover the gallery element. Default is `#FFF`.
-
-##### th_images
-
-An array of thumbnails to use. This should match up with the `images` array and have the same number of items. If not specified, vGallery.js will use the `images` array for thumbnails instead.
-
-##### thumbnails
-
-The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty. Overrides `indicators`.
-
-##### th_captions
-
-Array of captions to display below the thumbnail images. This should have the same number of items as the `images` array.
-
-##### th_buttons
-
-Boolean to show or hide the prev/next buttons in the thumbnail navigation element. Default is `true`.
-
-##### th_button_color
-
-The text color to use for the prev/next buttons in the thumbnail navigation. Default is `#000`.
-
-##### th_active_color
-
-The border color around the active thumbnail. Default is `#000`.
-
-##### indicators
-
-The element to display an indicator navigation in. You can style this element to your liking, but it should be empty.
-
-##### indicator_color
-
-The color for inactive indicators. Default is `#999`.
-
-##### indicator_acolor
-
-The color for the active indicator. Default is `#FFF`.
-
-##### indicator_round
-
-Boolean to make indicators round. Default is `false` (indicators will be square).
-
-##### indicator_opacity
-
-Opacity of inactive indicators. Should be between 0 and 1. Default is `1`.
-
-##### indicator_image
-
-Image to use for inactive indicators. Overrides `indicator_color`.
-
-##### indicator_aimage
-
-Image to use for the active indicator. Overrides `indicator_acolor`.
-
-##### counter
-
-Element to display a counter in. Will appear in format "(current) of (total)".
-
-##### prev
-
-Element to display a previous button within.
-
-##### next
-
-Element to display a next button within.
-
-##### prev_text
-
-Text to use for previous button. Default is &#10094;.
-
-##### next_text
-
-Text to use for next button. Default is &#10095;.
-
-##### prev_image
-
-Path to image to use for previous button. Overrides `prev_text`.
-
-##### next_image
-
-Path to image to use for next button. Overrides `next_text`.
-
-##### links
+#### links
 
 Array of links to attach to images within the gallery. Can use `null` as an item if no link is desired for a certain image. This should have the same number of items as the `images` array.
 
-##### text
+#### bg_color
 
-Array of rotating text to display within the `text_element`. You can use HTML as well as plain text. This should have the same number of items as the `images` array.
+The color to fill blank areas when an image does not fully cover the gallery element. Default is `#FFF`.
 
-##### text_element
-
-Element to display rotating text within. You can style this element to your liking, but it should be empty.
-
-##### auto
+#### auto
 
 Boolean to automatically advance the gallery based on `delay`. Default is `true`.
 
-##### pause
+#### pause
 
 Boolean to pause rotation timer when mouse hovers over gallery. Has no effect if `auto` is false. Default is `true`.
 
-##### delay
+#### delay
 
 Time in milliseconds to wait before advancing the gallery. Default is `5000` (5 seconds).
 
-##### fade
+#### fade
 
 Time in milliseconds the fade animation will last. Default is `1000` (1 second).
 
-##### loading_img
-
-Image to display when gallery image is loading.
-
-##### loading_all
-
-Boolean to show loading image for all images or just the first. Default is `true`.
-
-##### contain
+#### contain
 
 What images should use `background-size:contain` vs `background-size:cover`. There are five options:  
 `none`: All images will be cropped to fill the gallery element.  
@@ -195,6 +99,190 @@ What images should use `background-size:contain` vs `background-size:cover`. The
 `parent`: vGallery.js will use the size of the `gallery` to determine the best way to display the image. If the gallery element is in a portrait orientation, portrait images will be cropped to fill the element and landscape images will be contained within the element (and vice versa).
 
 The default is `none`.
+
+#### thumbnails
+
+Allows you to display a thumbnail navigation. It cannot co-exist with `indicators`.
+
+It takes an object:
+```
+thumbnails: {
+    element: null,
+    images: null,
+    captions: null,
+    buttons: true,
+    button_color: '#000',
+    active_color: '#000',
+}
+```
+##### thumbnails.element
+
+The element to display the thumbnail navigation in. You can style this element to your liking, but it should be empty. Overrides `indicators`.
+
+##### thumbnails.images
+
+An array of thumbnails to use. This should match up with the `images` array and have the same number of items. If not specified, vGallery.js will use the `images` array for thumbnails instead.
+
+##### thumbnails.captions
+
+Array of captions to display below the thumbnail images. This should have the same number of items as the `images` array.
+
+##### thumbnails.buttons
+
+Boolean to show or hide the prev/next buttons in the thumbnail navigation element. Default is `true`.
+
+##### thumbnails.button_color
+
+The text color to use for the prev/next buttons in the thumbnail navigation. Default is `#000`.
+
+##### thumbnails.active_color
+
+The border color around the active thumbnail. Default is `#000`.
+
+#### indicators
+
+Allows you to display an indicator navigation. It cannot co-exist with `thumbnails`.
+
+It takes an object:
+```
+indicators: {
+    element: null,
+    color: '#999',
+    acolor: '#FFF',
+    round: false,
+    opacity: 1,
+    image: null,
+    aimage: null,
+}
+```
+
+##### indicators.element
+
+The element to display an indicator navigation in. You can style this element to your liking, but it should be empty.
+
+##### indicators.color
+
+The color for inactive indicators. Default is `#999`.
+
+##### indicators.acolor
+
+The color for the active indicator. Default is `#FFF`.
+
+##### indicators.round
+
+Boolean to make indicators round. Default is `false` (indicators will be square).
+
+##### indicators.opacity
+
+Opacity of inactive indicators. Should be between 0 and 1. Default is `1`.
+
+##### indicators.image
+
+Image to use for inactive indicators. Overrides `indicator_color`.
+
+##### indicators.aimage
+
+Image to use for the active indicator. Overrides `indicator_acolor`.
+
+#### text
+
+Allows you to display text that rotates along with the images in an element of your choosing. It takes an object:
+```
+text: {
+    element: null,
+    items: null,
+}
+```
+
+##### text.element
+
+Element to display rotating text within. You can style this element to your liking, but it should be empty.
+
+##### text.items
+
+Array of rotating text to display within the `text_element`. You can use HTML as well as plain text. This should have the same number of items as the `images` array.
+
+#### prev
+
+Allows you to display a previous button within an element of your choosing. It takes an object:
+```
+prev: {
+    element: null,
+    text: '&#10094;',
+    image: null,
+}
+```
+
+##### prev.element
+
+Element to display a previous button within.
+
+##### prev.text
+
+Text to use for previous button. Default is &#10094;.
+
+##### prev.image
+
+Path to image to use for previous button. Overrides `prev.text`.
+
+#### next
+Allows you to display a next button within an element of your choosing. It takes an object:
+```
+next: {
+    element: null,
+    text: '&#10095;',
+    image: null,
+}
+```
+
+##### next.element
+
+Element to display a next button within.
+
+##### next.text
+
+Text to use for next button. Default is &#10095;.
+
+##### next.image
+
+Path to image to use for next button. Overrides `next.text`.
+
+#### counter
+
+Allows you to display a counter showing where the user is within the image gallery. It takes an object:
+```
+counter: {
+    element: null,
+    separator: ' of ',
+}
+```
+
+##### counter.element
+
+Element to display a counter in.
+
+##### counter.separator
+
+The separator to use between the count and total. The counter will appear in format "(current)(separator)(total)". Default is ` of `.
+
+#### loading
+
+Allows you to display a small loading image before gallery images load. It takes an object:
+```
+loading: {
+    image: null,
+    all: true,
+}
+```
+
+##### loading.image
+
+Image to display when gallery image is loading.
+
+##### loading.all
+
+Boolean to show loading image for all images or just the first. Default is `true`.
+
 
 ### Full Example
 
@@ -215,49 +303,64 @@ $(document).ready(function() {
             'path/to/image/one.jpg',
             'path/to/image/two.jpg'
         ],
-        image_bg_color: '#000',
-        th_images: [
-            'path/to/thumb/one.jpg',
-            'path/to/thumb/two.jpg'
-        ],
-        thumbnails: '#thumbnails',
-        th_captions: [
-            'Caption One',
-            'Caption Two'
-        ],
-        th_buttons: false,
-        th_button_color: '#FFF',
-        th_active_color: '#FFF',
-        indicators: '#indicators',
-        indicator_color: '#CCC',
-        indicator_acolor: '#000',
-        indicator_round: true,
-        indicator_opacity: 0.5,
-        indicator_image: 'path/to/indicator/inactive.png',
-        indicator_aimage: 'path/to/indicator/active.png',
-        counter: '#counter',
-        prev: '#prev',
-        next: '#next',
-        prev_text: '<',
-        next_text: '>',
-        prev_image: 'path/to/prev/image.jpg',
-        next_image: 'path/to/next/image.jpg',
         links: [
             'http://example.com',
             null
         ],
-        text: [
-            '<b>Text One</b>',
-            'Text Two'
-        ],
-        text_element: '#text',
-        auto: false,
-        pause: false,
-        delay: 10000,
-        fade: 500,
-        loading_img: 'path/to/loading/image.gif',
-        loading_all: true,
-        contain: 'portrait'
+        bg_color: '#FFF',
+        auto: true,
+        pause: true,
+        delay: 5000,
+        fade: 1000,
+        contain: 'portrait',
+        thumbnails: {
+            element: '#thumbnails',
+            images: [
+                'path/to/thumb/one.jpg',
+                'path/to/thumb/two.jpg'
+            ],
+            captions: [
+                'Caption One',
+                'Caption Two'
+            ],
+            buttons: true,
+            button_color: '#000',
+            active_color: '#000',
+        },
+        indicators: {
+            element: '#indicators',
+            color: '#999',
+            acolor: '#FFF',
+            round: false,
+            opacity: 1,
+            image: 'path/to/indicator/inactive.png',
+            aimage: 'path/to/indicator/active.png',
+        },
+        text: {
+            element: '#text',
+            items: [
+                '<b>Text One</b>',
+                'Text Two'
+            ],
+        },
+        prev: {
+            element: '#prev',
+            text: '&laquo;',
+            image: 'path/to/prev/image.jpg',
+        },
+        next: {
+            element: '#next',
+            text: '&raquo;',
+            image: 'path/to/next/image.jpg',
+        },
+        counter: {
+            element: '#counter',
+            separator: ' of ',
+        },
+        loading: {
+            image: 'path/to/loading/image.gif',
+            all: true,
+        },
     });
     vg.start();
 });

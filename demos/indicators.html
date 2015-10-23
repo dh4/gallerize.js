@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>vGallery.js Jumbotron Demo</title>
+    <title>vGallery.js Indicators Demo</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="../src/vgallery.js"></script>
     <style>
@@ -24,26 +24,7 @@
             font-size:14px;
             text-align:center;
             left:0;
-            bottom:10px;
-        }
-
-        body #counter {
-            top: 50px;
-            height: 30px;
-            line-height: 28px;
-            right: 60px;
-            background:rgba(0,0,0,0.3);
-        }
-
-        body #prev, body #next {
-            width:30px;
-            height:30px;
-            top:50px;
-            background:rgba(0,0,0,0.3);
-        }
-
-        body #prev {
-            right:30px;
+            bottom:25px;
         }
 
         body .text_header {
@@ -61,6 +42,10 @@
         }
 
         body #gallery {
+            height:300px;
+        }
+
+        body #prev, body #next {
             height:300px;
         }
     }
@@ -83,10 +68,22 @@
         height:500px;
     }
 
+    #indicators_wrapper {
+        position:absolute;
+        bottom:5px;
+        right:50%;
+    }
+
+    #indicators {
+        height:20px;
+        position:relative;
+        left:50%;
+    }
+
     #counter {
         width:75px;
         height:50px;
-        line-height:48px;
+        line-height:50px;
         position:absolute;
         bottom:0;
         right:100px;
@@ -143,9 +140,9 @@
 <body>
     <div id="wrapper">
         <div id="gallery"></div>
-        <div id="counter"></div>
-        <div id="prev"></div>
-        <div id="next"></div>
+        <div id="indicators_wrapper">
+            <div id="indicators"></div>
+        </div>
         <div id="text"></div>
     </div>
 <script>
@@ -158,12 +155,11 @@ $(document).ready(function() {
             'images/centralpark.jpg',
             'images/browncounty.jpg'
         ],
-        links: [
-            null,
-            null,
-            'http://example.com/',
-            null
-        ],
+        indicators: {
+            element: '#indicators',
+            round: true,
+            opacity:0.5,
+        },
         text: {
             element: '#text',
             items: [
@@ -172,15 +168,6 @@ $(document).ready(function() {
                 '<div class="text_header">Central Park, NY</div><div class="text_small">July 2015</div>',
                 '<div class="text_header">Brown County, IN</div>Hesitation Point<div class="text_small">August 2015</div>'
             ],
-        },
-        next: {
-            element: '#next',
-        },
-        prev: {
-            element: '#prev',
-        },
-        counter: {
-            element: '#counter',
         },
         loading: {
             image: 'images/loading.gif',
