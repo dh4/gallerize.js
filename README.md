@@ -8,11 +8,17 @@ It was born out of my frustration attempting to find an image gallery that was v
 
 vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
 
+#### Demos
+
 Click on the following demos to view them (you can view the source code in the demos directory):
 
-[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/large.jpg" alt="Large Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/large.html)
-[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/small.jpg" alt="Small Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/small.html)
-[<img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" />](https://dh4.github.io/vGallery.js/demos/jumbotron.html)
+<p align="center">
+<a href="https://dh4.github.io/vGallery.js/demos/large.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/large.jpg" alt="Large Demo" height="150" /></a>
+<a href="https://dh4.github.io/vGallery.js/demos/small.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/small.jpg" alt="Small Demo" height="150" /></a>
+<a href="https://dh4.github.io/vGallery.js/demos/background.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/background.jpg" alt="Background Demo" height="150" /></a>
+<a href="https://dh4.github.io/vGallery.js/demos/jumbotron.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" /></a>
+<a href="https://dh4.github.io/vGallery.js/demos/indicators.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/indicators.jpg" alt="Indicators Demo" height="150" /></a>
+</p>
 
 
 ## Usage
