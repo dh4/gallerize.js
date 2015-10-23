@@ -131,9 +131,6 @@ var vGallery = function(config) {
             vg.th.iterations = iterations_array[vg.images.length];
         else
             vg.th.iterations = (vg.images.length > 10) ? 1 : 2;
-
-        if (vg.th.element) vg.computeThumbSize();
-        if (!vg.th.element && vg.in.element) vg.computeIndicatorSize();
     };
 
     /**
@@ -205,6 +202,10 @@ var vGallery = function(config) {
             vg.log('indicators:size');
 
         vg.active = true;
+
+        // Compute size of thumbnails and indicators from their parent elements
+        if (vg.th.element) vg.computeThumbSize();
+        if (!vg.th.element && vg.in.element) vg.computeIndicatorSize();
 
         vg.insertCSS();
         vg.createGallery();
