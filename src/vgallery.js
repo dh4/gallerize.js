@@ -333,14 +333,11 @@ var vGallery = function(config) {
             ".vg_thumb_border {z-index:99;position:absolute;opacity:0;}"+
             "#vg_indicator_wrapper {z-index:97;position:relative;}"+
             ".vg_indicator {float:left;cursor:pointer;background-size:contain !important;}"+
-            "@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }"+
-            "@keyframes fadeOut { from {opacity:1;} to {opacity:0;} }"+
-            "@keyframes fadeInHalf { from {opacity:0;} to {opacity:0.5;} }"+
-            ".fadeIn {opacity:1;animation: fadeIn "+vg.fade+"ms forwards;}"+
-            ".fadeOut {opacity:0;animation: fadeOut "+vg.fade+"ms forwards;}"+
-            ".fadeInHalf {opacity:0.5;animation: fadeInHalf "+vg.fade+"ms forwards;}"+
-            ".fadeInQuick {opacity:1;animation: fadeIn "+(vg.fade / 2)+"ms forwards;}"+
-            ".fadeOutQuick {opacity:0;animation: fadeOut "+(vg.fade / 2)+"ms forwards;}"
+            ".fadeIn {opacity:1;transition:opacity "+vg.fade+"ms;}"+
+            ".fadeOut {opacity:0;transition:opacity "+vg.fade+"ms;}"+
+            ".fadeInHalf {opacity:0.5;transition:opacity "+vg.fade+"ms;}"+
+            ".fadeInQuick {opacity:1;transition:opacity "+(vg.fade / 2)+"ms;}"+
+            ".fadeOutQuick {opacity:0;transition:opacity "+(vg.fade / 2)+"ms;}"
         ).appendTo("head");
     };
 
@@ -456,8 +453,9 @@ var vGallery = function(config) {
             var border_style = 'height:'+(vg.th.height-2)+'px;'+
                                'width:'+(vg.th.width-2)+'px;'+
                                'border:1px solid '+vg.th.active_color+';';
-            if (i == 5) border_style += 'opacity:1;';
-            $('<div/>', {class: 'vg_thumb_border', style: border_style}).appendTo('#vg_thumb_'+i);
+            var border_class = 'vg_thumb_border';
+            if (i == 5) border_class += ' fadeIn';
+            $('<div/>', {class: border_class, style: border_style}).appendTo('#vg_thumb_'+i);
 
             var thumb = vg.getThumbImage(adjust);
             var thumb_style = 'background: '+vg.bg_color+' url('+thumb+') no-repeat 50% 50%;'+
@@ -703,7 +701,7 @@ var vGallery = function(config) {
             vg.setBackground('#vg_background');
 
             $('#vg_animator').addClass('fadeOut');
-            // .one('animationend', function() {
+            // .one('transitionend', function() {
             setTimeout(function() {
                 vg.setBackground('#vg_animator');
                 $('#vg_animator').removeClass('fadeOut');
@@ -728,7 +726,7 @@ var vGallery = function(config) {
                     $('#vg_text_inner').html(vg.text.items[vg.current % vg.images.length])
                         .removeClass('fadeOutQuick').addClass('fadeInQuick');
                 };
-                $('#vg_text_inner').addClass('fadeOutQuick').one('animationend', animateText);
+                $('#vg_text_inner').addClass('fadeOutQuick').one('transitionend', animateText);
 
                 // Fix for browsers that don't support CSS3 animations
                 setTimeout(animateText, vg.fade + 100);
