@@ -446,7 +446,7 @@ var vGallery = function(config) {
 
         [].forEach.call(document.querySelectorAll('.vg_th_nav_action'), function(e) {
             e.addEventListener('click', function() {
-                vg.changeImage(e.dataset.offset);
+                vg.changeImage(e.getAttribute('data-offset'));
             });
         });
 
@@ -507,7 +507,7 @@ var vGallery = function(config) {
         $(vg.in.element).appendChild($$('div', {id: 'vg_indicator_wrapper'}));
 
         var handler = function() {
-            vg.changeImage(this.dataset.image - (vg.current % vg.images.length));
+            vg.changeImage(this.getAttribute('data-image') - (vg.current % vg.images.length));
         };
 
         for (var i = 0; i < vg.images.length; i++) {
