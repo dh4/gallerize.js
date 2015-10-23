@@ -31,23 +31,41 @@
 
 
 /* exported vGallery */
+/**
+ * Creates a vGallery instance. Automatically calls vg.init.
+ *
+ * @example
+ * var vg = new vGallery({
+ *     gallery: '#gallery',
+ *     images: [
+ *         'path/to/image/one.jpg',
+ *         'path/to/image/two.jpg',
+ *     ],
+ * });
+ *
+ * @class
+ * @param {Object} config The configuration object. See the Github README for a description.
+ * @see {@link https://github.com/dh4/vGallery.js}
+ */
 var vGallery = function(config) {
     var vg = this;
 
     /**
-     * $ is a helper function to shorten document.querySelector
+     * $ is a helper function to shorten document.querySelector.
      *
-     * @param e The selector of the element to fetch
+     * @param {string} e The selector of the element to fetch.
+     * @returns {Object} The element if found or null.
      */
     var $ = function(e) {
         return document.querySelector(e);
     };
 
     /**
-     * $$ is a helper function to create elements
+     * $$ is a helper function to create elements.
      *
-     * @param e The element to create
-     * @param attr An object of attributes to set on the element
+     * @param {string} e The element to create. Usually 'div'.
+     * @param {Object} attr An object of attributes to set on the element.
+     * @returns {Object} The created element.
      */
     var $$ = function(e, attr) {
         var element = document.createElement(e);
@@ -56,7 +74,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.init initializes the class.
+     * Class constructor.
+     *
+     * @memberof vGallery
      */
     vg.init = function() {
         var defaults = {
@@ -129,21 +149,20 @@ var vGallery = function(config) {
         vg.in = vg.indicators;
 
         // Show errors for missing required configuration options
-        if (vg.gallery === null)    vg.log('gallery:missing');
-        if (vg.images === null)     vg.log('images:missing');
+        if (vg.gallery === null)    vg.log('gallery', 'missing');
+        if (vg.images === null)     vg.log('images', 'missing');
 
         // Check that other configuration arrays have same length as images array
         if (vg.th.images && vg.images.length != vg.th.images.length)
-            vg.log('thumbnails.images:count');
+            vg.log('thumbnails.images', 'count');
         if (vg.links && vg.images.length != vg.links.length)
-            vg.log('links:count');
+            vg.log('links', 'count');
         if (vg.th.captions && vg.images.length != vg.th.captions.length)
-            vg.log('thumbnails.captions:count');
+            vg.log('thumbnails.captions', 'count');
 
         vg.active = vg.hover = false;
         vg.current = vg.images.length * 10000; // High number so we will never go below 0
-        vg.preload = Array();
-        vg.ratios = Array();
+        vg.preload = vg.ratios = [];
         vg.remaining = vg.delay;
 
         // Thumbnail navigator shows 5 images, so make sure we have enough in the rotation
@@ -159,8 +178,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.computeThumbSize calculates the size and position of thumbnails based on the
-     * thumbnail element.
+     * Calculates the size and position of thumbnails based on the thumbnail element.
+     *
+     * @memberof vGallery
      */
     vg.computeThumbSize = function() {
         var e = $(vg.th.element);
@@ -187,8 +207,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.computeIndicatorSize calculates the size of indicators based on the
-     * indicator element.
+     * Calculates the size of indicators based on the indicator element.
+     *
+     * @memberof vGallery
      */
     vg.computeIndicatorSize = function() {
         var e = $(vg.in.element);
@@ -206,12 +227,13 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.start is used to initialize the gallery and navigation elements
-     * and start the rotation timer.
+     * Initializes the gallery and navigation elements and starts the rotation timer.
+     *
+     * @memberof vGallery
      */
     vg.start = function() {
         // Check that elements exist
-        if ($(vg.gallery).length === 0) vg.log('gallery:exists');
+        if ($(vg.gallery).length === 0) vg.log('gallery', 'exists');
         var elements = ['thumbnails', 'indicators', 'counter', 'prev', 'next', 'text'];
         for (var i = 0; i < elements.length; i++) {
             var e = elements[i];
@@ -220,16 +242,18 @@ var vGallery = function(config) {
 
         // Check that gallery and thumbnail elements have a height and width greater than zero
         if ($(vg.gallery).clientHeight === 0 || $(vg.gallery).clientWidth === 0)
-            vg.log('gallery:size');
+            vg.log('gallery', 'size');
         if (vg.th.element && ($(vg.th.element).clientHeight === 0 ||
             $(vg.th.element).clientWidth === 0)
            )
-            vg.log('thumbnails:size');
+            vg.log('thumbnails', 'size');
         if (vg.in.element && ($(vg.in.element).clientHeight === 0))
-            vg.log('indicators:size');
+            vg.log('indicators', 'size');
 
+        // Don't allow user to interact until first image loads
         vg.active = true;
 
+        // Setup everything
         vg.insertCSS();
         vg.createGallery();
         if (vg.th.element) vg.createThumbnailNavigator();
@@ -239,6 +263,7 @@ var vGallery = function(config) {
         if (vg.text.items && vg.text.element) vg.createText();
         vg.updateCounter();
 
+        // Wait for first image to load
         vg.loadImage(0, function() {
             vg.setGallery();
             vg.active = false;
@@ -277,6 +302,7 @@ var vGallery = function(config) {
             }, 50);
         });
 
+        // Pause timeout if mouse enters gallery, and resume once mouse leaves
         if (vg.auto && vg.pause) {
             $(vg.gallery).addEventListener('mouseover', function() {
                 vg.hover = true;
@@ -291,9 +317,10 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.startTimer starts the countdown until the gallery rotates
+     * Starts the countdown until the gallery rotates
      *
-     * @param delay The time in milliseconds to count down.
+     * @memberof vGallery
+     * @param {number} delay The time in milliseconds to count down.
      */
     vg.startTimer = function(delay) {
         if (vg.auto) {
@@ -304,35 +331,36 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.log displays a message to the Javascript console.
+     * Displays a message to the Javascript console.
      *
-     * @param value Key of message to display.
+     * @param {string} value Value to display in message.
+     * @param {string} reason Reason for the message. 'missing', 'exists', 'count', or 'size'
      */
-    vg.log = function(value) {
-        var values = value.split(':');
-
-        switch (values[1]) {
+    vg.log = function(value, reason) {
+        switch (reason) {
             case 'missing':
                 console.error("vGallery.js: '%s' is missing from the configuration. "+
-                              "Please add it.", values[0]);
+                              "Please add it.", value);
                 break;
             case 'exists':
-                console.error("vGallery.js: %s element does not exist. ", values[0]);
+                console.error("vGallery.js: %s element does not exist. ", value);
                 break;
             case 'count':
                 console.warn("vGallery.js: Number of %s does not equal number of "+
-                             "images. This will cause unintended consequences.", values[0]);
+                             "images. This will cause unintended consequences.", value);
                 break;
             case 'size':
                 console.warn("vGallery.js: %s element has a height or width of 0. "+
-                             "This will cause nothing to show.", values[0]);
+                             "This will cause nothing to show.", value);
                 break;
         }
     };
 
     /**
-     * vg.insertCSS inserts the CSS rules into the DOM. This is so we don't have to
+     * Inserts the CSS rules into the DOM. This is so we don't have to
      * distribute a static CSS file.
+     *
+     * @memberof vGallery
      */
     vg.insertCSS = function() {
         var style = $$('style', {type: 'text/css'});
@@ -368,7 +396,19 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createGallery initializes the gallery element.
+     * Initializes the gallery element.
+     *
+     * @example <caption>DOM nodes:</caption>
+     *  <(vg.gallery)>
+     *      <div id="vg_wrapper">
+     *          <a id="vg_click"></a>
+     *          <div id="vg_animator"></div>
+     *          <div id="vg_background"></div>
+     *          <div id="vg_loading"></div>
+     *      </div>
+     *  </(vg.gallery)>
+     *
+     * @memberof vGallery
      */
     vg.createGallery = function() {
         var wrapper = $$('div', {id: 'vg_wrapper'});
@@ -389,7 +429,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.setGallery preloads the first image.
+     * Preloads the first image.
+     *
+     * @memberof vGallery
      */
     vg.setGallery = function() {
         vg.setBackground('#vg_animator');
@@ -398,7 +440,14 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createText creates the initializes the text element.
+     * Creates the initializes the text element.
+     *
+     * @example <caption>DOM nodes:</caption>
+     *  <(vg.text.element)>
+     *      <div id="vg_text_inner"></div>
+     *  </(vg.text.element)>
+     *
+     * @memberof vGallery
      */
     vg.createText = function() {
         // Hide text element. We will display it when the first image loads.
@@ -409,7 +458,41 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createThumbnailNavigator initializes the thumbnail navigation element.
+     * Initializes the thumbnail navigation element.
+     *
+     * @example <caption>DOM nodes:</caption>
+     *  <(vg.th.element)>
+     *      <div id="vg_thumbnails">
+     *
+     *          (if vg.th.buttons)
+     *          <div id="vg_th_nav_prev" class="vg_button" ></div>
+     *          (endif)
+     *
+     *          <div id="vg_th_nav_thumbs">
+     *              <div class="vg_th_nav_action"></div>
+     *              <div class="vg_th_nav_action"></div>
+     *              <div id="vg_th_nav_current" class="vg_th_nav_action"></div>
+     *              <div class="vg_th_nav_action"></div>
+     *              <div class="vg_th_nav_action"></div>
+     *
+     *              (for vg.images.length * vg.th.iterations)
+     *              <div id="vg_thumb_(number)" class="vg_th_nav_thumb">
+     *                  <div class="vg_thumb_caption"></div>
+     *                  <div class="vg_thumb_border></div>
+     *                  <div class="vg_thumb_image"></div>
+     *              </div>
+     *              (endfor)
+     *
+     *          </div>
+     *
+     *          (if vg.th.buttons)
+     *          <div id="vg_th_nav_prev" class="vg_button" ></div>
+     *          (endif)
+     *
+     *      </div>
+     *  </(vg.th.element)>
+     *
+     * @memberof vGallery
      */
     vg.createThumbnailNavigator = function() {
         $(vg.th.element).appendChild($$('div', {id: 'vg_th_nav_wrapper'}));
@@ -501,7 +584,20 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createIndicatorNavigator initializes the indicator navigation element.
+     * Initializes the indicator navigation element.
+     *
+     * @example <caption>DOM nodes:</caption>
+     *  <(vg.in.element)>
+     *      <div id="vg_indicator_wrapper">
+     *
+     *          (for vg.images.length)
+     *          <div id="vg_indicator_(number)" class="vg_indicator"></div>
+     *          (endfor)
+     *
+     *      </div>
+     *  </(vg.in.element)>
+     *
+     * @memberof vGallery
      */
     vg.createIndicatorNavigator = function() {
         $(vg.in.element).appendChild($$('div', {id: 'vg_indicator_wrapper'}));
@@ -535,10 +631,16 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.createButton creates the 'prev' and 'next' buttons.
+     * Creates the 'prev' and 'next' buttons.
      *
-     * @param button The button to create: 'prev' or 'next'.
-     * @param nav Whether button appears in thumbnail nav or in free-standing element.
+     * @example <caption>DOM nodes:</caption>
+     *  <(vg.(button).element)>
+     *      <div id="vg_(button)" class="vg_button"></div>
+     *  </(vg.(button).element)>
+     *
+     * @memberof vGallery
+     * @param {string} button The button to create: 'prev' or 'next'.
+     * @param {boolean} nav Whether button appears in thumbnail nav or in free-standing element.
      */
     vg.createButton = function(button, nav) {
         var image = (button == 'prev') ? vg.prev.image : vg.next.image;
@@ -576,7 +678,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.updateCounter updates the counter element with the current position
+     * Updates the counter element with the current position
+     *
+     * @memberof vGallery
      */
     vg.updateCounter = function() {
         if (vg.counter.element) {
@@ -586,9 +690,11 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.getImage returns a given image from the image array.
+     * Returns a given image from the image array.
      *
-     * @param image Image to fetch, defaults to vg.current.
+     * @memberof vGallery
+     * @param {number} image Image to fetch, defaults to vg.current.
+     * @returns {string} The path to the image.
      */
     vg.getImage = function(image) {
         if (!image) image = vg.current;
@@ -596,9 +702,11 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.getThumbImage returns a given thumbnail image if provided, or the full image.
+     * Returns a given thumbnail image if provided, or the full image.
      *
-     * @param image Image to fetch, defaults to vg.current.
+     * @memberof vGallery
+     * @param {number} image Image to fetch, defaults to vg.current.
+     * @returns {string} The path to the thumbnail image.
      */
     vg.getThumbImage = function(image) {
         if (!image) image = vg.current;
@@ -609,14 +717,16 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.loadImage loads an image if it hasn't been loaded, then calls the onload function.
+     * Loads an image if it hasn't been loaded, then calls the onload function.
      *
-     * @param offset The offset from the current image to preload.
-     * @param onload A function to call after image has loaded.
+     * @memberof vGallery
+     * @param {number} offset The offset from the current image to preload.
+     * @param {function} onload A function to call after image has loaded.
      */
     vg.loadImage = function(offset, onload) {
         var imgSrc = vg.getImage(vg.current + parseInt(offset));
 
+        // function to hide '#vg_loading' and call onload()
         var hideLoading = function() {
             var loading = $('#vg_loading');
             if (loading) {
@@ -646,10 +756,11 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.setBackground sets the css background property and cover/contain class
+     * Sets the css background property and cover/contain class
      * for the given element.
      *
-     * @param e The element to modify.
+     * @memberof vGallery
+     * @param {string} e The element to modify. '#vg_animator' or '#vg_background'.
      */
     vg.setBackground = function(e) {
         var background = vg.bg_color+' url('+vg.getImage()+') no-repeat 50% 50%';
@@ -673,7 +784,9 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.setLink attaches a URL to the #vg_click element above the image.
+     * Attaches a URL to the '#vg_click' element above the image.
+     *
+     * @memberof vGallery
      */
     vg.setLink = function() {
         var click = $('#vg_click');
@@ -690,41 +803,45 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.adjustThumb adjusts the position of thumbnails by the given offset.
+     * Adjusts the position of thumbnails by the given offset.
      *
-     * @param e The thumbnail element to adjust.
-     * @param offset The offset to adjust the thumbnail element by.
+     * @memberof vGallery
+     * @param {number} offset The offset to adjust the thumbnail elements by.
      */
-    vg.adjustThumb = function(e, offset) {
-        var origin = parseInt(e.style.left.replace('px', ''));
-        var destination = origin + (vg.th.offset * offset * -1);
-        var position;
+    vg.adjustThumbs = function(offset) {
+        [].forEach.call(document.querySelectorAll('.vg_th_nav_thumb'), function(e) {
+            var origin = parseInt(e.style.left.replace('px', ''));
+            var destination = origin + (vg.th.offset * offset * -1);
+            var position;
 
-        if (destination < vg.th.most_left) {
-            position = destination + vg.th.wrap;
-            e.classList.remove('vg_thumb_transition');
-            e.style.left = position+'px';
-        } else if (destination > vg.th.most_right) {
-            position = destination - vg.th.wrap;
-            e.classList.remove('vg_thumb_transition');
-            e.style.left = position+'px';
-        } else {
-            e.classList.add('vg_thumb_transition');
-            e.style.left = destination+'px';
-        }
+            if (destination < vg.th.most_left) {
+                position = destination + vg.th.wrap;
+                e.classList.remove('vg_thumb_transition');
+                e.style.left = position+'px';
+            } else if (destination > vg.th.most_right) {
+                position = destination - vg.th.wrap;
+                e.classList.remove('vg_thumb_transition');
+                e.style.left = position+'px';
+            } else {
+                e.classList.add('vg_thumb_transition');
+                e.style.left = destination+'px';
+            }
 
-        var border = e.querySelector('.vg_thumb_border');
-        if (destination == vg.th.offset * 2) {
-            border.classList.remove('fadeOut');
-            border.classList.add('fadeIn');
-        } else if (origin == vg.th.offset * 2) {
-            border.classList.remove('fadeIn');
-            border.classList.add('fadeOut');
-        }
+            var border = e.querySelector('.vg_thumb_border');
+            if (destination == vg.th.offset * 2) {
+                border.classList.remove('fadeOut');
+                border.classList.add('fadeIn');
+            } else if (origin == vg.th.offset * 2) {
+                border.classList.remove('fadeIn');
+                border.classList.add('fadeOut');
+            }
+        });
     };
 
     /**
-     * vg.updateIndicators updates the indicator navigation
+     * Updates the indicator navigation
+     *
+     * @memberof vGallery
      */
     vg.updateIndicators = function() {
         [].forEach.call(document.querySelectorAll('.vg_indicator'), function(e) {
@@ -737,9 +854,10 @@ var vGallery = function(config) {
     };
 
     /**
-     * vg.changeImage is where the real action occurs. This animates the transition.
+     * Where the real action occurs. This animates the transition.
      *
-     * @param offset The image offset to adjust to. Positive for forward in the
+     * @memberof vGallery
+     * @param {number} offset The image offset to adjust to. Positive for forward in the
      *            image array and negative for backwards.
      */
     vg.changeImage = function(offset) {
@@ -760,8 +878,9 @@ var vGallery = function(config) {
 
         vg.loadImage(0, function() {
             if (vg.auto) clearTimeout(vg.timeout);
-            vg.setBackground('#vg_background');
 
+            // Animate gallery
+            vg.setBackground('#vg_background');
             $('#vg_animator').classList.add('fadeOut');
             setTimeout(function() {
                 vg.setBackground('#vg_animator');
@@ -774,14 +893,11 @@ var vGallery = function(config) {
                 vg.loadImage(1);
             }, vg.fade + 100);
 
-            if (vg.th.element) {
-                [].forEach.call(document.querySelectorAll('.vg_th_nav_thumb'), function(e) {
-                    vg.adjustThumb(e, offset);
-                });
-            }
-
+            // Update thumbnails and indicators if they are showing
+            if (vg.th.element) vg.adjustThumbs(offset);
             if (!vg.th.element && vg.in.element) vg.updateIndicators();
 
+            // Animate text
             if (vg.text.items && vg.text.element) {
                 var text = $('#vg_text_inner');
                 var animateText = function() {

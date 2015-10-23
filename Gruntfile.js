@@ -55,6 +55,14 @@ module.exports = function(grunt) {
                 ],
             },
         },
+        jsdoc : {
+            dist : {
+                src: ['src/*.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -62,6 +70,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.registerTask('default', ['jshint']);
     grunt.registerTask('package', ['uglify', 'copy', 'compress']);
 };
