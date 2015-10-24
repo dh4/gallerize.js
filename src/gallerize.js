@@ -880,36 +880,40 @@ window.Gallerize = function(config) {
 
         loadImage(0, function() {
             if (self.auto) clearTimeout(self.timeout);
-
-            // Animate gallery
             setBackground('#gz_background');
-            $('#gz_animator').classList.add('fadeOut');
+
+            // Delay the animation by a small amount to prevent flickering
+            // while the background is set
             setTimeout(function() {
-                setBackground('#gz_animator');
-                $('#gz_animator').classList.remove('fadeOut');
-                updateCounter();
-                if (self.links) setLink();
-                self.active = false;
-                self.remaining = self.delay;
-                if (!self.hover) startTimer();
-                loadImage(1);
-            }, self.fade + 100);
+                // Animate gallery
+                $('#gz_animator').classList.add('fadeOut');
+                setTimeout(function() {
+                    setBackground('#gz_animator');
+                    $('#gz_animator').classList.remove('fadeOut');
+                    updateCounter();
+                    if (self.links) setLink();
+                    self.active = false;
+                    self.remaining = self.delay;
+                    if (!self.hover) startTimer();
+                    loadImage(1);
+                }, self.fade + 100);
 
-            // Update thumbnails and indicators if they are showing
-            if (self.th.element) adjustThumbs(offset);
-            if (!self.th.element && self.in.element) updateIndicators();
+                // Update thumbnails and indicators if they are showing
+                if (self.th.element) adjustThumbs(offset);
+                if (!self.th.element && self.in.element) updateIndicators();
 
-            // Animate text
-            if (self.text.items && self.text.element) {
-                var text = $('#gz_text_inner');
-                var animateText = function() {
-                    text.innerHTML = self.text.items[getCurrent()];
-                    text.classList.remove('fadeOutQuick');
-                    text.classList.add('fadeInQuick');
-                };
-                text.classList.add('fadeOutQuick');
-                setTimeout(animateText, self.fade / 2);
-            }
+                // Animate text
+                if (self.text.items && self.text.element) {
+                    var text = $('#gz_text_inner');
+                    var animateText = function() {
+                        text.innerHTML = self.text.items[getCurrent()];
+                        text.classList.remove('fadeOutQuick');
+                        text.classList.add('fadeInQuick');
+                    };
+                    text.classList.add('fadeOutQuick');
+                    setTimeout(animateText, self.fade / 2);
+                }
+            }, 50);
         });
     };
 
