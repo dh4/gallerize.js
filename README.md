@@ -1,37 +1,37 @@
-# vGallery.js [![Build Status](https://travis-ci.org/dh4/vGallery.js.svg?branch=master)](https://travis-ci.org/dh4/vGallery.js)
+# gallerize.js [![Build Status](https://travis-ci.org/dh4/gallerize.js.svg?branch=master)](https://travis-ci.org/dh4/gallerize.js) ![Bower](https://img.shields.io/bower/v/gallerize.js.svg)
 
-vGallery.js is a responsive image fader designed to be as versatile as possible. It uses CSS3 transitions and pure Javascript.
+gallerize.js is a responsive image fader designed to be as versatile as possible. It uses CSS3 transitions and pure Javascript.
 
 #### Why another image gallery?
 
 It was born out of my frustration attempting to find an image gallery that was versatile enough for me to style to display the way I want for various different use cases. The vast majority of image galleries are designed to be plug and play with a default, fairly immutable styling and layout, making it difficult to get them to look any different without resorting to hacks.
 
-vGallery.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
+gallerize.js is designed to allow the developer to heavily customize the location and look of the gallery elements (gallery, navigation, buttons, links, supporting text). As such, it requires you to at least have a good knowledge of HTML/CSS to make use of it.
 
 #### Demos
 
 Click on the following demos to view them (you can view the source code in the demos directory):
 
 <p align="center">
-<a href="https://dh4.github.io/vGallery.js/demos/large.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/large.jpg" alt="Large Demo" height="150" /></a>
-<a href="https://dh4.github.io/vGallery.js/demos/small.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/small.jpg" alt="Small Demo" height="150" /></a>
-<a href="https://dh4.github.io/vGallery.js/demos/background.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/background.jpg" alt="Background Demo" height="150" /></a>
-<a href="https://dh4.github.io/vGallery.js/demos/jumbotron.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" /></a>
-<a href="https://dh4.github.io/vGallery.js/demos/indicators.html"><img src="https://dl.dropboxusercontent.com/u/232085155/vGallery.js/indicators.jpg" alt="Indicators Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/large.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/large.jpg" alt="Large Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/small.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/small.jpg" alt="Small Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/background.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/background.jpg" alt="Background Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/jumbotron.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/indicators.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/indicators.jpg" alt="Indicators Demo" height="150" /></a>
 </p>
 
 
 ## Usage
 
-Download the latest release from the [releases](https://github.com/dh4/vGallery.js/releases) page and install it into the \<head\> tag of the page you want the gallery to show:
+Download the latest release from the [releases](https://github.com/dh4/gallerize.js/releases) page and install it into the \<head\> tag of the page you want the gallery to show:
 ```
-<script type="text/javascript" src="vgallery-<VERSION>.min.js"></script>
+<script type="text/javascript" src="gallerize-<VERSION>.min.js"></script>
 ```
 
-Then initialize the gallery by creating a new vGallery object and calling start(). The following should be placed before the \</body\> tag:
+Then initialize the gallery by creating a new Gallerize object and calling start(). The following should be placed before the \</body\> tag:
 ```
 <script type="text/javascript">
-var vg = new vGallery({
+var gallery = new Gallerize({
     gallery: '#gallery',
     images: [
         'path/to/image/one.jpg',
@@ -39,7 +39,7 @@ var vg = new vGallery({
     ],
 });
 document.addEventListener('DOMContentLoaded', function() {
-    vg.start();
+    gallery.start();
 });
 </script>
 ```
@@ -48,9 +48,9 @@ The above shows the minimal configuration. See the configuration section below f
 
 ### Styling
 
-vGallery.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `indicators`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
+gallerize.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `indicators`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
-vGallery.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
+gallerize.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
 
 Look at the examples in the demos directory for good starting points on styling the gallery.
 
@@ -98,7 +98,7 @@ What images should use `background-size:contain` vs `background-size:cover`. The
 `all`: All images will be contained within the gallery element and no cropping will occur.  
 `portrait`: Only portrait images will be contained within the gallery. Landscape images will be cropped to fill the gallery element.  
 `landscape`: Only landscape images will be contained within the gallery. Portrait images will be cropped.  
-`parent`: vGallery.js will use the size of the `gallery` to determine the best way to display the image. If the gallery element is in a portrait orientation, portrait images will be cropped to fill the element and landscape images will be contained within the element (and vice versa).
+`parent`: gallerize.js will use the size of the `gallery` to determine the best way to display the image. If the gallery element is in a portrait orientation, portrait images will be cropped to fill the element and landscape images will be contained within the element (and vice versa).
 
 The default is `none`.
 
@@ -123,7 +123,7 @@ The element to display the thumbnail navigation in. You can style this element t
 
 ##### thumbnails.images
 
-An array of thumbnails to use. This should match up with the `images` array and have the same number of items. If not specified, vGallery.js will use the `images` array for thumbnails instead.
+An array of thumbnails to use. This should match up with the `images` array and have the same number of items. If not specified, gallerize.js will use the `images` array for thumbnails instead.
 
 ##### thumbnails.captions
 
@@ -298,7 +298,7 @@ An example configuration using all options:
 <div id="next"></div>
 <div id="text"></div>
 <script>
-var vg = new vGallery({
+var gallery = new Gallerize({
     gallery: '#gallery',
     images: [
         'path/to/image/one.jpg',
@@ -364,7 +364,7 @@ var vg = new vGallery({
     },
 });
 document.addEventListener('DOMContentLoaded', function() {
-    vg.start();
+    gallery.start();
 });
 </script>
 ```

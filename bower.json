@@ -1,8 +1,8 @@
 {
-  "name": "vGallery.js",
-  "homepage": "https://github.com/dh4/vGallery.js",
+  "name": "gallerize.js",
+  "homepage": "https://github.com/dh4/gallerize.js",
   "description": "Versatile JavaScript image gallery",
-  "main": "src/vgallery.js",
+  "main": "src/gallerize.js",
   "keywords": [
     "image",
     "images",
