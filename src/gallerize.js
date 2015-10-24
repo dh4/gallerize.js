@@ -202,27 +202,27 @@ window.Gallerize = function(config) {
         window.addEventListener('resize', function() {
             if (resize_timeout) clearTimeout(resize_timeout);
             resize_timeout = setTimeout(function() {
-                setBackground('#gz_animator');
+                setBackground('.gz_animator');
 
                 if (self.th.element) {
                     computeThumbSize();
-                    $('#gz_th_nav_wrapper').remove();
+                    $('.gz_th_nav_wrapper').remove();
                     createThumbnailNavigator();
                 }
 
                 if (!self.th.element && self.in.element) {
                     computeIndicatorSize();
-                    $('#gz_indicator_wrapper').remove();
+                    $('.gz_indicator_wrapper').remove();
                     createIndicatorNavigator();
                 }
 
                 if (self.prev.element) {
-                    $('#gz_prev').remove();
+                    $('.gz_prev').remove();
                     createButton('prev', false);
                 }
 
                 if (self.next.element) {
-                    $('#gz_next').remove();
+                    $('.gz_next').remove();
                     createButton('next', false);
                 }
             }, 50);
@@ -366,42 +366,58 @@ window.Gallerize = function(config) {
      */
     var insertCSS = function() {
         var style = $$('style', {type: 'text/css'});
+
         style.innerHTML =
-            "#gz_wrapper {position:relative;width:100%;height:100%;}"+
-            "#gz_click {z-index:93;display:block;position:absolute;width:100%;height:100%;}"+
-            "#gz_animator {z-index:95;position:absolute;width:100%;height:100%;}"+
-            "#gz_background {z-index:94;position:absolute;width:100%;height:100%;}"+
-            "#gz_loading {z-index:96;position:absolute;width:100%;height:100%;opacity:0;"+
-                "background:"+self.bg_color+" url("+self.loading.image+") no-repeat 50% 50%;}"+
+            ".gz_wrapper {position:relative;width:100%;height:100%;}"+
+            ".gz_click {z-index:93;display:block;position:absolute;width:100%;height:100%;}"+
+            ".gz_animator {z-index:95;position:absolute;width:100%;height:100%;}"+
+            ".gz_background {z-index:94;position:absolute;width:100%;height:100%;}"+
+            self.th.element+" .gz_loading {z-index:96;position:absolute;width:100%;height:100%;"+
+                "opacity:0;background:"+self.bg_color+" url("+self.loading.image+") "+
+                "no-repeat 50% 50%;}"+
             ".gz_cover {background-size:cover !important;}"+
             ".gz_contain {background-size:contain !important;}"+
-            "#gz_th_nav_wrapper {position:absolute;right:50%;}"+
-            "#gz_thumbnails {z-index:97;position:relative;left:50%;}"+
-            "#gz_prev, #gz_next {z-index:97;color:#FFF;}"+
-            "#gz_th_nav_prev, #gz_th_nav_next {float:left;color:#000;}"+
+            ".gz_prev, .gz_next {z-index:97;color:#FFF;}"+
             ".gz_button {position:relative;cursor:pointer;text-align:center;}"+
             ".gz_button > div {height:100%;width:100%;}"+
-            "#gz_th_nav_thumbs {position:relative;float:left;overflow:hidden;}"+
-            ".gz_th_nav_action {z-index:99;position:absolute;cursor:pointer;}"+
-            ".gz_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
-            ".gz_thumb_transition {transition:left "+self.fade+"ms;}"+
-            ".gz_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
-                "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
-            ".gz_thumb_border {z-index:99;position:absolute;opacity:0;"+
-                "border:1px solid "+self.th.active_color+";}"+
-            ".gz_thumb_image {background-size: cover;}"+
-            "#gz_indicator_wrapper {z-index:97;position:relative;}"+
-            ".gz_indicator {float:left;cursor:pointer;background-size:contain !important;"+
-                "opacity:"+self.in.opacity+";}"+
-            ".fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
-            ".fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}"+
-            ".fadeInHalf {opacity:0.5 !important;transition:opacity "+self.fade+"ms;}"+
-            ".fadeInQuick {opacity:1 !important;transition:opacity "+(self.fade / 2)+"ms;}"+
-            ".fadeOutQuick {opacity:0 !important;transition:opacity "+(self.fade / 2)+"ms;}";
+            self.gallery+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
+            self.gallery+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}"+
+            self.gallery+" .fadeInHalf {opacity:0.5 !important;transition:opacity "+self.fade+"ms;}";
+
         for (var i = 0; i < self.images.length; i++) {
-            style.innerHTML += ".image_"+i+" {background:"+self.bg_color+
+            style.innerHTML += self.gallery+" .image_"+i+" {background:"+self.bg_color+
                                " url("+getImage(i)+") no-repeat 50% 50%;}";
         }
+
+        if (self.th.element) {
+            style.innerHTML +=
+                ".gz_th_nav_wrapper {position:absolute;right:50%;}"+
+                ".gz_thumbnails {z-index:97;position:relative;left:50%;}"+
+                ".gz_th_nav_prev, .gz_th_nav_next {float:left;color:#000;}"+
+                ".gz_th_nav_thumbs {position:relative;float:left;overflow:hidden;}"+
+                ".gz_th_nav_action {z-index:99;position:absolute;cursor:pointer;}"+
+                ".gz_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
+                self.th.element+" .gz_thumb_transition {transition:left "+self.fade+"ms;}"+
+                ".gz_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
+                    "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
+                self.th.element+" .gz_thumb_border {z-index:99;position:absolute;opacity:0;"+
+                    "border:1px solid "+self.th.active_color+";}"+
+                ".gz_thumb_image {background-size: cover;}"+
+                ".gz_indicator_wrapper {z-index:97;position:relative;}"+
+                self.th.element+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
+                self.th.element+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}";
+        }
+        if (self.in.element) {
+            style.innerHTML +=
+                self.in.element+" .gz_indicator {float:left;cursor:pointer;"+
+                    "background-size:contain !important;opacity:"+self.in.opacity+";}";
+        }
+        if (self.text.element) {
+            style.innerHTML +=
+                self.text.element+" .fadeInQuick {opacity:1 !important;transition:opacity "+(self.fade / 2)+"ms;}"+
+                self.text.element+" .fadeOutQuick {opacity:0 !important;transition:opacity "+(self.fade / 2)+"ms;}";
+        }
+
         document.head.appendChild(style);
     };
 
@@ -419,14 +435,14 @@ window.Gallerize = function(config) {
      *  </(self.gallery)>
      */
     var createGallery = function() {
-        var wrapper = $$('div', {id: 'gz_wrapper'});
+        var wrapper = $$('div', {class: 'gz_wrapper'});
         $(self.gallery).appendChild(wrapper);
-        wrapper.appendChild($$('a',   {id: 'gz_click'}));
-        wrapper.appendChild($$('div', {id: 'gz_animator'}));
-        wrapper.appendChild($$('div', {id: 'gz_background'}));
+        wrapper.appendChild($$('a',   {class: 'gz_click'}));
+        wrapper.appendChild($$('div', {class: 'gz_animator'}));
+        wrapper.appendChild($$('div', {class: 'gz_background'}));
 
         if (self.loading.image) {
-            var loading = $$('div', {id: 'gz_loading'});
+            var loading = $$('div', {class: 'gz_loading'});
             setTimeout(function() {loading.classList.add('fadeIn');}, 1000);
             wrapper.appendChild(loading);
         }
@@ -436,8 +452,8 @@ window.Gallerize = function(config) {
      * Preloads the first image.
      */
     var setGallery = function() {
-        setBackground('#gz_animator');
-        setBackground('#gz_background');
+        setBackground('.gz_animator');
+        setBackground('.gz_background');
         if (self.links) setLink();
     };
 
@@ -453,8 +469,8 @@ window.Gallerize = function(config) {
         // Hide text element. We will display it when the first image loads.
         if (self.loading.image) $(self.text.element).style.visibility = 'hidden';
 
-        $(self.text.element).appendChild($$('div', {id: 'gz_text_inner'}));
-        $('#gz_text_inner').innerHTML = self.text.items[getCurrent()];
+        $(self.text.element).appendChild($$('div', {class: 'gz_text_inner'}));
+        $('.gz_text_inner').innerHTML = self.text.items[getCurrent()];
     };
 
     /**
@@ -493,11 +509,11 @@ window.Gallerize = function(config) {
      *  </(self.th.element)>
      */
     var createThumbnailNavigator = function() {
-        $(self.th.element).appendChild($$('div', {id: 'gz_th_nav_wrapper'}));
+        $(self.th.element).appendChild($$('div', {class: 'gz_th_nav_wrapper'}));
         var wrapper_style = 'height:'+self.th.height+'px;'+
                             'width:'+$(self.th.element).clientWidth+'px;'+
                             'padding:'+self.th.wrapper_padding+'px 0;';
-        $('#gz_th_nav_wrapper').appendChild($$('div', {id: 'gz_thumbnails', style: wrapper_style}));
+        $('.gz_th_nav_wrapper').appendChild($$('div', {class: 'gz_thumbnails', style: wrapper_style}));
 
         // Create previous button
         if (self.th.buttons) createButton('prev', true);
@@ -505,7 +521,7 @@ window.Gallerize = function(config) {
         var thumbs_style = 'height:'+$(self.th.element).clientHeight+'px;'+
                            'width:'+self.th.wrapper_width+'px;'+
                            'margin:0 '+self.th.hpadding+'px;';
-        $('#gz_thumbnails').appendChild($$('div', {id: 'gz_th_nav_thumbs', style: thumbs_style}));
+        $('.gz_thumbnails').appendChild($$('div', {class: 'gz_th_nav_thumbs', style: thumbs_style}));
 
         // Create clickable placeholders. The thumbnail images will move under these.
         var i, position, attr;
@@ -522,7 +538,7 @@ window.Gallerize = function(config) {
                        'width:'+width+'px;',
             };
             if (i === 0) attr.id = 'gz_th_nav_current';
-            $('#gz_th_nav_thumbs').appendChild($$('div', attr));
+            $('.gz_th_nav_thumbs').appendChild($$('div', attr));
         }
 
         [].forEach.call(document.querySelectorAll('.gz_th_nav_action'), function(e) {
@@ -539,13 +555,12 @@ window.Gallerize = function(config) {
 
             position = self.th.offset * (i - 3);
             attr = {
-                id: 'gz_thumb_'+i,
-                class: 'gz_th_nav_thumb',
+                class: 'gz_thumb_'+i+' gz_th_nav_thumb',
                 style: 'left:'+position+'px;'+
                        'height:'+self.th.height+'px;'+
                        'width:'+self.th.width+'px;',
             };
-            $('#gz_th_nav_thumbs').appendChild($$('div', attr));
+            $('.gz_th_nav_thumbs').appendChild($$('div', attr));
 
             if (self.th.captions) {
                 var caption_size  = (self.th.height > 80) ? [18, 11] :
@@ -557,22 +572,22 @@ window.Gallerize = function(config) {
                     style: 'line-height:'+caption_size[0]+'px;'+
                            'font-size:'+caption_size[1]+'px;'
                 };
-                $('#gz_thumb_'+i).appendChild($$('div', caption_attr));
+                $('.gz_thumb_'+i).appendChild($$('div', caption_attr));
                 var caption = self.th.captions[adjust % self.images.length];
-                $('#gz_thumb_'+i+' .gz_thumb_caption').innerHTML = caption;
+                $('.gz_thumb_'+i+' .gz_thumb_caption').innerHTML = caption;
             }
 
             var border_style = 'height:'+(self.th.height-2)+'px;'+
                                'width:'+(self.th.width-2)+'px;';
             var border_class = 'gz_thumb_border';
             if (i == 5) border_class += ' fadeIn';
-            $('#gz_thumb_'+i).appendChild($$('div', {class: border_class, style: border_style}));
+            $('.gz_thumb_'+i).appendChild($$('div', {class: border_class, style: border_style}));
 
             var thumb = getThumbImage(adjust);
             var thumb_style = 'background: '+self.bg_color+' url('+thumb+') no-repeat 50% 50%;'+
                               'height:'+self.th.height+'px;'+
                               'width:'+self.th.width+'px;';
-            $('#gz_thumb_'+i).appendChild($$('div', {class: 'gz_thumb_image', style: thumb_style}));
+            $('.gz_thumb_'+i).appendChild($$('div', {class: 'gz_thumb_image', style: thumb_style}));
         }
 
         // Create next button
@@ -594,7 +609,7 @@ window.Gallerize = function(config) {
      *  </(self.in.element)>
      */
     var createIndicatorNavigator = function() {
-        $(self.in.element).appendChild($$('div', {id: 'gz_indicator_wrapper'}));
+        $(self.in.element).appendChild($$('div', {class: 'gz_indicator_wrapper'}));
 
         var handler = function() {
             changeImage(this.getAttribute('data-image') - getCurrent());
@@ -602,8 +617,7 @@ window.Gallerize = function(config) {
 
         for (var i = 0; i < self.images.length; i++) {
             var attr = {
-                id: 'gz_indicator_'+i,
-                class: 'gz_indicator',
+                class: 'gz_indicator_'+i+' gz_indicator',
                 'data-image': i,
                 style: 'width:'+self.in.size+'px;'+
                        'height:'+self.in.size+'px;'+
@@ -612,13 +626,13 @@ window.Gallerize = function(config) {
             };
             if (self.in.round) attr.style += 'border-radius:'+self.in.size+'px;';
 
-            $('#gz_indicator_wrapper').appendChild($$('div', attr));
+            $('.gz_indicator_wrapper').appendChild($$('div', attr));
 
-            $('#gz_indicator_'+i).addEventListener('click', handler);
+            $('.gz_indicator_'+i).addEventListener('click', handler);
 
             if (i == getCurrent()) {
-                $('#gz_indicator_'+i).style.background = self.in.active_bg;
-                $('#gz_indicator_'+i).style.opacity = 1;
+                $('.gz_indicator_'+i).style.background = self.in.active_bg;
+                $('.gz_indicator_'+i).style.opacity = 1;
             }
         }
     };
@@ -639,7 +653,7 @@ window.Gallerize = function(config) {
         var parent, element, button_style;
 
         if (nav) {
-            parent = $('#gz_thumbnails');
+            parent = $('.gz_thumbnails');
             element = 'gz_th_nav_'+button;
             button_style = 'line-height:'+(self.th.height-6)+'px;'+
                            'height:'+self.th.height+'px;'+
@@ -654,17 +668,17 @@ window.Gallerize = function(config) {
                            'width:'+parent.clientWidth+'px;';
         }
 
-        parent.appendChild($$('div', {id: element, class: 'gz_button', style: button_style}));
+        parent.appendChild($$('div', {class: element+' gz_button', style: button_style}));
 
         if (image) {
             var button_img_style = 'background: url('+image+') no-repeat 50% 50%;'+
                                    'background-size: contain;';
-            $('#'+element).appendChild($$('div', {style: button_img_style}));
+            $('.'+element).appendChild($$('div', {style: button_img_style}));
         } else {
-            $('#'+element).innerHTML = (button == 'prev') ? self.prev.text : self.next.text;
+            $('.'+element).innerHTML = (button == 'prev') ? self.prev.text : self.next.text;
         }
 
-        $('#'+element).addEventListener('click', function() {
+        $('.'+element).addEventListener('click', function() {
             changeImage((button == 'prev') ? -1 : 1);
         });
     };
@@ -723,9 +737,9 @@ window.Gallerize = function(config) {
     var loadImage = function(offset, onload) {
         var imgSrc = getImage(self.current + parseInt(offset));
 
-        // function to hide '#gz_loading' and call onload()
+        // function to hide '.gz_loading' and call onload()
         var hideLoading = function() {
-            var loading = $('#gz_loading');
+            var loading = $('.gz_loading');
             if (loading) {
                 clearTimeout(self.loading_timeout);
                 loading.style['z-index'] = 0;
@@ -757,7 +771,7 @@ window.Gallerize = function(config) {
      * Sets the css background property and cover/contain class
      * for the given element.
      *
-     * @param {string} e The element to modify. '#gz_animator' or '#gz_background'.
+     * @param {string} e The element to modify. '.gz_animator' or '.gz_background'.
      */
     var setBackground = function(e) {
         for (var i = 0; i < self.images.length; i++) $(e).classList.remove('image_'+i);
@@ -781,10 +795,10 @@ window.Gallerize = function(config) {
     };
 
     /**
-     * Attaches a URL to the '#gz_click' element above the image.
+     * Attaches a URL to the '.gz_click' element above the image.
      */
     var setLink = function() {
-        var click = $('#gz_click');
+        var click = $('.gz_click');
         var link = self.links[getCurrent()];
         if (link) {
             click.style.cursor = 'pointer';
@@ -840,7 +854,7 @@ window.Gallerize = function(config) {
             e.style.background = self.in.bg;
             e.style.opacity = self.in.opacity;
         });
-        var current = $('#gz_indicator_'+getCurrent());
+        var current = $('.gz_indicator_'+getCurrent());
         current.style.background = self.in.active_bg;
         current.style.opacity = 1;
     };
@@ -870,7 +884,7 @@ window.Gallerize = function(config) {
         self.current = self.current + offset;
 
         if (self.loading.image && self.loading.all) {
-            var loading = $('#gz_loading');
+            var loading = $('.gz_loading');
             loading.classList.remove('fadeInHalf');
             self.loading_timeout = setTimeout(function() {
                 loading.style['z-index'] = 96;
@@ -880,16 +894,16 @@ window.Gallerize = function(config) {
 
         loadImage(0, function() {
             if (self.auto) clearTimeout(self.timeout);
-            setBackground('#gz_background');
+            setBackground('.gz_background');
 
             // Delay the animation by a small amount to prevent flickering
             // while the background is set
             setTimeout(function() {
                 // Animate gallery
-                $('#gz_animator').classList.add('fadeOut');
+                $('.gz_animator').classList.add('fadeOut');
                 setTimeout(function() {
-                    setBackground('#gz_animator');
-                    $('#gz_animator').classList.remove('fadeOut');
+                    setBackground('.gz_animator');
+                    $('.gz_animator').classList.remove('fadeOut');
                     updateCounter();
                     if (self.links) setLink();
                     self.active = false;
@@ -904,7 +918,7 @@ window.Gallerize = function(config) {
 
                 // Animate text
                 if (self.text.items && self.text.element) {
-                    var text = $('#gz_text_inner');
+                    var text = $('.gz_text_inner');
                     var animateText = function() {
                         text.innerHTML = self.text.items[getCurrent()];
                         text.classList.remove('fadeOutQuick');

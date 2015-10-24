@@ -90,6 +90,10 @@
         padding-top:5px;
         font-size:14px;
     }
+    #gallery2 {
+        height:200px;
+        width:100%
+    }
     </style>
 </head>
 <body>
@@ -99,6 +103,7 @@
         <div id="prev"></div>
         <div id="next"></div>
         <div id="text"></div>
+        <div id="gallery2"></div>
     </div>
 <script>
 var gallery = new Gallerize({
@@ -134,8 +139,18 @@ var gallery = new Gallerize({
         image: 'images/loading.gif',
     },
 });
+var gallery2 = new Gallerize({
+    gallery: '#gallery2',
+    images: [
+        'images/rumney.jpg',
+        'images/redrivergorge.jpg',
+        'images/centralpark.jpg',
+        'images/browncounty.jpg'
+    ],
+});
 document.addEventListener('DOMContentLoaded', function() {
     gallery.start();
+    gallery2.start();
 });
 </script>
 </body>
