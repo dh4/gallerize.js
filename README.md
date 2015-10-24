@@ -1,4 +1,4 @@
-# gallerize.js [![Build Status](https://travis-ci.org/dh4/gallerize.js.svg?branch=master)](https://travis-ci.org/dh4/gallerize.js) ![Bower](https://img.shields.io/bower/v/gallerize.js.svg)
+# gallerize.js [![Build Status](https://travis-ci.org/dh4/gallerize.js.svg?branch=master)](https://travis-ci.org/dh4/gallerize.js) [![Bower](https://img.shields.io/bower/v/gallerize.js.svg)](http://bower.io/search/?q=gallerize.js)
 
 gallerize.js is a responsive image fader designed to be as versatile as possible. It uses CSS3 transitions and pure Javascript.
 
@@ -371,6 +371,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 Also see the demos directory for more examples.
 
+
+## Advanced Usage
+
+You can also bind the `changeImage` method to events:
+```
+document.querySelector('#random_element').addEventListener('click', function() {
+    gallery.changeImage(1);
+});
+```
+
+This will adjust the image rotation by an offset. In this example, it switches to the next image. Use negative numbers to go backwards.
+
+If you want to go to a specific image, use `changeToImage`:
+```
+document.querySelector('#random_element').addEventListener('click', function() {
+    gallery.changeToImage(3);
+});
+```
+
+This will switch the gallery to the third image in the images array. Note it's best not to use `changeToImage` with the thumbnail nav unless you have a small number of images (<= 4).
 
 ## Feedback
 
