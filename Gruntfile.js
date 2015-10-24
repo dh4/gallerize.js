@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            files: ['Gruntfile.js', 'src/vgallery.js'],
+            files: ['Gruntfile.js', 'src/gallerize.js'],
             options: {
                 undef: true,
                 unused: true,
@@ -22,35 +22,35 @@ module.exports = function(grunt) {
                         ' * Copyright (c) 2015, Dan Hasting\n'+
                         ' * All rights reserved.\n'+
                         ' *\n'+
-                        ' * https://github.com/dh4/vGallery.js\n'+
+                        ' * https://github.com/dh4/gallerize.js\n'+
                         ' **/\n'
             },
             build: {
-                src: 'src/vgallery.js',
-                dest: 'build/vgallery-<%= pkg.version %>.min.js'
+                src: 'src/gallerize.js',
+                dest: 'build/gallerize-<%= pkg.version %>.min.js'
             },
         },
         copy: {
             main: {
-                src: 'src/vgallery.js',
-                dest: 'build/vgallery-<%= pkg.version %>.js',
+                src: 'src/gallerize.js',
+                dest: 'build/gallerize-<%= pkg.version %>.js',
             },
         },
         compress: {
             main: {
                 options: {
-                    archive: 'vGalleryjs-<%= pkg.version %>.zip'
+                    archive: 'gallerizejs-<%= pkg.version %>.zip'
                 },
                 files: [
                     {
                         flatten: true,
                         expand: true,
                         src: [
-                            'build/vgallery-<%= pkg.version %>.js',
-                            'build/vgallery-<%= pkg.version %>.min.js',
+                            'build/gallerize-<%= pkg.version %>.js',
+                            'build/gallerize-<%= pkg.version %>.min.js',
                             'LICENSE'
                         ],
-                        dest: 'vGallery.js',
+                        dest: 'gallerize.js',
                     },
                 ],
             },

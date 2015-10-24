@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>vGallery.js Large Demo</title>
-    <script src="../src/vgallery.js"></script>
+    <title>gallerize.js Large Demo</title>
+    <script src="../src/gallerize.js"></script>
     <style>
     @media screen and (max-width:1000px) {
         body #thumb_wrapper {
@@ -145,7 +145,7 @@
     <div id="next"></div>
     <div id="text"></div>
 <script>
-var vg = new vGallery({
+var gallery = new Gallerize({
     gallery: '#gallery',
     images: [
         'images/rumney.jpg',
@@ -194,7 +194,7 @@ var vg = new vGallery({
     },
 });
 document.addEventListener('DOMContentLoaded', function() {
-    vg.start();
+    gallery.start();
 });
 </script>
 </body>

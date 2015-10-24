@@ -1,10 +1,10 @@
 {
-  "name": "vGallery.js",
+  "name": "gallerize.js",
   "version": "0.3.0",
   "description": "Versatile JavaScript image gallery",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dh4/vgallery.js.git"
+    "url": "git+https://github.com/dh4/gallerize.js.git"
   },
   "author": "Dan Hasting",
   "license": "BSD-3-Clause",
