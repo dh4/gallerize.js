@@ -1,0 +1,19 @@
+{
+  "name": "vGallery.js",
+  "homepage": "https://github.com/dh4/vGallery.js",
+  "description": "Versatile JavaScript image gallery",
+  "main": "src/vgallery.js",
+  "keywords": [
+    "image",
+    "images",
+    "gallery",
+    "carousel",
+    "fader",
+    "slider",
+    "rotator"
+  ],
+  "ignore": [
+    "**/.*",
+    "demos/"
+  ]
+}
