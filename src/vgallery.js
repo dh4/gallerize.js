@@ -731,6 +731,7 @@ var vGallery = function(config) {
         var hideLoading = function() {
             var loading = $('#vg_loading');
             if (loading) {
+                clearTimeout(vg.loading_timeout);
                 loading.style['z-index'] = 0;
                 loading.classList.remove('fadeIn');
             }
@@ -872,9 +873,11 @@ var vGallery = function(config) {
 
         if (vg.loading.image && vg.loading.all) {
             var loading = $('#vg_loading');
-            loading.style['z-index'] = 96;
             loading.classList.remove('fadeInHalf');
-            loading.classList.add('fadeInHalf');
+            vg.loading_timeout = setTimeout(function() {
+                loading.style['z-index'] = 96;
+                loading.classList.add('fadeInHalf');
+            }, 500);
         }
 
         vg.loadImage(0, function() {
