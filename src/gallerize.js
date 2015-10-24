@@ -371,7 +371,8 @@ window.Gallerize = function(config) {
             "#gz_click {z-index:93;display:block;position:absolute;width:100%;height:100%;}"+
             "#gz_animator {z-index:95;position:absolute;width:100%;height:100%;}"+
             "#gz_background {z-index:94;position:absolute;width:100%;height:100%;}"+
-            "#gz_loading {z-index:96;position:absolute;width:100%;height:100%;}"+
+            "#gz_loading {z-index:96;position:absolute;width:100%;height:100%;opacity:0;"+
+                "background:"+self.bg_color+" url("+self.loading.image+") no-repeat 50% 50%;}"+
             ".gz_cover {background-size:cover !important;}"+
             ".gz_contain {background-size:contain !important;}"+
             "#gz_th_nav_wrapper {position:absolute;right:50%;}"+
@@ -386,14 +387,21 @@ window.Gallerize = function(config) {
             ".gz_thumb_transition {transition:left "+self.fade+"ms;}"+
             ".gz_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
                 "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
-            ".gz_thumb_border {z-index:99;position:absolute;opacity:0;}"+
+            ".gz_thumb_border {z-index:99;position:absolute;opacity:0;"+
+                "border:1px solid "+self.th.active_color+";}"+
+            ".gz_thumb_image {background-size: cover;}"+
             "#gz_indicator_wrapper {z-index:97;position:relative;}"+
-            ".gz_indicator {float:left;cursor:pointer;background-size:contain !important;}"+
+            ".gz_indicator {float:left;cursor:pointer;background-size:contain !important;"+
+                "opacity:"+self.in.opacity+";}"+
             ".fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
             ".fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}"+
             ".fadeInHalf {opacity:0.5 !important;transition:opacity "+self.fade+"ms;}"+
             ".fadeInQuick {opacity:1 !important;transition:opacity "+(self.fade / 2)+"ms;}"+
             ".fadeOutQuick {opacity:0 !important;transition:opacity "+(self.fade / 2)+"ms;}";
+        for (var i = 0; i < self.images.length; i++) {
+            style.innerHTML += ".image_"+i+" {background:"+self.bg_color+
+                               " url("+getImage(i)+") no-repeat 50% 50%;}";
+        }
         document.head.appendChild(style);
     };
 
@@ -417,13 +425,8 @@ window.Gallerize = function(config) {
         wrapper.appendChild($$('div', {id: 'gz_animator'}));
         wrapper.appendChild($$('div', {id: 'gz_background'}));
 
-        $('#gz_background').style.background = self.bg_color;
-
         if (self.loading.image) {
             var loading = $$('div', {id: 'gz_loading'});
-            loading.style.opacity = 0;
-            loading.style.background = self.bg_color+' url("'+self.loading.image+
-                                       '") no-repeat 50% 50%';
             setTimeout(function() {loading.classList.add('fadeIn');}, 1000);
             wrapper.appendChild(loading);
         }
@@ -548,7 +551,7 @@ window.Gallerize = function(config) {
                 var caption_size  = (self.th.height > 80) ? [18, 11] :
                                     (self.th.height > 60) ? [15, 10] :
                                     (self.th.height > 50) ? [12,  9] :
-                                                          [10,  8] ;
+                                                            [10,  8] ;
                 var caption_attr = {
                     class: 'gz_thumb_caption',
                     style: 'line-height:'+caption_size[0]+'px;'+
@@ -560,15 +563,13 @@ window.Gallerize = function(config) {
             }
 
             var border_style = 'height:'+(self.th.height-2)+'px;'+
-                               'width:'+(self.th.width-2)+'px;'+
-                               'border:1px solid '+self.th.active_color+';';
+                               'width:'+(self.th.width-2)+'px;';
             var border_class = 'gz_thumb_border';
             if (i == 5) border_class += ' fadeIn';
             $('#gz_thumb_'+i).appendChild($$('div', {class: border_class, style: border_style}));
 
             var thumb = getThumbImage(adjust);
             var thumb_style = 'background: '+self.bg_color+' url('+thumb+') no-repeat 50% 50%;'+
-                              'background-size: cover;'+
                               'height:'+self.th.height+'px;'+
                               'width:'+self.th.width+'px;';
             $('#gz_thumb_'+i).appendChild($$('div', {class: 'gz_thumb_image', style: thumb_style}));
@@ -607,8 +608,7 @@ window.Gallerize = function(config) {
                 style: 'width:'+self.in.size+'px;'+
                        'height:'+self.in.size+'px;'+
                        'margin:'+self.in.vpadding+'px '+self.in.hpadding+'px;'+
-                       'background:'+self.in.bg+';'+
-                       'opacity:'+self.in.opacity+';'
+                       'background:'+self.in.bg+';'
             };
             if (self.in.round) attr.style += 'border-radius:'+self.in.size+'px;';
 
@@ -760,8 +760,8 @@ window.Gallerize = function(config) {
      * @param {string} e The element to modify. '#gz_animator' or '#gz_background'.
      */
     var setBackground = function(e) {
-        var background = self.bg_color+' url('+getImage()+') no-repeat 50% 50%';
-        $(e).style.background = background;
+        for (var i = 0; i < self.images.length; i++) $(e).classList.remove('image_'+i);
+        $(e).classList.add('image_'+getCurrent());
 
         var ratio = self.ratios[getCurrent()];
         var parent_ratio = $(self.gallery).clientWidth / $(self.gallery).clientHeight;
