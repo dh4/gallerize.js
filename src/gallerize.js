@@ -116,9 +116,12 @@ window.Gallerize = function(config) {
         }
     }
 
-    // Rename thumbnails and indicators to save space
+    // Create shortcuts
     self.th = self.thumbnails;
     self.in = self.indicators;
+    self.g = self.gallery;
+    var elements = [self.th, self.in, self.prev, self.next, self.text];
+    for (var e in elements) elements[e].e = elements[e].element;
 
     self.active = false;
     self.hover = false;
@@ -176,17 +179,17 @@ window.Gallerize = function(config) {
         self.active = true;
 
         // Compute size of thumbnails and indicators from their parent elements
-        if (self.th.element) computeThumbSize();
-        if (!self.th.element && self.in.element) computeIndicatorSize();
+        if (self.th.e) computeThumbSize();
+        if (!self.th.e && self.in.e) computeIndicatorSize();
 
         // Setup everything
         insertCSS();
         createGallery();
-        if (self.th.element) createThumbnailNavigator();
-        if (!self.th.element && self.in.element) createIndicatorNavigator();
-        if (self.prev.element) createButton('prev', false);
-        if (self.next.element) createButton('next', false);
-        if (self.text.items && self.text.element) createText();
+        if (self.th.e) createThumbnailNavigator();
+        if (!self.th.e && self.in.e) createIndicatorNavigator();
+        if (self.prev.e) createButton('prev', false);
+        if (self.next.e) createButton('next', false);
+        if (self.text.items && self.text.e) createText();
         updateCounter();
 
         // Wait for first image to load
@@ -202,27 +205,27 @@ window.Gallerize = function(config) {
         window.addEventListener('resize', function() {
             if (resize_timeout) clearTimeout(resize_timeout);
             resize_timeout = setTimeout(function() {
-                setBackground('.gz_animator');
+                setBackground(self.g+' .gz_animator');
 
-                if (self.th.element) {
+                if (self.th.e) {
                     computeThumbSize();
-                    $('.gz_th_nav_wrapper').remove();
+                    $(self.th.e+' .gz_th_nav_wrapper').remove();
                     createThumbnailNavigator();
                 }
 
-                if (!self.th.element && self.in.element) {
+                if (!self.th.e && self.in.e) {
                     computeIndicatorSize();
-                    $('.gz_indicator_wrapper').remove();
+                    $(self.in.e+' .gz_indicator_wrapper').remove();
                     createIndicatorNavigator();
                 }
 
-                if (self.prev.element) {
-                    $('.gz_prev').remove();
+                if (self.prev.e) {
+                    $(self.prev.e+' .gz_prev').remove();
                     createButton('prev', false);
                 }
 
-                if (self.next.element) {
-                    $('.gz_next').remove();
+                if (self.next.e) {
+                    $(self.next.e+' .gz_next').remove();
                     createButton('next', false);
                 }
             }, 50);
@@ -230,12 +233,12 @@ window.Gallerize = function(config) {
 
         // Pause timeout if mouse enters gallery, and resume once mouse leaves
         if (self.auto && self.pause) {
-            $(self.gallery).addEventListener('mouseover', function() {
+            $(self.g).addEventListener('mouseover', function() {
                 self.hover = true;
                 self.remaining -= new Date() - self.timeoutStart;
                 clearTimeout(self.timeout);
             });
-            $(self.gallery).addEventListener('mouseout', function() {
+            $(self.g).addEventListener('mouseout', function() {
                 self.hover = false;
                 startTimer(self.remaining);
             });
@@ -247,8 +250,8 @@ window.Gallerize = function(config) {
      */
     var checkIssues = function() {
         // Show errors for missing required configuration options
-        if (self.gallery === null)    issue('gallery', 'missing');
-        if (self.images === null)     issue('images', 'missing');
+        if (self.g === null)        issue('gallery', 'missing');
+        if (self.images === null)   issue('images', 'missing');
 
         // Check that other configuration arrays have same length as images array
         if (self.th.images && self.images.length != self.th.images.length)
@@ -259,21 +262,19 @@ window.Gallerize = function(config) {
             issue('thumbnails.captions', 'count');
 
         // Check that elements exist
-        if ($(self.gallery).length === 0) issue('gallery', 'exists');
+        if ($(self.g).length === 0) issue('gallery', 'exists');
         var elements = ['thumbnails', 'indicators', 'counter', 'prev', 'next', 'text'];
         for (var i = 0; i < elements.length; i++) {
             var e = elements[i];
-            if (self[e] && self[e].element && $(self[e].element).length === 0) issue(e+':exists');
+            if (self[e] && self[e].e && $(self[e].e).length === 0) issue(e+':exists');
         }
 
         // Check that gallery and thumbnail elements have a height and width greater than zero
-        if ($(self.gallery).clientHeight === 0 || $(self.gallery).clientWidth === 0)
+        if ($(self.g).clientHeight === 0 || $(self.g).clientWidth === 0)
             issue('gallery', 'size');
-        if (self.th.element && ($(self.th.element).clientHeight === 0 ||
-            $(self.th.element).clientWidth === 0)
-           )
+        if (self.th.e && ($(self.th.e).clientHeight === 0 || $(self.th.e).clientWidth === 0))
             issue('thumbnails', 'size');
-        if (self.in.element && ($(self.in.element).clientHeight === 0))
+        if (self.in.e && ($(self.in.e).clientHeight === 0))
             issue('indicators', 'size');
     };
 
@@ -281,7 +282,7 @@ window.Gallerize = function(config) {
      * Calculates the size and position of thumbnails based on the thumbnail element.
      */
     var computeThumbSize = function() {
-        var e = $(self.th.element);
+        var e = $(self.th.e);
 
         // Calculate thumbnail size and padding based on how large the thumbnail element is
         self.th.hpadding = Math.round(e.clientWidth * 0.015);
@@ -308,7 +309,7 @@ window.Gallerize = function(config) {
      * Calculates the size of indicators based on the indicator element.
      */
     var computeIndicatorSize = function() {
-        var e = $(self.in.element);
+        var e = $(self.in.e);
 
         // Calculate indicator size and padding based on how large the indicator element is
         self.in.size = Math.round(e.clientHeight * 0.5);
@@ -372,7 +373,7 @@ window.Gallerize = function(config) {
             ".gz_click {z-index:93;display:block;position:absolute;width:100%;height:100%;}"+
             ".gz_animator {z-index:95;position:absolute;width:100%;height:100%;}"+
             ".gz_background {z-index:94;position:absolute;width:100%;height:100%;}"+
-            self.th.element+" .gz_loading {z-index:96;position:absolute;width:100%;height:100%;"+
+            self.g+" .gz_loading {z-index:96;position:absolute;width:100%;height:100%;"+
                 "opacity:0;background:"+self.bg_color+" url("+self.loading.image+") "+
                 "no-repeat 50% 50%;}"+
             ".gz_cover {background-size:cover !important;}"+
@@ -380,16 +381,16 @@ window.Gallerize = function(config) {
             ".gz_prev, .gz_next {z-index:97;color:#FFF;}"+
             ".gz_button {position:relative;cursor:pointer;text-align:center;}"+
             ".gz_button > div {height:100%;width:100%;}"+
-            self.gallery+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
-            self.gallery+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}"+
-            self.gallery+" .fadeInHalf {opacity:0.5 !important;transition:opacity "+self.fade+"ms;}";
+            self.g+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
+            self.g+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}"+
+            self.g+" .fadeInHalf{opacity:0.5 !important;transition:opacity "+self.fade+"ms;}";
 
         for (var i = 0; i < self.images.length; i++) {
-            style.innerHTML += self.gallery+" .image_"+i+" {background:"+self.bg_color+
+            style.innerHTML += self.g+" .image_"+i+" {background:"+self.bg_color+
                                " url("+getImage(i)+") no-repeat 50% 50%;}";
         }
 
-        if (self.th.element) {
+        if (self.th.e) {
             style.innerHTML +=
                 ".gz_th_nav_wrapper {position:absolute;right:50%;}"+
                 ".gz_thumbnails {z-index:97;position:relative;left:50%;}"+
@@ -397,25 +398,28 @@ window.Gallerize = function(config) {
                 ".gz_th_nav_thumbs {position:relative;float:left;overflow:hidden;}"+
                 ".gz_th_nav_action {z-index:99;position:absolute;cursor:pointer;}"+
                 ".gz_th_nav_thumb {z-index:98;position:absolute;top:0;overflow:hidden;}"+
-                self.th.element+" .gz_thumb_transition {transition:left "+self.fade+"ms;}"+
+                self.th.e+" .gz_thumb_transition {transition:left "+self.fade+"ms;}"+
                 ".gz_thumb_caption {z-index:98;position:absolute;bottom:0px;width:100%;color:#FFF;"+
-                    "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);text-align:center;}"+
-                self.th.element+" .gz_thumb_border {z-index:99;position:absolute;opacity:0;"+
+                    "font-weight:bold;background:#000;background:rgba(0,0,0,0.7);"+
+                    "text-align:center;}"+
+                self.th.e+" .gz_thumb_border {z-index:99;position:absolute;opacity:0;"+
                     "border:1px solid "+self.th.active_color+";}"+
-                ".gz_thumb_image {background-size: cover;}"+
-                ".gz_indicator_wrapper {z-index:97;position:relative;}"+
-                self.th.element+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
-                self.th.element+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}";
+                ".gz_thumb_image {background-size:cover !important;}"+
+                self.th.e+" .fadeIn {opacity:1 !important;transition:opacity "+self.fade+"ms;}"+
+                self.th.e+" .fadeOut {opacity:0 !important;transition:opacity "+self.fade+"ms;}";
         }
-        if (self.in.element) {
+        if (self.in.e) {
             style.innerHTML +=
-                self.in.element+" .gz_indicator {float:left;cursor:pointer;"+
+                ".gz_indicator_wrapper {z-index:97;position:relative;}"+
+                self.in.e+" .gz_indicator {float:left;cursor:pointer;"+
                     "background-size:contain !important;opacity:"+self.in.opacity+";}";
         }
-        if (self.text.element) {
+        if (self.text.e) {
             style.innerHTML +=
-                self.text.element+" .fadeInQuick {opacity:1 !important;transition:opacity "+(self.fade / 2)+"ms;}"+
-                self.text.element+" .fadeOutQuick {opacity:0 !important;transition:opacity "+(self.fade / 2)+"ms;}";
+                self.text.e+" .fadeInQuick {opacity:1 !important;transition:opacity "+
+                    (self.fade / 2)+"ms;}"+
+                self.text.e+" .fadeOutQuick {opacity:0 !important;transition:opacity "+
+                    (self.fade / 2)+"ms;}";
         }
 
         document.head.appendChild(style);
@@ -426,17 +430,17 @@ window.Gallerize = function(config) {
      *
      * @example <caption>DOM nodes:</caption>
      *  <(self.gallery)>
-     *      <div id="gz_wrapper">
-     *          <a id="gz_click"></a>
-     *          <div id="gz_animator"></div>
-     *          <div id="gz_background"></div>
-     *          <div id="gz_loading"></div>
+     *      <div class="gz_wrapper">
+     *          <a class="gz_click"></a>
+     *          <div class="gz_animator"></div>
+     *          <div class="gz_background"></div>
+     *          <div class="gz_loading"></div>
      *      </div>
      *  </(self.gallery)>
      */
     var createGallery = function() {
         var wrapper = $$('div', {class: 'gz_wrapper'});
-        $(self.gallery).appendChild(wrapper);
+        $(self.g).appendChild(wrapper);
         wrapper.appendChild($$('a',   {class: 'gz_click'}));
         wrapper.appendChild($$('div', {class: 'gz_animator'}));
         wrapper.appendChild($$('div', {class: 'gz_background'}));
@@ -452,8 +456,8 @@ window.Gallerize = function(config) {
      * Preloads the first image.
      */
     var setGallery = function() {
-        setBackground('.gz_animator');
-        setBackground('.gz_background');
+        setBackground(self.g+' .gz_animator');
+        setBackground(self.g+' .gz_background');
         if (self.links) setLink();
     };
 
@@ -462,37 +466,37 @@ window.Gallerize = function(config) {
      *
      * @example <caption>DOM nodes:</caption>
      *  <(self.text.element)>
-     *      <div id="gz_text_inner"></div>
+     *      <div class="gz_text_inner"></div>
      *  </(self.text.element)>
      */
     var createText = function() {
         // Hide text element. We will display it when the first image loads.
-        if (self.loading.image) $(self.text.element).style.visibility = 'hidden';
+        if (self.loading.image) $(self.text.e).style.visibility = 'hidden';
 
-        $(self.text.element).appendChild($$('div', {class: 'gz_text_inner'}));
-        $('.gz_text_inner').innerHTML = self.text.items[getCurrent()];
+        $(self.text.e).appendChild($$('div', {class: 'gz_text_inner'}));
+        $(self.text.e+' .gz_text_inner').innerHTML = self.text.items[getCurrent()];
     };
 
     /**
      * Initializes the thumbnail navigation element.
      *
      * @example <caption>DOM nodes:</caption>
-     *  <(self.th.element)>
-     *      <div id="gz_thumbnails">
+     *  <(self.thumbnails.element)>
+     *      <div class="gz_thumbnails">
      *
-     *          (if self.th.buttons)
-     *          <div id="gz_th_nav_prev" class="gz_button" ></div>
+     *          (if self.thumbnails.buttons)
+     *          <div class="gz_th_nav_prev gz_button" ></div>
      *          (endif)
      *
-     *          <div id="gz_th_nav_thumbs">
+     *          <div class="gz_th_nav_thumbs">
      *              <div class="gz_th_nav_action"></div>
      *              <div class="gz_th_nav_action"></div>
-     *              <div id="gz_th_nav_current" class="gz_th_nav_action"></div>
+     *              <div class="gz_th_nav_current gz_th_nav_action"></div>
      *              <div class="gz_th_nav_action"></div>
      *              <div class="gz_th_nav_action"></div>
      *
-     *              (for self.images.length * self.th.iterations)
-     *              <div id="gz_thumb_(number)" class="gz_th_nav_thumb">
+     *              (for self.images.length * self.thumbnails.iterations)
+     *              <div class="gz_thumb_(number) gz_th_nav_thumb">
      *                  <div class="gz_thumb_caption"></div>
      *                  <div class="gz_thumb_border></div>
      *                  <div class="gz_thumb_image"></div>
@@ -501,27 +505,33 @@ window.Gallerize = function(config) {
      *
      *          </div>
      *
-     *          (if self.th.buttons)
-     *          <div id="gz_th_nav_prev" class="gz_button" ></div>
+     *          (if self.thumbnails.buttons)
+     *          <div class="gz_th_nav_prev gz_button" ></div>
      *          (endif)
      *
      *      </div>
-     *  </(self.th.element)>
+     *  </(self.thumbnails.element)>
      */
     var createThumbnailNavigator = function() {
-        $(self.th.element).appendChild($$('div', {class: 'gz_th_nav_wrapper'}));
-        var wrapper_style = 'height:'+self.th.height+'px;'+
-                            'width:'+$(self.th.element).clientWidth+'px;'+
-                            'padding:'+self.th.wrapper_padding+'px 0;';
-        $('.gz_th_nav_wrapper').appendChild($$('div', {class: 'gz_thumbnails', style: wrapper_style}));
+        $(self.th.e).appendChild($$('div', {class: 'gz_th_nav_wrapper'}));
+        var wrapper_attr = {
+            class: 'gz_thumbnails',
+            style: 'height:'+self.th.height+'px;'+
+                   'width:'+$(self.th.e).clientWidth+'px;'+
+                   'padding:'+self.th.wrapper_padding+'px 0;',
+        };
+        $(self.th.e+' .gz_th_nav_wrapper').appendChild($$('div', wrapper_attr));
 
         // Create previous button
         if (self.th.buttons) createButton('prev', true);
 
-        var thumbs_style = 'height:'+$(self.th.element).clientHeight+'px;'+
-                           'width:'+self.th.wrapper_width+'px;'+
-                           'margin:0 '+self.th.hpadding+'px;';
-        $('.gz_thumbnails').appendChild($$('div', {class: 'gz_th_nav_thumbs', style: thumbs_style}));
+        var thumbs_attr = {
+            class: 'gz_th_nav_thumbs',
+            style: 'height:'+$(self.th.e).clientHeight+'px;'+
+                   'width:'+self.th.wrapper_width+'px;'+
+                   'margin:0 '+self.th.hpadding+'px;',
+        };
+        $(self.th.e+' .gz_thumbnails').appendChild($$('div', thumbs_attr));
 
         // Create clickable placeholders. The thumbnail images will move under these.
         var i, position, attr;
@@ -538,10 +548,10 @@ window.Gallerize = function(config) {
                        'width:'+width+'px;',
             };
             if (i === 0) attr.id = 'gz_th_nav_current';
-            $('.gz_th_nav_thumbs').appendChild($$('div', attr));
+            $(self.th.e+' .gz_th_nav_thumbs').appendChild($$('div', attr));
         }
 
-        [].forEach.call(document.querySelectorAll('.gz_th_nav_action'), function(e) {
+        [].forEach.call(document.querySelectorAll(self.th.e+' .gz_th_nav_action'), function(e) {
             e.addEventListener('click', function() {
                 changeImage(e.getAttribute('data-offset'));
             });
@@ -560,7 +570,7 @@ window.Gallerize = function(config) {
                        'height:'+self.th.height+'px;'+
                        'width:'+self.th.width+'px;',
             };
-            $('.gz_th_nav_thumbs').appendChild($$('div', attr));
+            $(self.th.e+' .gz_th_nav_thumbs').appendChild($$('div', attr));
 
             if (self.th.captions) {
                 var caption_size  = (self.th.height > 80) ? [18, 11] :
@@ -572,22 +582,27 @@ window.Gallerize = function(config) {
                     style: 'line-height:'+caption_size[0]+'px;'+
                            'font-size:'+caption_size[1]+'px;'
                 };
-                $('.gz_thumb_'+i).appendChild($$('div', caption_attr));
+                $(self.th.e+' .gz_thumb_'+i).appendChild($$('div', caption_attr));
                 var caption = self.th.captions[adjust % self.images.length];
-                $('.gz_thumb_'+i+' .gz_thumb_caption').innerHTML = caption;
+                $(self.th.e+' .gz_thumb_'+i+' .gz_thumb_caption').innerHTML = caption;
             }
 
-            var border_style = 'height:'+(self.th.height-2)+'px;'+
-                               'width:'+(self.th.width-2)+'px;';
-            var border_class = 'gz_thumb_border';
-            if (i == 5) border_class += ' fadeIn';
-            $('.gz_thumb_'+i).appendChild($$('div', {class: border_class, style: border_style}));
+            var border_attr = {
+                class: 'gz_thumb_border',
+                style: 'height:'+(self.th.height-2)+'px;'+
+                       'width:'+(self.th.width-2)+'px;',
+            };
+            if (i == 5) border_attr.class += ' fadeIn';
+            $(self.th.e+' .gz_thumb_'+i).appendChild($$('div', border_attr));
 
             var thumb = getThumbImage(adjust);
-            var thumb_style = 'background: '+self.bg_color+' url('+thumb+') no-repeat 50% 50%;'+
-                              'height:'+self.th.height+'px;'+
-                              'width:'+self.th.width+'px;';
-            $('.gz_thumb_'+i).appendChild($$('div', {class: 'gz_thumb_image', style: thumb_style}));
+            var thumb_attr = {
+                class: 'gz_thumb_image',
+                style: 'background: '+self.bg_color+' url('+thumb+') no-repeat 50% 50%;'+
+                       'height:'+self.th.height+'px;'+
+                       'width:'+self.th.width+'px;',
+            };
+            $(self.th.e+' .gz_thumb_'+i).appendChild($$('div', thumb_attr));
         }
 
         // Create next button
@@ -598,18 +613,18 @@ window.Gallerize = function(config) {
      * Initializes the indicator navigation element.
      *
      * @example <caption>DOM nodes:</caption>
-     *  <(self.in.element)>
-     *      <div id="gz_indicator_wrapper">
+     *  <(self.indicators.element)>
+     *      <div class="gz_indicator_wrapper">
      *
      *          (for self.images.length)
-     *          <div id="gz_indicator_(number)" class="gz_indicator"></div>
+     *          <div class="gz_indicator_(number) gz_indicator"></div>
      *          (endfor)
      *
      *      </div>
-     *  </(self.in.element)>
+     *  </(self.indicators.elements)>
      */
     var createIndicatorNavigator = function() {
-        $(self.in.element).appendChild($$('div', {class: 'gz_indicator_wrapper'}));
+        $(self.in.e).appendChild($$('div', {class: 'gz_indicator_wrapper'}));
 
         var handler = function() {
             changeImage(this.getAttribute('data-image') - getCurrent());
@@ -626,13 +641,13 @@ window.Gallerize = function(config) {
             };
             if (self.in.round) attr.style += 'border-radius:'+self.in.size+'px;';
 
-            $('.gz_indicator_wrapper').appendChild($$('div', attr));
+            $(self.in.e+' .gz_indicator_wrapper').appendChild($$('div', attr));
 
-            $('.gz_indicator_'+i).addEventListener('click', handler);
+            $(self.in.e+' .gz_indicator_'+i).addEventListener('click', handler);
 
             if (i == getCurrent()) {
-                $('.gz_indicator_'+i).style.background = self.in.active_bg;
-                $('.gz_indicator_'+i).style.opacity = 1;
+                $(self.in.e+' .gz_indicator_'+i).style.background = self.in.active_bg;
+                $(self.in.e+' .gz_indicator_'+i).style.opacity = 1;
             }
         }
     };
@@ -642,7 +657,7 @@ window.Gallerize = function(config) {
      *
      * @example <caption>DOM nodes:</caption>
      *  <(self.(button).element)>
-     *      <div id="gz_(button)" class="gz_button"></div>
+     *      <div class="gz_(button) gz_button"></div>
      *  </(self.(button).element)>
      *
      * @param {string} button The button to create: 'prev' or 'next'.
@@ -653,7 +668,7 @@ window.Gallerize = function(config) {
         var parent, element, button_style;
 
         if (nav) {
-            parent = $('.gz_thumbnails');
+            parent = self.th.e+' .gz_thumbnails';
             element = 'gz_th_nav_'+button;
             button_style = 'line-height:'+(self.th.height-6)+'px;'+
                            'height:'+self.th.height+'px;'+
@@ -661,24 +676,24 @@ window.Gallerize = function(config) {
                            'font-size:'+self.button_size+'px;'+
                            'color:'+self.th.button_color+';';
         } else {
-            parent = $((button == 'prev') ? self.prev.element : self.next.element);
+            parent = (button == 'prev') ? self.prev.e : self.next.e;
             element = 'gz_'+button;
-            button_style = 'line-height:'+(parent.clientHeight-6)+'px;'+
-                           'height:'+parent.clientHeight+'px;'+
-                           'width:'+parent.clientWidth+'px;';
+            button_style = 'line-height:'+($(parent).clientHeight-6)+'px;'+
+                           'height:'+$(parent).clientHeight+'px;'+
+                           'width:'+$(parent).clientWidth+'px;';
         }
 
-        parent.appendChild($$('div', {class: element+' gz_button', style: button_style}));
+        $(parent).appendChild($$('div', {class: element+' gz_button', style: button_style}));
 
         if (image) {
             var button_img_style = 'background: url('+image+') no-repeat 50% 50%;'+
                                    'background-size: contain;';
-            $('.'+element).appendChild($$('div', {style: button_img_style}));
+            $(parent+' .'+element).appendChild($$('div', {style: button_img_style}));
         } else {
-            $('.'+element).innerHTML = (button == 'prev') ? self.prev.text : self.next.text;
+            $(parent+' .'+element).innerHTML = (button == 'prev') ? self.prev.text : self.next.text;
         }
 
-        $('.'+element).addEventListener('click', function() {
+        $(parent+' .'+element).addEventListener('click', function() {
             changeImage((button == 'prev') ? -1 : 1);
         });
     };
@@ -739,7 +754,7 @@ window.Gallerize = function(config) {
 
         // function to hide '.gz_loading' and call onload()
         var hideLoading = function() {
-            var loading = $('.gz_loading');
+            var loading = $(self.g+' .gz_loading');
             if (loading) {
                 clearTimeout(self.loading_timeout);
                 loading.style['z-index'] = 0;
@@ -755,7 +770,7 @@ window.Gallerize = function(config) {
             image.onload = function() {
                 self.preload.push(imgSrc);
                 self.ratios[self.images.indexOf(imgSrc)] = this.width / this.height;
-                if (self.text.element) $(self.text.element).style.visibility = 'visible';
+                if (self.text.e) $(self.text.e).style.visibility = 'visible';
                 hideLoading();
             };
             image.onerror = function() {
@@ -778,7 +793,7 @@ window.Gallerize = function(config) {
         $(e).classList.add('image_'+getCurrent());
 
         var ratio = self.ratios[getCurrent()];
-        var parent_ratio = $(self.gallery).clientWidth / $(self.gallery).clientHeight;
+        var parent_ratio = $(self.g).clientWidth / $(self.g).clientHeight;
 
         if (self.contain == 'all' ||
             (self.contain == 'landscape' && ratio > 1) ||
@@ -798,7 +813,7 @@ window.Gallerize = function(config) {
      * Attaches a URL to the '.gz_click' element above the image.
      */
     var setLink = function() {
-        var click = $('.gz_click');
+        var click = $(self.g+' .gz_click');
         var link = self.links[getCurrent()];
         if (link) {
             click.style.cursor = 'pointer';
@@ -817,7 +832,7 @@ window.Gallerize = function(config) {
      * @param {number} offset The offset to adjust the thumbnail elements by.
      */
     var adjustThumbs = function(offset) {
-        [].forEach.call(document.querySelectorAll('.gz_th_nav_thumb'), function(e) {
+        [].forEach.call(document.querySelectorAll(self.th.e+' .gz_th_nav_thumb'), function(e) {
             var origin = parseInt(e.style.left.replace('px', ''));
             var destination = origin + (self.th.offset * offset * -1);
             var position;
@@ -835,7 +850,7 @@ window.Gallerize = function(config) {
                 e.style.left = destination+'px';
             }
 
-            var border = e.querySelector('.gz_thumb_border');
+            var border = e.querySelector(self.th.e+' .gz_thumb_border');
             if (destination == self.th.offset * 2) {
                 border.classList.remove('fadeOut');
                 border.classList.add('fadeIn');
@@ -850,11 +865,11 @@ window.Gallerize = function(config) {
      * Updates the indicator navigation
      */
     var updateIndicators = function() {
-        [].forEach.call(document.querySelectorAll('.gz_indicator'), function(e) {
+        [].forEach.call(document.querySelectorAll(self.in.e+' .gz_indicator'), function(e) {
             e.style.background = self.in.bg;
             e.style.opacity = self.in.opacity;
         });
-        var current = $('.gz_indicator_'+getCurrent());
+        var current = $(self.in.e+' .gz_indicator_'+getCurrent());
         current.style.background = self.in.active_bg;
         current.style.opacity = 1;
     };
@@ -884,7 +899,7 @@ window.Gallerize = function(config) {
         self.current = self.current + offset;
 
         if (self.loading.image && self.loading.all) {
-            var loading = $('.gz_loading');
+            var loading = $(self.g+' .gz_loading');
             loading.classList.remove('fadeInHalf');
             self.loading_timeout = setTimeout(function() {
                 loading.style['z-index'] = 96;
@@ -894,16 +909,16 @@ window.Gallerize = function(config) {
 
         loadImage(0, function() {
             if (self.auto) clearTimeout(self.timeout);
-            setBackground('.gz_background');
+            setBackground(self.g+' .gz_background');
 
             // Delay the animation by a small amount to prevent flickering
             // while the background is set
             setTimeout(function() {
                 // Animate gallery
-                $('.gz_animator').classList.add('fadeOut');
+                $(self.g+' .gz_animator').classList.add('fadeOut');
                 setTimeout(function() {
-                    setBackground('.gz_animator');
-                    $('.gz_animator').classList.remove('fadeOut');
+                    setBackground(self.g+' .gz_animator');
+                    $(self.g+' .gz_animator').classList.remove('fadeOut');
                     updateCounter();
                     if (self.links) setLink();
                     self.active = false;
@@ -913,12 +928,12 @@ window.Gallerize = function(config) {
                 }, self.fade + 100);
 
                 // Update thumbnails and indicators if they are showing
-                if (self.th.element) adjustThumbs(offset);
-                if (!self.th.element && self.in.element) updateIndicators();
+                if (self.th.e) adjustThumbs(offset);
+                if (!self.th.e && self.in.e) updateIndicators();
 
                 // Animate text
-                if (self.text.items && self.text.element) {
-                    var text = $('.gz_text_inner');
+                if (self.text.items && self.text.e) {
+                    var text = $(self.text.e+' .gz_text_inner');
                     var animateText = function() {
                         text.innerHTML = self.text.items[getCurrent()];
                         text.classList.remove('fadeOutQuick');
