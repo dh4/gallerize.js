@@ -95,6 +95,8 @@ window.Gallerize = function(config) {
             buttons: true,
             button_color: '#000',
             active_color: '#000',
+            hpadding: 0.125,
+            vpadding: 0.125,
         },
         indicators: {
             element: null,
@@ -104,6 +106,8 @@ window.Gallerize = function(config) {
             opacity: 1,
             image: null,
             aimage: null,
+            size: 0.5,
+            padding: 0.25,
         },
         text: {
             element: null,
@@ -288,22 +292,22 @@ window.Gallerize = function(config) {
     var computeThumbSize = function() {
         var e = $(self.th.e);
 
-        // Calculate thumbnail size and padding based on how large the thumbnail element is
-        self.th.hpadding = Math.round(e.clientWidth * 0.015);
-        self.th.vpadding = Math.round(e.clientWidth * 0.01);
-
-        self.th.height = Math.round(e.clientHeight - (self.th.vpadding * 2));
+        self.th.height = Math.round(e.clientHeight * (1 - self.th.vpadding));
 
         // Calculate button size
         self.button_size = (self.th.height > 60) ? 30 : (self.th.height > 50) ? 25 : 20;
 
-        self.th.wrapper_width = e.clientWidth - (self.th.hpadding * 2);
-        if (self.th.buttons) self.th.wrapper_width = self.th.wrapper_width - self.button_size * 2;
-        self.th.width = Math.round((self.th.wrapper_width - (self.th.hpadding * 4)) / 5);
-        self.th.wrapper_padding = (e.clientHeight - self.th.height) / 2;
+        var wrapper_width = e.clientWidth;
+        if (self.th.buttons) wrapper_width = wrapper_width - self.button_size * 2;
+        var th_width = wrapper_width / 5;
+
+        self.th.padding = Math.round((th_width - th_width * (1 - self.th.hpadding / 2)) * (6 / 5));
+        self.th.wrapper_width = wrapper_width - (self.th.padding * 2);
+        self.th.width = Math.round((self.th.wrapper_width - (self.th.padding * 4)) / 5);
+        self.th.wrapper_vpadding = (e.clientHeight - self.th.height) / 2;
 
         // Calculate position of thumbnails
-        self.th.offset = self.th.width + self.th.hpadding;
+        self.th.offset = self.th.width + self.th.padding;
         self.th.most_left = 3 * self.th.offset * -1;
         self.th.most_right = (self.images.length * self.th.iterations - 3) * self.th.offset;
         self.th.wrap = Math.abs(self.th.most_left) + self.th.most_right;
@@ -316,9 +320,9 @@ window.Gallerize = function(config) {
         var e = $(self.in.e);
 
         // Calculate indicator size and padding based on how large the indicator element is
-        self.in.size = Math.round(e.clientHeight * 0.5);
-        self.in.hpadding = Math.round((e.clientHeight - self.in.size) / 4);
-        self.in.vpadding = Math.round((e.clientHeight - self.in.size) / 2);
+        self.in.size_px = Math.round(e.clientHeight * self.in.size);
+        self.in.hpadding = Math.round(self.in.size_px * self.in.padding);
+        self.in.vpadding = Math.round((e.clientHeight - self.in.size_px) / 2);
 
         // Setup background variables
         self.in.bg = (self.in.image) ?
@@ -523,7 +527,7 @@ window.Gallerize = function(config) {
             class: 'gz_thumbnails',
             style: 'height:'+self.th.height+'px;'+
                    'width:'+$(parent).clientWidth+'px;'+
-                   'padding:'+self.th.wrapper_padding+'px 0;',
+                   'padding:'+self.th.wrapper_vpadding+'px 0;',
         };
         $('.gz_th_nav_wrapper', parent).appendChild($$('div', wrapper_attr));
 
@@ -534,7 +538,7 @@ window.Gallerize = function(config) {
             class: 'gz_th_nav_thumbs',
             style: 'height:'+$(parent).clientHeight+'px;'+
                    'width:'+self.th.wrapper_width+'px;'+
-                   'margin:0 '+self.th.hpadding+'px;',
+                   'margin:0 '+self.th.padding+'px;',
         };
         $('.gz_thumbnails', parent).appendChild($$('div', thumbs_attr));
 
@@ -639,12 +643,12 @@ window.Gallerize = function(config) {
             var attr = {
                 class: 'gz_indicator_'+i+' gz_indicator',
                 'data-image': i,
-                style: 'width:'+self.in.size+'px;'+
-                       'height:'+self.in.size+'px;'+
+                style: 'width:'+self.in.size_px+'px;'+
+                       'height:'+self.in.size_px+'px;'+
                        'margin:'+self.in.vpadding+'px '+self.in.hpadding+'px;'+
                        'background:'+self.in.bg+';'
             };
-            if (self.in.round) attr.style += 'border-radius:'+self.in.size+'px;';
+            if (self.in.round) attr.style += 'border-radius:'+self.in.size_px+'px;';
 
             $('.gz_indicator_wrapper', self.in.e).appendChild($$('div', attr));
 
