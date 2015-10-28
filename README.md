@@ -355,7 +355,7 @@ var gallery = new Gallerize({
         image: 'path/to/indicator/inactive.png',
         aimage: 'path/to/indicator/active.png',
         size: 0.75,
-        hpadding: 0.375,
+        padding: 0.375,
     },
     text: {
         element: '#text',
