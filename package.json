@@ -2,9 +2,22 @@
   "name": "gallerize.js",
   "version": "0.4.1",
   "description": "Versatile JavaScript image gallery",
+  "main": "src/gallerize.js",
+  "keywords": [
+    "image",
+    "images",
+    "gallery",
+    "carousel",
+    "fader",
+    "slider",
+    "rotator"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dh4/gallerize.js.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/dh4/gallerize.js/issues"
   },
   "author": "Dan Hasting",
   "license": "BSD-3-Clause",
