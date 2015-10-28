@@ -141,6 +141,14 @@ The text color to use for the prev/next buttons in the thumbnail navigation. Def
 
 The border color around the active thumbnail. Default is `#000`.
 
+##### thumbnails.hpadding
+
+The horizontal padding between thumbnails as a percent of the width of the thumbnails. Default is `0.125`.
+
+##### thumbnails.vpadding
+
+The vertical padding of thumbnails as a percent of the height of the thumbnails. Default is `0.125`.
+
 #### indicators
 
 Allows you to display an indicator navigation. It cannot co-exist with `thumbnails`.
@@ -185,6 +193,14 @@ Image to use for inactive indicators. Overrides `indicator_color`.
 ##### indicators.aimage
 
 Image to use for the active indicator. Overrides `indicator_acolor`.
+
+##### indicators.size
+
+The size of the indicators as a percent of the height of the indicator element. A value of `1` will make the indicators the same height as `indicators.element`. Default is `0.5`.
+
+##### indicators.padding
+
+The padding between indicators as a percent of the size of the indicators. Default is `0.25`.
 
 #### text
 
@@ -327,6 +343,8 @@ var gallery = new Gallerize({
         buttons: true,
         button_color: '#000',
         active_color: '#000',
+        hpadding: 0.1,
+        vpadding: 0.1,
     },
     indicators: {
         element: '#indicators',
@@ -336,6 +354,8 @@ var gallery = new Gallerize({
         opacity: 1,
         image: 'path/to/indicator/inactive.png',
         aimage: 'path/to/indicator/active.png',
+        size: 0.75,
+        hpadding: 0.375,
     },
     text: {
         element: '#text',
