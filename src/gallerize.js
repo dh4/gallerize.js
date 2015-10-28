@@ -33,6 +33,33 @@
 (function(document, window, undefined) {
 
 /**
+ * $ is a helper function to shorten document.querySelector.
+ *
+ * @function $
+ * @param {string} selector The element to fetch.
+ * @param {string} context The element to query.
+ * @returns {Object} The element if found or null.
+ */
+var $ = function(selector, context) {
+    context = (context) ? $(context) : document;
+    return context.querySelector(selector);
+};
+
+/**
+ * $$ is a helper function to create elements.
+ *
+ * @function $$
+ * @param {string} e The element to create. Usually 'div'.
+ * @param {Object} attr An object of attributes to set on the element.
+ * @returns {Object} The created element.
+ */
+var $$ = function(e, attr) {
+    var element = document.createElement(e);
+    for (var a in attr) element.setAttribute(a, attr[a]);
+    return element;
+};
+
+/**
  * Creates a Gallerize instance. You must call start() after for anything to happen.
  *
  * @example
@@ -137,31 +164,6 @@ window.Gallerize = function(config) {
         self.th.iterations = iterations_array[self.images.length];
     else
         self.th.iterations = (self.images.length > 10) ? 1 : 2;
-
-    /**
-     * $ is a helper function to shorten document.querySelector.
-     *
-     * @param {string} selector The element to fetch.
-     * @param {string} context The element to query.
-     * @returns {Object} The element if found or null.
-     */
-    var $ = function(selector, context) {
-        context = (context) ? $(context) : document;
-        return context.querySelector(selector);
-    };
-
-    /**
-     * $$ is a helper function to create elements.
-     *
-     * @param {string} e The element to create. Usually 'div'.
-     * @param {Object} attr An object of attributes to set on the element.
-     * @returns {Object} The created element.
-     */
-    var $$ = function(e, attr) {
-        var element = document.createElement(e);
-        for (var a in attr) element.setAttribute(a, attr[a]);
-        return element;
-    };
 
     /**
      * Initializes the gallery and navigation elements and starts the rotation timer.
@@ -702,7 +704,7 @@ window.Gallerize = function(config) {
     };
 
     /**
-     * Updates the counter element with the current position
+     * Updates the counter element with the current position.
      */
     var updateCounter = function() {
         if (self.counter.element) {
@@ -866,7 +868,7 @@ window.Gallerize = function(config) {
     };
 
     /**
-     * Updates the indicator navigation
+     * Updates the indicator navigation.
      */
     var updateIndicators = function() {
         [].forEach.call($(self.in.e).querySelectorAll('.gz_indicator'), function(e) {
