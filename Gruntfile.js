@@ -23,7 +23,8 @@ module.exports = function(grunt) {
                         ' * All rights reserved.\n'+
                         ' *\n'+
                         ' * https://github.com/dh4/gallerize.js\n'+
-                        ' **/\n'
+                        ' **/\n',
+                screwIE8: true
             },
             build: {
                 src: 'src/gallerize.js',
