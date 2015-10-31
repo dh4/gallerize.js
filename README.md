@@ -20,6 +20,8 @@ Click on the following demos to view them (you can view the source code in the d
 <a href="https://dh4.github.io/gallerize.js/demos/indicators.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/indicators.jpg" alt="Indicators Demo" height="150" /></a>
 </p>
 
+You can also view these demos in a [CodePen collection](http://codepen.io/collection/nMgLBa/).
+
 
 ## Usage
 
