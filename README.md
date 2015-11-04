@@ -412,7 +412,7 @@ document.querySelector('#random_element').addEventListener('click', function() {
 });
 ```
 
-This will switch the gallery to the third image in the images array. Note it's best not to use `changeToImage` with the thumbnail nav unless you have a small number of images (<= 4).
+This will switch the gallery to the third image in the images array.
 
 ## Feedback
 

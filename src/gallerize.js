@@ -856,7 +856,10 @@ window.Gallerize = function(config) {
                 e.classList.remove('gz_thumb_transition');
                 e.style.left = position+'px';
             } else {
-                e.classList.add('gz_thumb_transition');
+                if (offset <= 2 && offset >= -2)
+                    e.classList.add('gz_thumb_transition');
+                else
+                    e.classList.remove('gz_thumb_transition');
                 e.style.left = destination+'px';
             }
 
