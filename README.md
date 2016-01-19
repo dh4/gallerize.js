@@ -52,7 +52,7 @@ The above shows the minimal configuration. See the configuration section below f
 
 gallerize.js is not designed to display a styled gallery by default. It requires you to style the elements used (`gallery` and `thumbnails`, `indicators`, `counter`, `prev`, `next`, `text` if they are used). At a bare minimum, you will need to add a height and width to the `gallery` element.
 
-gallerize.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it.
+gallerize.js uses a z-index range of 90-100. Any z-index above 100 will show above the gallery and a z-index below 90 will show below it. If you want an element to appear as a part of the gallery (the `text` element for instance), use a z-index of 99 so it will appear below the loading animation.
 
 Look at the examples in the demos directory for good starting points on styling the gallery.
 
