@@ -827,11 +827,11 @@ window.Gallerize = function(config) {
         var link = self.links[getCurrent()];
         if (link) {
             click.style.cursor = 'pointer';
-            click.style['z-index'] = 96;
+            click.style['z-index'] = 93;
             click.href = link;
         } else {
             click.style.cursor = 'default';
-            click.style['z-index'] = 93;
+            click.style['z-index'] = 90;
             click.href = '#';
         }
     };
@@ -915,7 +915,7 @@ window.Gallerize = function(config) {
             var loading = $('.gz_loading', self.g);
             loading.classList.remove('fadeInHalf');
             self.loading_timeout = setTimeout(function() {
-                loading.style['z-index'] = 96;
+                loading.style['z-index'] = 100;
                 loading.classList.add('fadeInHalf');
             }, 500);
         }
