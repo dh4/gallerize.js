@@ -1,6 +1,6 @@
 {
   "name": "gallerize.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Versatile JavaScript image gallery",
   "main": "src/gallerize.js",
   "keywords": [
