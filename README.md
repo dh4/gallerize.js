@@ -416,13 +416,13 @@ This will switch the gallery to the third image in the images array.
 
 ## Feedback
 
-If you find yourself needing to hack the source code to get this to behave the way you want, please let me know by opening an [issue](https://github.com/dh4/mupen64plus-qt/issues) or submitting a pull request to make what you need configurable. My hope for this is to make it as versatile and usable as possible.
+If you find yourself needing to hack the source code to get this to behave the way you want, please let me know by opening an [issue](https://github.com/dh4/gallerize.js/issues) or submitting a pull request to make what you need configurable. My hope for this is to make it as versatile and usable as possible.
 
 
 ## Internet Explorer
 
 It makes liberal use of `background-size` and Javascript methods such as `addEventListener` which are not supported in IE8 and below. If you are looking for an image gallery that displays in those browsers, this is not for you.
 
-To get this working in IE9, you'll need to copy the shim [here](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) and load it into your page. Note that IE9 doesn't support CSS3 transitions, so there will be no transition between images in that browser.
+To get this working in IE9, you'll need to copy the polyfill [here](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) and load it into your page. Note that IE9 doesn't support CSS3 transitions, so there will be no transition between images in that browser.
 
 IE10 and above are supported out of the box.

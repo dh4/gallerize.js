@@ -506,7 +506,7 @@ window.Gallerize = function(config) {
      *              (for self.images.length * self.thumbnails.iterations)
      *              <div class="gz_thumb_(number) gz_th_nav_thumb">
      *                  <div class="gz_thumb_caption"></div>
-     *                  <div class="gz_thumb_border></div>
+     *                  <div class="gz_thumb_border"></div>
      *                  <div class="gz_thumb_image"></div>
      *              </div>
      *              (endfor)
