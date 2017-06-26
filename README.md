@@ -13,11 +13,11 @@ gallerize.js is designed to allow the developer to heavily customize the locatio
 Click on the following demos to view them (you can view the source code in the demos directory):
 
 <p align="center">
-<a href="https://dh4.github.io/gallerize.js/demos/large.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/large.jpg" alt="Large Demo" height="150" /></a>
-<a href="https://dh4.github.io/gallerize.js/demos/small.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/small.jpg" alt="Small Demo" height="150" /></a>
-<a href="https://dh4.github.io/gallerize.js/demos/background.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/background.jpg" alt="Background Demo" height="150" /></a>
-<a href="https://dh4.github.io/gallerize.js/demos/jumbotron.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/jumbotron.jpg" alt="Jumbotron Demo" height="150" /></a>
-<a href="https://dh4.github.io/gallerize.js/demos/indicators.html"><img src="https://dl.dropboxusercontent.com/u/232085155/gallerize.js/indicators.jpg" alt="Indicators Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/large.html"><img src="https://raw.githubusercontent.com/dh4/gallerize.js/master/demos/images/large.jpg" alt="Large Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/small.html"><img src="https://raw.githubusercontent.com/dh4/gallerize.js/master/demos/images/small.jpg" alt="Small Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/background.html"><img src="https://raw.githubusercontent.com/dh4/gallerize.js/master/demos/images/background.jpg" alt="Background Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/jumbotron.html"><img src="https://raw.githubusercontent.com/dh4/gallerize.js/master/demos/images/jumbotron.jpg" alt="Jumbotron Demo" height="150" /></a>
+<a href="https://dh4.github.io/gallerize.js/demos/indicators.html"><img src="https://raw.githubusercontent.com/dh4/gallerize.js/master/demos/images/indicators.jpg" alt="Indicators Demo" height="150" /></a>
 </p>
 
 You can also view these demos in a [CodePen collection](http://codepen.io/collection/nMgLBa/).
