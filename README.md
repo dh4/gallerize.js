@@ -1,4 +1,4 @@
-# gallerize.js [![Build Status](https://travis-ci.org/dh4/gallerize.js.svg?branch=master)](https://travis-ci.org/dh4/gallerize.js) [![Bower](https://img.shields.io/bower/v/gallerize.js.svg)](http://bower.io/search/?q=gallerize.js)
+# gallerize.js [![Build Status](https://travis-ci.com/dh4/gallerize.js.svg?branch=master)](https://travis-ci.com/dh4/gallerize.js) [![Bower](https://img.shields.io/bower/v/gallerize.js.svg)](http://bower.io/search/?q=gallerize.js)
 
 gallerize.js is a responsive image fader designed to be as versatile as possible. It uses CSS3 transitions and pure Javascript.
 
